@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+})
 
 export async function POST(req: NextRequest) {
   const { firstName, lastName, email, jobTitle } = await req.json()
@@ -12,11 +20,13 @@ export async function POST(req: NextRequest) {
 
   const fullName = [firstName, lastName].filter(Boolean).join(' ') || 'there'
 
-  const { error } = await resend.emails.send({
-    from: 'SMarDevs Talent <onboarding@resend.dev>',
-    to: email,
-    subject: `We received your application — ${jobTitle}`,
-    html: `
+  let error: Error | null = null
+  try {
+    await transporter.sendMail({
+      from: `"SMarDevs Talent" <${process.env.SMTP_USER}>`,
+      to: email,
+      subject: `We received your application — ${jobTitle}`,
+      html: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -107,11 +117,13 @@ export async function POST(req: NextRequest) {
 </body>
 </html>
     `.trim(),
-  })
+    })
+  } catch (err) {
+    error = err as Error
+  }
 
   if (error) {
-    console.error('[confirm email] Resend error:', error)
-    // Don't fail the user experience if email fails — just log it
+    console.error('[confirm email] SMTP error:', error)
     return NextResponse.json({ success: false, error: error.message })
   }
 
