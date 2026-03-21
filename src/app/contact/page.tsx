@@ -1,0 +1,380 @@
+"use client";
+
+import { useState, FormEvent } from "react";
+import Link from "next/link";
+import {
+  Mail,
+  Phone,
+  Clock,
+  Calendar,
+  Send,
+  CheckCircle2,
+  ChevronDown,
+  MapPin,
+  MessageSquare,
+} from "lucide-react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
+const roleOptions = [
+  "Software Engineer",
+  "Frontend Developer",
+  "Backend Developer",
+  "Full Stack Developer",
+  "QA Engineer",
+  "QA Automation Engineer",
+  "DevOps Engineer",
+  "UI/UX Designer",
+  "Project Manager",
+  "Business Analyst",
+  "Other",
+];
+
+const positionOptions = ["1", "2-5", "6-10", "10+"];
+const timelineOptions = ["Immediately", "1-2 weeks", "1 month", "Just exploring"];
+
+export default function ContactPage() {
+  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    role: "",
+    positions: "",
+    timeline: "",
+    message: "",
+  });
+
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: false }));
+  }
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    const newErrors: Record<string, boolean> = {};
+    if (!form.name.trim()) newErrors.name = true;
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      newErrors.email = true;
+    if (!form.company.trim()) newErrors.company = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setSubmitted(true);
+  }
+
+  return (
+    <>
+      <Header />
+      <main className="min-h-screen bg-navy-950 text-white">
+        {/* Hero */}
+        <section className="bg-hero-gradient section-padding pt-32 pb-16">
+          <div className="container-custom text-center">
+            <div className="inline-flex items-center gap-2 bg-brand-600/10 border border-brand-600/20 rounded-full px-4 py-1.5 mb-6">
+              <MessageSquare className="w-4 h-4 text-brand-600" />
+              <span className="text-sm text-brand-600 font-medium">Get in Touch</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 max-w-4xl mx-auto">
+              Let&#39;s Build Something{" "}
+              <span className="gradient-text">Exceptional Together</span>
+            </h1>
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+              Tell us about your hiring needs and our team will craft a tailored staffing solution
+              within 24 hours.
+            </p>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section className="section-padding">
+          <div className="container-custom">
+            <div className="max-w-6xl mx-auto grid lg:grid-cols-5 gap-10">
+              {/* Form */}
+              <div className="lg:col-span-3">
+                <div className="shadow-glass rounded-2xl border border-white/10 bg-white/5 p-6 md:p-8">
+                  {submitted ? (
+                    <div className="text-center py-16">
+                      <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <CheckCircle2 className="w-8 h-8 text-green-400" />
+                      </div>
+                      <h3 className="text-2xl font-bold mb-3">Thank You!</h3>
+                      <p className="text-gray-400 max-w-md mx-auto">
+                        Our team will reach out within 24 hours. We look forward to helping you
+                        build your ideal engineering team.
+                      </p>
+                      <Link
+                        href="/"
+                        className="inline-flex items-center gap-2 mt-8 text-brand-600 hover:text-brand-600/80 font-medium transition-colors"
+                      >
+                        Back to Home
+                      </Link>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                      <h2 className="text-xl font-semibold mb-2">Tell Us About Your Needs</h2>
+
+                      <div className="grid md:grid-cols-2 gap-5">
+                        {/* Full Name */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-400 mb-1.5">
+                            Full Name <span className="text-red-400">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="name"
+                            value={form.name}
+                            onChange={handleChange}
+                            placeholder="John Smith"
+                            className={`w-full bg-navy-950 border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent ${
+                              errors.name ? "border-red-500" : "border-white/10"
+                            }`}
+                          />
+                          {errors.name && (
+                            <p className="text-red-400 text-xs mt-1">Name is required</p>
+                          )}
+                        </div>
+
+                        {/* Work Email */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-400 mb-1.5">
+                            Work Email <span className="text-red-400">*</span>
+                          </label>
+                          <input
+                            type="email"
+                            name="email"
+                            value={form.email}
+                            onChange={handleChange}
+                            placeholder="john@company.com"
+                            className={`w-full bg-navy-950 border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent ${
+                              errors.email ? "border-red-500" : "border-white/10"
+                            }`}
+                          />
+                          {errors.email && (
+                            <p className="text-red-400 text-xs mt-1">Valid email is required</p>
+                          )}
+                        </div>
+
+                        {/* Company */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-400 mb-1.5">
+                            Company Name <span className="text-red-400">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="company"
+                            value={form.company}
+                            onChange={handleChange}
+                            placeholder="Acme Inc."
+                            className={`w-full bg-navy-950 border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent ${
+                              errors.company ? "border-red-500" : "border-white/10"
+                            }`}
+                          />
+                          {errors.company && (
+                            <p className="text-red-400 text-xs mt-1">Company name is required</p>
+                          )}
+                        </div>
+
+                        {/* Phone */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-400 mb-1.5">
+                            Phone <span className="text-gray-600">(optional)</span>
+                          </label>
+                          <input
+                            type="tel"
+                            name="phone"
+                            value={form.phone}
+                            onChange={handleChange}
+                            placeholder="+1 (555) 000-0000"
+                            className="w-full bg-navy-950 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent"
+                          />
+                        </div>
+
+                        {/* Role */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-400 mb-1.5">
+                            Role You&#39;re Hiring For
+                          </label>
+                          <div className="relative">
+                            <select
+                              name="role"
+                              value={form.role}
+                              onChange={handleChange}
+                              className="w-full bg-navy-950 border border-white/10 rounded-lg px-4 py-3 text-white appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent"
+                            >
+                              <option value="">Select a role</option>
+                              {roleOptions.map((r) => (
+                                <option key={r} value={r}>
+                                  {r}
+                                </option>
+                              ))}
+                            </select>
+                            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                          </div>
+                        </div>
+
+                        {/* Positions */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-400 mb-1.5">
+                            Number of Positions
+                          </label>
+                          <div className="relative">
+                            <select
+                              name="positions"
+                              value={form.positions}
+                              onChange={handleChange}
+                              className="w-full bg-navy-950 border border-white/10 rounded-lg px-4 py-3 text-white appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent"
+                            >
+                              <option value="">Select</option>
+                              {positionOptions.map((p) => (
+                                <option key={p} value={p}>
+                                  {p}
+                                </option>
+                              ))}
+                            </select>
+                            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Timeline */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-400 mb-1.5">
+                          Project Timeline
+                        </label>
+                        <div className="relative">
+                          <select
+                            name="timeline"
+                            value={form.timeline}
+                            onChange={handleChange}
+                            className="w-full bg-navy-950 border border-white/10 rounded-lg px-4 py-3 text-white appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent"
+                          >
+                            <option value="">Select a timeline</option>
+                            {timelineOptions.map((t) => (
+                              <option key={t} value={t}>
+                                {t}
+                              </option>
+                            ))}
+                          </select>
+                          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        </div>
+                      </div>
+
+                      {/* Message */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-400 mb-1.5">
+                          Message <span className="text-gray-600">(optional)</span>
+                        </label>
+                        <textarea
+                          name="message"
+                          value={form.message}
+                          onChange={handleChange}
+                          rows={4}
+                          placeholder="Tell us about your project, tech stack, or any specific requirements..."
+                          className="w-full bg-navy-950 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent resize-none"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="w-full inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-600/90 text-white font-semibold px-8 py-4 rounded-lg transition-all"
+                      >
+                        <Send className="w-4 h-4" />
+                        Send Message
+                      </button>
+                    </form>
+                  )}
+                </div>
+              </div>
+
+              {/* Sidebar */}
+              <div className="lg:col-span-2 space-y-6">
+                {/* Contact Info */}
+                <div className="shadow-glass rounded-2xl border border-white/10 bg-white/5 p-6">
+                  <h3 className="text-lg font-semibold mb-4">Contact Information</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-brand-600/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Mail className="w-5 h-5 text-brand-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-400">Email</p>
+                        <p className="text-white font-medium">info@smartdevs.com</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-brand-600/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Phone className="w-5 h-5 text-brand-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-400">Phone</p>
+                        <p className="text-white font-medium">+1 (555) 123-4567</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-brand-600/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Clock className="w-5 h-5 text-brand-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-400">Office Hours</p>
+                        <p className="text-white font-medium">Mon-Fri, 8am - 6pm EST</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-brand-600/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <MapPin className="w-5 h-5 text-brand-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-400">Location</p>
+                        <p className="text-white font-medium">Miami, FL</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Response Time */}
+                <div className="shadow-glass rounded-2xl border border-white/10 bg-white/5 p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+                    <span className="text-sm font-medium text-green-400">
+                      Typically responds within 4 hours
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-400">
+                    Our talent acquisition team reviews every inquiry personally and will respond
+                    with a customized proposal.
+                  </p>
+                </div>
+
+                {/* Calendly Placeholder */}
+                <div className="shadow-glass rounded-2xl border border-white/10 bg-white/5 p-6">
+                  <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                    <Calendar className="w-5 h-5 text-accent-500" />
+                    Book Directly
+                  </h3>
+                  <p className="text-sm text-gray-400 mb-4">
+                    Prefer to book directly? Use our calendar below to schedule a 30-minute
+                    discovery call at a time that works for you.
+                  </p>
+                  <div className="w-full h-48 bg-navy-950 border border-white/10 rounded-lg flex items-center justify-center">
+                    <p className="text-gray-600 text-sm text-center px-4">
+                      Calendly scheduling widget will appear here
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
+}
