@@ -12,6 +12,55 @@ interface JobFormProps {
   initialData?: Job
 }
 
+interface ArrayFieldEditorProps {
+  field: string
+  label: string
+  placeholder: string
+  items: string[]
+  onUpdate: (field: string, index: number, value: string) => void
+  onAdd: (field: string) => void
+  onRemove: (field: string, index: number) => void
+  inputClasses: string
+  labelClasses: string
+}
+
+function ArrayFieldEditor({ field, label, placeholder, items, onUpdate, onAdd, onRemove, inputClasses, labelClasses }: ArrayFieldEditorProps) {
+  return (
+    <div>
+      <label className={labelClasses}>{label}</label>
+      <div className="space-y-2">
+        {items.map((item: string, idx: number) => (
+          <div key={idx} className="flex gap-2">
+            <input
+              value={item}
+              onChange={(e) => onUpdate(field, idx, e.target.value)}
+              placeholder={placeholder}
+              className={inputClasses}
+            />
+            {items.length > 1 && (
+              <button
+                type="button"
+                onClick={() => onRemove(field, idx)}
+                className="p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors shrink-0"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+      <button
+        type="button"
+        onClick={() => onAdd(field)}
+        className="mt-2 inline-flex items-center gap-1.5 text-sm text-brand-600 hover:text-brand-700 font-medium"
+      >
+        <Plus className="w-3.5 h-3.5" />
+        Add item
+      </button>
+    </div>
+  )
+}
+
 function slugify(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 }
@@ -112,41 +161,6 @@ export default function JobForm({ categories, initialData }: JobFormProps) {
   const inputClasses = 'w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-navy-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all'
   const labelClasses = 'block text-sm font-medium text-gray-700 mb-1.5'
 
-  const ArrayFieldEditor = ({ field, label, placeholder }: { field: string; label: string; placeholder: string }) => (
-    <div>
-      <label className={labelClasses}>{label}</label>
-      <div className="space-y-2">
-        {(( form as any)[field] as string[]).map((item: string, idx: number) => (
-          <div key={idx} className="flex gap-2">
-            <input
-              value={item}
-              onChange={(e) => updateArrayField(field, idx, e.target.value)}
-              placeholder={placeholder}
-              className={inputClasses}
-            />
-            {(( form as any)[field] as string[]).length > 1 && (
-              <button
-                type="button"
-                onClick={() => removeArrayItem(field, idx)}
-                className="p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors shrink-0"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-      <button
-        type="button"
-        onClick={() => addArrayItem(field)}
-        className="mt-2 inline-flex items-center gap-1.5 text-sm text-brand-600 hover:text-brand-700 font-medium"
-      >
-        <Plus className="w-3.5 h-3.5" />
-        Add item
-      </button>
-    </div>
-  )
-
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {error && (
@@ -225,11 +239,11 @@ export default function JobForm({ categories, initialData }: JobFormProps) {
       {/* Array fields */}
       <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-6">
         <h2 className="text-lg font-semibold text-navy-950 border-b border-gray-100 pb-3">Details</h2>
-        <ArrayFieldEditor field="responsibilities" label="Responsibilities *" placeholder="e.g., Design and implement new features..." />
-        <ArrayFieldEditor field="requirements" label="Requirements *" placeholder="e.g., 5+ years of experience with React..." />
-        <ArrayFieldEditor field="preferred_qualifications" label="Preferred Qualifications" placeholder="e.g., Experience with GraphQL..." />
-        <ArrayFieldEditor field="tech_stack" label="Tech Stack" placeholder="e.g., React" />
-        <ArrayFieldEditor field="benefits" label="Benefits" placeholder="e.g., Competitive USD compensation..." />
+        <ArrayFieldEditor field="responsibilities" label="Responsibilities *" placeholder="e.g., Design and implement new features..." items={form.responsibilities} onUpdate={updateArrayField} onAdd={addArrayItem} onRemove={removeArrayItem} inputClasses={inputClasses} labelClasses={labelClasses} />
+        <ArrayFieldEditor field="requirements" label="Requirements *" placeholder="e.g., 5+ years of experience with React..." items={form.requirements} onUpdate={updateArrayField} onAdd={addArrayItem} onRemove={removeArrayItem} inputClasses={inputClasses} labelClasses={labelClasses} />
+        <ArrayFieldEditor field="preferred_qualifications" label="Preferred Qualifications" placeholder="e.g., Experience with GraphQL..." items={form.preferred_qualifications} onUpdate={updateArrayField} onAdd={addArrayItem} onRemove={removeArrayItem} inputClasses={inputClasses} labelClasses={labelClasses} />
+        <ArrayFieldEditor field="tech_stack" label="Tech Stack" placeholder="e.g., React" items={form.tech_stack} onUpdate={updateArrayField} onAdd={addArrayItem} onRemove={removeArrayItem} inputClasses={inputClasses} labelClasses={labelClasses} />
+        <ArrayFieldEditor field="benefits" label="Benefits" placeholder="e.g., Competitive USD compensation..." items={form.benefits} onUpdate={updateArrayField} onAdd={addArrayItem} onRemove={removeArrayItem} inputClasses={inputClasses} labelClasses={labelClasses} />
       </div>
 
       {/* Salary */}
