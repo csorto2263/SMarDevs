@@ -37,8 +37,6 @@ const footerColumns = [
     links: [
       { label: "Blog", href: "/blog" },
       { label: "Case Studies", href: "/case-studies" },
-      { label: "Salary Guide", href: "/resources/salary-guide" },
-      { label: "Ebook", href: "/resources/ebook" },
       { label: "Savings Calculator", href: "/savings-calculator" },
     ],
   },

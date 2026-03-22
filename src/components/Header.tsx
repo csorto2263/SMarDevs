@@ -10,8 +10,6 @@ import {
   BookOpen,
   FileText,
   Calculator,
-  DollarSign,
-  BookMarked,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
@@ -29,8 +27,6 @@ const resourceLinks = [
   { label: "Blog", href: "/blog", icon: BookOpen },
   { label: "Case Studies", href: "/case-studies", icon: FileText },
   { label: "Savings Calculator", href: "/savings-calculator", icon: Calculator },
-  { label: "Salary Guide", href: "/resources/salary-guide", icon: DollarSign },
-  { label: "Ebook", href: "/resources/ebook", icon: BookMarked },
 ];
 
 /* ─── Component ─── */
