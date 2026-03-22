@@ -226,25 +226,25 @@ export default function SavingsCalculatorPage() {
                 <div className="space-y-4">
                   <div className="shadow-glass rounded-2xl border border-white/10 bg-white/5 p-6">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm text-gray-400">Monthly US Cost</span>
+                      <span className="text-sm text-gray-400">Monthly US Cost <span className="text-gray-500">({hires} {hires === 1 ? "person" : "people"})</span></span>
                       <DollarSign className="w-4 h-4 text-gray-500" />
                     </div>
                     <p className="text-2xl font-bold text-white">{formatCurrency(monthlyUS)}</p>
                     <p className="text-xs text-gray-500 mt-1">
-                      {formatCurrency(data.us)} per person
+                      {formatCurrency(data.us)} &times; {hires} {hires === 1 ? "person" : "people"}
                     </p>
                   </div>
 
                   <div className="shadow-glass rounded-2xl border border-white/10 bg-white/5 p-6">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm text-gray-400">Monthly LATAM Cost</span>
+                      <span className="text-sm text-gray-400">Monthly LATAM Cost <span className="text-gray-500">({hires} {hires === 1 ? "person" : "people"})</span></span>
                       <Users className="w-4 h-4 text-accent-500" />
                     </div>
                     <p className="text-2xl font-bold text-accent-500">
                       {formatCurrency(monthlyLATAM)}
                     </p>
                     <p className="text-xs text-gray-500 mt-1">
-                      {formatCurrency(data.latam)} per person
+                      {formatCurrency(data.latam)} &times; {hires} {hires === 1 ? "person" : "people"}
                     </p>
                   </div>
 
