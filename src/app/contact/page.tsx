@@ -329,7 +329,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <p className="text-sm text-gray-400">Phone</p>
-                        <a href="https://wa.me/15043331465" target="_blank" rel="noopener noreferrer" className="text-white font-medium hover:text-brand-400 transition-colors">+1 (504) 333-1465</a>
+                        <a href="https://wa.me/15043331465?text=Hi%20there!%20I%20came%20across%20SMarDevs%20and%20I'm%20curious%20about%20your%20talent%20solutions%20for%20LATAM%20engineers.%20I'd%20like%20to%20get%20more%20details%20%E2%80%94%20is%20this%20a%20good%20channel%20to%20reach%20you%3F" target="_blank" rel="noopener noreferrer" className="text-white font-medium hover:text-brand-400 transition-colors">+1 (504) 333-1465</a>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
