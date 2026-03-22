@@ -320,7 +320,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <p className="text-sm text-gray-400">Email</p>
-                        <p className="text-white font-medium">info@smartdevs.com</p>
+                        <a href="mailto:carlos.sorto@easylifehn.com" className="text-white font-medium hover:text-brand-400 transition-colors">carlos.sorto@easylifehn.com</a>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
@@ -329,7 +329,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <p className="text-sm text-gray-400">Phone</p>
-                        <p className="text-white font-medium">+1 (504) 333-1465</p>
+                        <a href="https://wa.me/15043331465" target="_blank" rel="noopener noreferrer" className="text-white font-medium hover:text-brand-400 transition-colors">+1 (504) 333-1465</a>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
