@@ -90,19 +90,16 @@ const differentiators = [
 
 const leaders = [
   {
-    name: "Daniel Reyes",
+    name: "Marvin Ortega",
     title: "Co-Founder & CEO",
-    bio: "Daniel founded SMarDevs with the conviction that Latin American engineers deserve access to the world's most ambitious projects — and that companies deserve better options than traditional outsourcing. With over a decade of experience in technology recruiting and operations across Central and South America, he leads the company's vision and strategic partnerships.",
+    focus: ["Sales Strategy", "Business Development", "Marketing"],
+    bio: "Marvin co-founded SMarDevs with a clear mission: give ambitious companies access to world-class Latin American talent — and give LATAM professionals access to the opportunities they deserve. He leads the company's commercial strategy, client relationships, and growth initiatives, bringing a sharp focus on building partnerships that deliver measurable impact.",
   },
   {
-    name: "Carolina Mejia",
+    name: "Carlos Sorto",
     title: "Co-Founder & COO",
-    bio: "Carolina oversees SMarDevs' talent operations, ensuring every engagement meets the quality bar that clients have come to expect. Her background in HR technology and organizational design across LATAM markets drives the company's scalable vetting processes and account management standards.",
-  },
-  {
-    name: "Marco Alvarado",
-    title: "VP of Engineering & Talent",
-    bio: "Marco leads SMarDevs' technical evaluation framework and engineering community initiatives. A former senior engineer himself, he designed the assessment methodology that screens over 2,000 candidates annually and maintains the rigorous standards behind the company's 97% client retention rate.",
+    focus: ["Engineering", "Talent Acquisition", "Operations"],
+    bio: "Carlos oversees SMarDevs' engineering and talent operations, ensuring every professional placed meets the technical bar and cultural standards clients expect. With deep roots in software engineering and a rigorous approach to candidate evaluation, he architects the vetting methodology and operational systems that power the company's delivery excellence.",
   },
 ];
 
@@ -340,7 +337,7 @@ export default function AboutPage() {
                 recruiting, LATAM operations, and engineering management.
               </p>
             </div>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               {leaders.map((leader) => (
                 <div
                   key={leader.name}
@@ -358,9 +355,16 @@ export default function AboutPage() {
                     <h3 className="text-xl font-semibold mb-1">
                       {leader.name}
                     </h3>
-                    <p className="text-brand-600 font-medium text-sm mb-4">
+                    <p className="text-brand-600 font-medium text-sm mb-3">
                       {leader.title}
                     </p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {leader.focus.map((tag) => (
+                        <span key={tag} className="px-3 py-1 bg-brand-50 text-brand-700 text-xs font-medium rounded-full border border-brand-100">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                     <p className="text-gray-600 leading-relaxed text-sm">
                       {leader.bio}
                     </p>
