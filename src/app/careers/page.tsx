@@ -149,9 +149,9 @@ export default async function CareersPage({
               <p className="text-sm font-semibold tracking-widest text-brand-600 uppercase mb-3">How It Works</p>
               <h2 className="text-3xl md:text-4xl font-bold text-navy-950">Application Process</h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="flex flex-wrap justify-center gap-8">
               {steps.map((step) => (
-                <div key={step.num} className="text-center">
+                <div key={step.num} className="text-center w-40">
                   <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-brand-600 to-accent-500 flex items-center justify-center text-white text-lg font-bold mb-4 shadow-lg shadow-brand-600/20">
                     {step.num}
                   </div>
