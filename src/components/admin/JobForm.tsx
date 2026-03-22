@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Save, ArrowLeft, Plus, X, Loader2 } from 'lucide-react'
@@ -25,6 +25,16 @@ interface ArrayFieldEditorProps {
 }
 
 function ArrayFieldEditor({ field, label, placeholder, items, onUpdate, onAdd, onRemove, inputClasses, labelClasses }: ArrayFieldEditorProps) {
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([])
+  const prevLengthRef = useRef(items.length)
+
+  useEffect(() => {
+    if (items.length > prevLengthRef.current) {
+      inputRefs.current[items.length - 1]?.focus()
+    }
+    prevLengthRef.current = items.length
+  }, [items.length])
+
   return (
     <div>
       <label className={labelClasses}>{label}</label>
@@ -32,6 +42,7 @@ function ArrayFieldEditor({ field, label, placeholder, items, onUpdate, onAdd, o
         {items.map((item: string, idx: number) => (
           <div key={idx} className="flex gap-2">
             <input
+              ref={(el) => { inputRefs.current[idx] = el }}
               value={item}
               onChange={(e) => onUpdate(field, idx, e.target.value)}
               onKeyDown={(e) => {
