@@ -231,7 +231,7 @@ export default function SavingsCalculatorPage() {
                     </div>
                     <p className="text-2xl font-bold text-white">{formatCurrency(monthlyUS)}</p>
                     <p className="text-xs text-gray-500 mt-1">
-                      {formatCurrency(data.us)} &times; {hires} {hires === 1 ? "engineer" : "engineers"}
+                      {formatCurrency(data.us)} per person
                     </p>
                   </div>
 
@@ -244,7 +244,7 @@ export default function SavingsCalculatorPage() {
                       {formatCurrency(monthlyLATAM)}
                     </p>
                     <p className="text-xs text-gray-500 mt-1">
-                      {formatCurrency(data.latam)} &times; {hires} {hires === 1 ? "engineer" : "engineers"}
+                      {formatCurrency(data.latam)} per person
                     </p>
                   </div>
 
