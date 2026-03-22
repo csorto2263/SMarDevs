@@ -1029,4 +1029,206 @@ export const roles: Role[] = [
       },
     ],
   },
+  {
+    slug: "data-engineers",
+    title: "Hire Data Engineers",
+    shortTitle: "Data Engineers",
+    category: "Engineering",
+    description:
+      "Build reliable, scalable data infrastructure with experienced data engineers who design pipelines, data warehouses, and real-time streaming systems. Our engineers enable data-driven decision making by transforming raw data into clean, accessible, and trusted assets.",
+    heroDescription:
+      "Accelerate your data strategy with data engineers from Latin America who design and maintain robust pipelines, warehouses, and analytics platforms. Get the data foundation your business needs at 40–50% less than US market rates.",
+    whyHire: [
+      "Eliminate data silos and build a unified data platform with engineers experienced in modern lakehouse architectures and cloud-native data tools.",
+      "Reduce time-to-insight by automating data ingestion, transformation, and delivery so your analysts and data scientists always work with fresh, reliable data.",
+      "Save 40–50% compared to US-based data engineers while accessing professionals with hands-on experience on high-volume production data systems.",
+      "Scale data infrastructure on demand — from early-stage pipelines to petabyte-scale warehouses — without long-term hiring commitments.",
+      "Work with engineers in your time zone who collaborate closely with analytics, data science, and product teams to deliver end-to-end data solutions.",
+    ],
+    advantages: [
+      "Data engineering candidates are assessed through a practical pipeline design challenge that evaluates ingestion, transformation logic, and data quality practices.",
+      "Our engineers are proficient with leading cloud data platforms including Snowflake, BigQuery, Databricks, and Redshift.",
+      "SMarDevs matches data engineers based on your stack, whether that is batch processing, real-time streaming, or a hybrid lakehouse approach.",
+      "All engineers communicate fluently in English and are experienced collaborating with business intelligence, data science, and product teams.",
+      "We manage all payroll, compliance, and equipment logistics so your engineering leads can focus on architecture and delivery.",
+      "Our 30-day satisfaction guarantee ensures every placement meets your technical and collaboration expectations.",
+    ],
+    levels: [
+      {
+        name: "Junior",
+        experience: "1-2 years",
+        skills: [
+          "Proficiency in Python or SQL for data extraction, transformation, and loading tasks",
+          "Familiarity with ETL concepts and at least one orchestration tool such as Apache Airflow or Prefect",
+          "Experience working with cloud storage platforms (S3, GCS, or Azure Blob) and relational databases",
+          "Understanding of data modeling fundamentals including normalization and dimensional modeling concepts",
+          "Ability to write unit tests for data pipelines and document pipeline logic clearly",
+        ],
+        typicalSalaryUS: 8000,
+        typicalSalaryLATAM: 4000,
+      },
+      {
+        name: "Mid-Level",
+        experience: "3-5 years",
+        skills: [
+          "Strong experience designing and maintaining ELT pipelines using dbt, Spark, or equivalent transformation frameworks",
+          "Proficiency with cloud data warehouses (Snowflake, BigQuery, or Redshift) including query optimization and cost management",
+          "Experience with real-time streaming technologies such as Apache Kafka, Kinesis, or Pub/Sub",
+          "Ability to implement data quality checks, monitoring alerts, and lineage tracking across pipeline stages",
+          "Understanding of data governance practices including schema management, access control, and PII handling",
+        ],
+        typicalSalaryUS: 12500,
+        typicalSalaryLATAM: 6500,
+      },
+      {
+        name: "Senior",
+        experience: "6+ years",
+        skills: [
+          "Expert-level ability to design end-to-end data platforms including ingestion, transformation, serving, and orchestration layers",
+          "Deep experience architecting lakehouse solutions using Delta Lake, Apache Iceberg, or Hudi on cloud infrastructure",
+          "Proven track record of optimizing large-scale data systems for performance, reliability, and cost efficiency",
+          "Ability to define data engineering standards, review architecture decisions, and mentor junior engineers",
+          "Experience with infrastructure-as-code for data infrastructure (Terraform, Pulumi) and DataOps practices",
+        ],
+        typicalSalaryUS: 17000,
+        typicalSalaryLATAM: 9000,
+      },
+    ],
+    hiringProcess: [
+      "Discovery session to understand your data stack, business goals, and current pipeline maturity.",
+      "Candidate sourcing from our vetted data engineering pool, filtered by tooling expertise and domain experience.",
+      "Technical assessment covering pipeline design, SQL proficiency, and data modeling principles.",
+      "Architecture discussion to evaluate how candidates approach scalability, reliability, and data quality trade-offs.",
+      "Team integration interview with data science, analytics, and engineering leadership to assess collaboration fit.",
+      "Onboarding with environment access, current architecture review, and introduction to your data governance practices.",
+    ],
+    faqs: [
+      {
+        question: "What data tools and platforms do your engineers specialize in?",
+        answer:
+          "Our data engineers cover a broad spectrum including Airflow, dbt, Spark, Kafka, Snowflake, BigQuery, Databricks, Redshift, and Fivetran. During sourcing we match candidates specifically to your existing stack and any tools you plan to adopt.",
+      },
+      {
+        question: "Can your data engineers handle both batch and streaming workloads?",
+        answer:
+          "Yes. Many of our mid-level and senior engineers have production experience with both paradigms. We can source candidates who specialize in one area or who have worked in hybrid architectures that combine scheduled batch pipelines with real-time event streaming.",
+      },
+      {
+        question: "How quickly can a data engineer ramp up on our existing infrastructure?",
+        answer:
+          "Most data engineers are productive within the first two weeks after receiving architecture documentation and environment access. We recommend a structured onboarding period where they shadow existing pipelines before making independent changes to production systems.",
+      },
+      {
+        question: "Do your data engineers have experience with data governance and compliance?",
+        answer:
+          "Yes. Our mid-level and senior engineers understand PII classification, data masking, role-based access control, and audit logging. Several have worked in regulated industries such as fintech and healthcare where compliance requirements are particularly strict.",
+      },
+      {
+        question: "Can a data engineer also support our data science team?",
+        answer:
+          "Absolutely. Our data engineers are experienced collaborating with data scientists to build feature stores, ML training pipelines, and model serving infrastructure. They can help productionize experiments and ensure reproducibility across environments.",
+      },
+    ],
+  },
+  {
+    slug: "mobile-developers",
+    title: "Hire Mobile Developers",
+    shortTitle: "Mobile Developers",
+    category: "Engineering",
+    description:
+      "Deliver polished, high-performance mobile applications with developers who specialize in iOS, Android, and cross-platform development. Our mobile engineers build apps that users love — fast, reliable, and crafted with attention to platform-specific design standards.",
+    heroDescription:
+      "Launch and scale your mobile product with experienced mobile developers from Latin America. Whether you need native iOS, native Android, or cross-platform expertise with React Native or Flutter, we connect you with rigorously vetted talent at 40–50% below US rates.",
+    whyHire: [
+      "Accelerate your mobile roadmap with engineers who have shipped production apps to the App Store and Google Play with hundreds of thousands of active users.",
+      "Get developers who understand the full mobile development lifecycle from architecture and API integration to App Store submission and post-launch monitoring.",
+      "Save 40–50% compared to US-based mobile developers while maintaining the same code quality, delivery pace, and communication standards.",
+      "Access specialists in React Native and Flutter who can serve both iOS and Android from a single codebase, reducing your team size and coordination overhead.",
+      "Work with engineers in your time zone who participate in sprint ceremonies, design reviews, and live demos alongside your product team.",
+    ],
+    advantages: [
+      "Mobile developer candidates are evaluated through a practical build assessment that tests UI implementation, state management, API integration, and performance awareness.",
+      "Our engineers have experience with App Store and Google Play submission processes including review guidelines, provisioning profiles, and release automation.",
+      "SMarDevs sources mobile developers based on your platform priority — native iOS (Swift/SwiftUI), native Android (Kotlin), or cross-platform (React Native or Flutter).",
+      "All engineers understand mobile performance optimization including rendering efficiency, memory management, battery impact, and offline-first patterns.",
+      "We handle all employment, compliance, and equipment logistics so your team can focus entirely on building the product.",
+      "Our 30-day satisfaction guarantee ensures every placement meets your technical and collaboration standards.",
+    ],
+    levels: [
+      {
+        name: "Junior",
+        experience: "1-2 years",
+        skills: [
+          "Proficiency in Swift/SwiftUI for iOS or Kotlin/Jetpack Compose for Android, or React Native/Flutter for cross-platform development",
+          "Ability to consume REST APIs and integrate third-party SDKs including analytics, authentication, and push notification services",
+          "Understanding of mobile UI patterns, navigation flows, and platform-specific design guidelines (HIG and Material Design)",
+          "Familiarity with version control, Agile workflows, and basic debugging using Xcode or Android Studio",
+          "Experience publishing at least one application to the App Store or Google Play",
+        ],
+        typicalSalaryUS: 7500,
+        typicalSalaryLATAM: 3800,
+      },
+      {
+        name: "Mid-Level",
+        experience: "3-5 years",
+        skills: [
+          "Strong command of state management patterns (Redux, BLoC, MVVM, or TCA) and clean architecture principles in a mobile context",
+          "Experience with offline-first architecture, local persistence using SQLite, Core Data, Room, or Hive, and sync conflict resolution",
+          "Proficiency in performance profiling and optimization using platform tools such as Instruments, Android Profiler, or Dart DevTools",
+          "Ability to write unit and integration tests for mobile code including UI testing with XCTest, Espresso, or Flutter integration tests",
+          "Experience integrating push notifications, deep linking, in-app purchases, and biometric authentication in production apps",
+        ],
+        typicalSalaryUS: 12000,
+        typicalSalaryLATAM: 6500,
+      },
+      {
+        name: "Senior",
+        experience: "6+ years",
+        skills: [
+          "Expert-level mobile architecture skills including modularization, feature flagging, and multi-team development at scale",
+          "Deep experience optimizing app startup time, rendering performance, and memory efficiency for large user bases",
+          "Proven ability to lead mobile teams, conduct code reviews, and define engineering standards across iOS and Android platforms",
+          "Experience with CI/CD pipelines for mobile using Fastlane, GitHub Actions, Bitrise, or App Center for automated testing and deployment",
+          "Track record of shipping major releases with zero-downtime rollout strategies including staged rollouts and feature flags",
+        ],
+        typicalSalaryUS: 16500,
+        typicalSalaryLATAM: 9000,
+      },
+    ],
+    hiringProcess: [
+      "Discovery call to understand your target platforms, existing codebase, tech stack, and product roadmap.",
+      "Candidate shortlisting from our vetted mobile talent pool, filtered by platform expertise and industry experience.",
+      "Technical assessment requiring candidates to build a small but complete mobile feature demonstrating UI, state management, and API integration.",
+      "Portfolio and code review session where candidates walk through a past project and explain key architectural decisions.",
+      "Team interview with product and engineering leadership to evaluate communication, problem-solving, and collaboration style.",
+      "Onboarding with codebase walkthrough, build environment setup, and introduction to your release and QA processes.",
+    ],
+    faqs: [
+      {
+        question: "Do you have developers for iOS, Android, and cross-platform?",
+        answer:
+          "Yes. Our mobile talent pool includes native iOS developers specializing in Swift and SwiftUI, native Android developers specializing in Kotlin and Jetpack Compose, and cross-platform developers with production experience in React Native and Flutter. We match based on your specific platform priorities.",
+      },
+      {
+        question: "How do you assess mobile developer quality?",
+        answer:
+          "Candidates complete a practical build challenge that covers UI implementation, state management, API consumption, and basic performance considerations. Senior candidates also undergo an architecture discussion where they design a solution for a realistic mobile product scenario.",
+      },
+      {
+        question: "Can your developers handle both frontend UI and backend API integration?",
+        answer:
+          "Yes. Our mobile engineers are experienced consuming REST and GraphQL APIs, handling authentication flows, managing local caching, and working closely with backend teams on contract definitions. Many have experience with Firebase and other BaaS platforms as well.",
+      },
+      {
+        question: "Do your mobile developers have App Store and Google Play submission experience?",
+        answer:
+          "All of our mid-level and senior mobile developers have managed the App Store and Play Store submission process. This includes managing signing certificates, provisioning profiles, release notes, phased rollouts, and responding to review rejections.",
+      },
+      {
+        question: "Can a React Native or Flutter developer replace separate iOS and Android engineers?",
+        answer:
+          "For many products, yes. Cross-platform developers can deliver a high-quality app on both platforms from a single codebase, significantly reducing team size and coordination overhead. We recommend native specialists when your app has highly platform-specific requirements such as complex custom animations, deep OS integrations, or extremely high performance demands.",
+      },
+    ],
+  },
 ];
