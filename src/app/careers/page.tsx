@@ -84,10 +84,13 @@ export default async function CareersPage({
   ]
 
   const steps = [
-    { num: '01', title: 'Apply Online', description: 'Submit your profile through our application form' },
-    { num: '02', title: 'Technical Review', description: 'Our team evaluates your skills and experience' },
-    { num: '03', title: 'Interview', description: 'Meet with our team and the client hiring manager' },
-    { num: '04', title: 'Welcome Aboard', description: 'Get onboarded and start your new role' },
+    { num: '01', title: 'Apply Online', description: 'Submit your profile and resume through our application form.' },
+    { num: '02', title: 'Technical Review', description: 'Our team reviews your experience, skills, and background against the role requirements.' },
+    { num: '03', title: 'Screening Interview', description: 'A 15-minute conversation to validate your CV, understand your background, and get to know you as a professional.' },
+    { num: '04', title: 'Challenge', description: 'When relevant to the role, a practical assessment to demonstrate your technical abilities. Not always required.' },
+    { num: '05', title: 'Technical Interview', description: 'A deeper technical discussion to review your challenge results and evaluate problem-solving approach.' },
+    { num: '06', title: 'Client Interview', description: 'Meet with the client\'s hiring team for a final evaluation and cultural fit conversation.' },
+    { num: '07', title: 'Welcome Aboard', description: 'Congratulations — you\'re in. Get onboarded and start your new role with full SMarDevs support.' },
   ]
 
   return (
