@@ -28,9 +28,9 @@ const navLinks = [
 const resourceLinks = [
   { label: "Blog", href: "/blog", icon: BookOpen },
   { label: "Case Studies", href: "/case-studies", icon: FileText },
-  { label: "Savings Calculator", href: "/calculator", icon: Calculator },
-  { label: "Salary Guide", href: "/salary-guide", icon: DollarSign },
-  { label: "Ebook", href: "/ebook", icon: BookMarked },
+  { label: "Savings Calculator", href: "/savings-calculator", icon: Calculator },
+  { label: "Salary Guide", href: "/resources/salary-guide", icon: DollarSign },
+  { label: "Ebook", href: "/resources/ebook", icon: BookMarked },
 ];
 
 /* ─── Component ─── */

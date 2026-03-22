@@ -25,11 +25,11 @@ const footerColumns = [
   {
     title: "Hire Remote",
     links: [
-      { label: "React Developers", href: "/hire/react-developers" },
-      { label: "Node.js Developers", href: "/hire/nodejs-developers" },
-      { label: "Python Developers", href: "/hire/python-developers" },
-      { label: "DevOps Engineers", href: "/hire/devops-engineers" },
+      { label: "Frontend Developers", href: "/hire/frontend-developers" },
+      { label: "Backend Developers", href: "/hire/backend-developers" },
       { label: "Full-Stack Developers", href: "/hire/fullstack-developers" },
+      { label: "DevOps Engineers", href: "/hire/devops-engineers" },
+      { label: "QA Engineers", href: "/hire/qa-engineers" },
     ],
   },
   {
@@ -37,9 +37,9 @@ const footerColumns = [
     links: [
       { label: "Blog", href: "/blog" },
       { label: "Case Studies", href: "/case-studies" },
-      { label: "Salary Guide", href: "/salary-guide" },
-      { label: "Ebook", href: "/ebook" },
-      { label: "Savings Calculator", href: "/calculator" },
+      { label: "Salary Guide", href: "/resources/salary-guide" },
+      { label: "Ebook", href: "/resources/ebook" },
+      { label: "Savings Calculator", href: "/savings-calculator" },
     ],
   },
   {
@@ -48,7 +48,7 @@ const footerColumns = [
       { label: "About", href: "/about" },
       { label: "Careers", href: "/careers" },
       { label: "Contact", href: "/contact" },
-      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Privacy Policy", href: "/privacy-policy" },
       { label: "Terms of Service", href: "/terms" },
     ],
   },

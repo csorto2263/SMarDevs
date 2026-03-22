@@ -48,7 +48,19 @@
       "Bash(echo 'use file' echo \"SELECT policyname, cmd, roles, qual, with_check FROM pg_policies WHERE tablename = ''''applications'''' ORDER BY cmd;\" npx supabase db query --linked -f /tmp/check_apps.sql)",
       "Bash(git remote:*)",
       "Bash(git branch:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git credential:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(grep -n \"SITE_URL\\\\|localhost\" C:/Users/Admin/Documents/BigDevs/Website/src/app/api/admin/users/route.ts C:/Users/Admin/Documents/BigDevs/Website/src/app/api/admin/users/[id]/reset-password/route.ts)",
+      "Bash(grep -roh 'href={[`/][^}]*}' /c/Users/Admin/Documents/BigDevs/Website/src --include=\"*.tsx\" --include=\"*.ts\")",
+      "Bash(grep -roh 'href\\\\s*=\\\\s*[\"\"\"\"`/][^\"\"\"\"`}]*[\"\"\"\"`]' /c/Users/Admin/Documents/BigDevs/Website/src --include=\"*.tsx\" --include=\"*.ts\")",
+      "Read(//c/Users/Admin/Documents/BigDevs/Website/**)",
+      "Bash(bash /tmp/collect_paths.sh)",
+      "Bash(xargs grep:*)",
+      "Bash(for f:*)",
+      "Bash(do echo:*)"
     ]
   }
 }
