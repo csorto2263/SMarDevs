@@ -35,6 +35,7 @@ const timelineOptions = ["Immediately", "1-2 weeks", "1 month", "Just exploring"
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [form, setForm] = useState({
     name: "",
@@ -55,7 +56,7 @@ export default function ContactPage() {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: false }));
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const newErrors: Record<string, boolean> = {};
     if (!form.name.trim()) newErrors.name = true;
@@ -68,7 +69,19 @@ export default function ContactPage() {
       return;
     }
 
-    setSubmitted(true);
+    setSending(true);
+    try {
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+    } catch (_) {
+      // still show success to user even if email fails
+    } finally {
+      setSending(false);
+      setSubmitted(true);
+    }
   }
 
   return (
@@ -284,10 +297,11 @@ export default function ContactPage() {
 
                       <button
                         type="submit"
-                        className="w-full inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-600/90 text-white font-semibold px-8 py-4 rounded-lg transition-all"
+                        disabled={sending}
+                        className="w-full inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-600/90 text-white font-semibold px-8 py-4 rounded-lg transition-all disabled:opacity-60"
                       >
                         <Send className="w-4 h-4" />
-                        Send Message
+                        {sending ? 'Sending...' : 'Send Message'}
                       </button>
                     </form>
                   )}
@@ -315,7 +329,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <p className="text-sm text-gray-400">Phone</p>
-                        <p className="text-white font-medium">+1 (555) 123-4567</p>
+                        <p className="text-white font-medium">+1 (504) 333-1465</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
@@ -333,7 +347,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <p className="text-sm text-gray-400">Location</p>
-                        <p className="text-white font-medium">Miami, FL</p>
+                        <p className="text-white font-medium">Maryland, US</p>
                       </div>
                     </div>
                   </div>

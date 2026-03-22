@@ -138,10 +138,10 @@ function Footer() {
                 info@smartdevs.com
               </a>
               <a
-                href="tel:+15551234567"
+                href="tel:+15043331465"
                 className="block hover:text-white transition-colors"
               >
-                +1 (555) 123-4567
+                +1 (504) 333-1465
               </a>
             </div>
 
