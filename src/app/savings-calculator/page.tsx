@@ -32,63 +32,57 @@ const roles = [
 type Role = (typeof roles)[number];
 type Seniority = "Junior" | "Mid-Level" | "Senior";
 
+// LATAM cost = 60% of US cost (40% savings shown to client; remainder is negotiation margin)
 const salaryData: Record<Role, Record<Seniority, { us: number; latam: number }>> = {
-  // Junior/Mid/Senior taken directly from the pricing table
   "Software Engineer": {
-    Junior: { us: 8500, latam: 4500 },
-    "Mid-Level": { us: 11000, latam: 6200 },
-    Senior: { us: 14000, latam: 8100 },
+    Junior:     { us: 8500,  latam: 5100 },
+    "Mid-Level":{ us: 11000, latam: 6600 },
+    Senior:     { us: 14000, latam: 8400 },
   },
   "Frontend Developer": {
-    Junior: { us: 8500, latam: 4500 },
-    "Mid-Level": { us: 11000, latam: 6200 },
-    Senior: { us: 14000, latam: 8100 },
+    Junior:     { us: 8500,  latam: 5100 },
+    "Mid-Level":{ us: 11000, latam: 6600 },
+    Senior:     { us: 14000, latam: 8400 },
   },
   "Backend Developer": {
-    Junior: { us: 8500, latam: 4500 },
-    "Mid-Level": { us: 11000, latam: 6200 },
-    Senior: { us: 14000, latam: 8100 },
+    Junior:     { us: 8500,  latam: 5100 },
+    "Mid-Level":{ us: 11000, latam: 6600 },
+    Senior:     { us: 14000, latam: 8400 },
   },
   "Full Stack Developer": {
-    Junior: { us: 8500, latam: 4500 },
-    "Mid-Level": { us: 11000, latam: 6200 },
-    Senior: { us: 14000, latam: 8100 },
+    Junior:     { us: 8500,  latam: 5100 },
+    "Mid-Level":{ us: 11000, latam: 6600 },
+    Senior:     { us: 14000, latam: 8400 },
   },
-  // QA Manual: Mid = table value; Junior/Senior extrapolated proportionally
   "QA Engineer": {
-    Junior: { us: 7000, latam: 3800 },
-    "Mid-Level": { us: 8000, latam: 4600 },
-    Senior: { us: 10500, latam: 6200 },
+    Junior:     { us: 7000,  latam: 4200 },
+    "Mid-Level":{ us: 8000,  latam: 4800 },
+    Senior:     { us: 10500, latam: 6300 },
   },
-  // QA Automation: Mid = table value
   "QA Automation Engineer": {
-    Junior: { us: 8000, latam: 5500 },
-    "Mid-Level": { us: 10000, latam: 7500 },
-    Senior: { us: 13000, latam: 9500 },
+    Junior:     { us: 8000,  latam: 4800 },
+    "Mid-Level":{ us: 10000, latam: 6000 },
+    Senior:     { us: 13000, latam: 7800 },
   },
-  // DevOps Engineer: Mid = table value ($7,500 / $11,200)
   "DevOps Engineer": {
-    Junior: { us: 8500, latam: 5500 },
-    "Mid-Level": { us: 11200, latam: 7500 },
-    Senior: { us: 14500, latam: 9500 },
+    Junior:     { us: 8500,  latam: 5100 },
+    "Mid-Level":{ us: 11200, latam: 6720 },
+    Senior:     { us: 14500, latam: 8700 },
   },
-  // UI/UX Designer: Mid = table value ($5,000 / $9,000)
   "UI/UX Designer": {
-    Junior: { us: 7000, latam: 3800 },
-    "Mid-Level": { us: 9000, latam: 5000 },
-    Senior: { us: 12000, latam: 7000 },
+    Junior:     { us: 7000,  latam: 4200 },
+    "Mid-Level":{ us: 9000,  latam: 5400 },
+    Senior:     { us: 12000, latam: 7200 },
   },
-  // Project Manager: Mid = table value ($5,800 / $9,500)
   "Project Manager": {
-    Junior: { us: 7500, latam: 4200 },
-    "Mid-Level": { us: 9500, latam: 5800 },
-    Senior: { us: 13000, latam: 8100 },
+    Junior:     { us: 7500,  latam: 4500 },
+    "Mid-Level":{ us: 9500,  latam: 5700 },
+    Senior:     { us: 13000, latam: 7800 },
   },
-  // Business Analyst: Mid = table value ($5,600 / $9,000)
   "Business Analyst": {
-    Junior: { us: 7000, latam: 4200 },
-    "Mid-Level": { us: 9000, latam: 5600 },
-    Senior: { us: 12000, latam: 7500 },
+    Junior:     { us: 7000,  latam: 4200 },
+    "Mid-Level":{ us: 9000,  latam: 5400 },
+    Senior:     { us: 12000, latam: 7200 },
   },
 };
 
