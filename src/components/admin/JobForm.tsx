@@ -34,6 +34,12 @@ function ArrayFieldEditor({ field, label, placeholder, items, onUpdate, onAdd, o
             <input
               value={item}
               onChange={(e) => onUpdate(field, idx, e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  onAdd(field)
+                }
+              }}
               placeholder={placeholder}
               className={inputClasses}
             />
