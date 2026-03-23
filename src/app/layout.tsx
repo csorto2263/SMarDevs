@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import SMartyWidget from "@/components/SMartyWidget";
 
 export const metadata: Metadata = {
   title: {
@@ -64,7 +65,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="antialiased text-navy-950 bg-white">{children}</body>
+      <body className="antialiased text-navy-950 bg-white">
+        {children}
+        <SMartyWidget />
+      </body>
     </html>
   );
 }
