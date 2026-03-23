@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { Users, ExternalLink, FileText, Mail } from 'lucide-react'
+import { Users, ExternalLink, FileText, Mail, Building2 } from 'lucide-react'
 import ApplicantFilters from '@/components/admin/ApplicantFilters'
 
 const statusLabels: Record<string, string> = {
@@ -42,7 +42,7 @@ export default async function AdminApplicantsPage({
   // Build query
   let query = supabase
     .from('applications')
-    .select('*, jobs(id, title, slug)')
+    .select('*, jobs(id, title, slug, clients(id, name))')
     .order('created_at', { ascending: false })
 
   if (params.job) {
@@ -99,6 +99,7 @@ export default async function AdminApplicantsPage({
                 <tr className="border-b border-gray-100 bg-gray-50/50">
                   <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Candidate</th>
                   <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Position</th>
+                  <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Client</th>
                   <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
                   <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">English</th>
                   <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Salary Exp.</th>
@@ -126,6 +127,19 @@ export default async function AdminApplicantsPage({
                     </td>
                     <td className="px-5 py-4">
                       <span className="text-sm text-gray-600">{app.jobs?.title || '—'}</span>
+                    </td>
+                    <td className="px-5 py-4">
+                      {app.jobs?.clients ? (
+                        <Link
+                          href={`/admin/clients/${app.jobs.clients.id}`}
+                          className="inline-flex items-center gap-1.5 text-sm text-gray-700 hover:text-brand-600 transition-colors font-medium"
+                        >
+                          <Building2 className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                          {app.jobs.clients.name}
+                        </Link>
+                      ) : (
+                        <span className="text-sm text-gray-400">—</span>
+                      )}
                     </td>
                     <td className="px-5 py-4">
                       <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[app.status] || 'bg-gray-100 text-gray-600'}`}>

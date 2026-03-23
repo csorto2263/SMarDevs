@@ -4,16 +4,16 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import {
   ArrowLeft, Mail, Phone, MapPin, Linkedin, Github, Globe, FileText,
-  Calendar, DollarSign, Clock, CheckCircle2
+  Calendar, DollarSign, Clock,
 } from 'lucide-react'
-import StatusChanger from '@/components/admin/StatusChanger'
+import StatusChangerV2 from '@/components/admin/StatusChangerV2'
 import AdminNotes from '@/components/admin/AdminNotes'
 import ShareApplicantButton from '@/components/admin/ShareApplicantButton'
+import PipelineHistoryDrawer from '@/components/admin/PipelineHistoryDrawer'
 
 export default async function ApplicantDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const supabase = await createServerSupabaseClient()
-
   const { data: { user } } = await supabase.auth.getUser()
 
   // Fetch application with all related data
@@ -21,7 +21,7 @@ export default async function ApplicantDetailPage({ params }: { params: Promise<
     .from('applications')
     .select(`
       *,
-      jobs(id, title, slug, department),
+      jobs(id, title, slug, department, client_id, job_categories(name)),
       application_answers(*, questions(*)),
       application_status_history(*, profiles:changed_by(full_name, email)),
       admin_notes(*, profiles:author_id(full_name, email))
@@ -31,20 +31,20 @@ export default async function ApplicantDetailPage({ params }: { params: Promise<
 
   if (!application) return notFound()
 
-  // Fetch active team members with a phone number for the Share button
-  const { data: teamMembers } = await supabase
+  // Fetch team members for Share button (cast because 'phone'/'status' were added after type generation)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: teamMembers } = await (supabase as any)
     .from('profiles')
     .select('id, full_name, phone')
     .eq('status', 'active')
     .not('phone', 'is', null)
     .neq('phone', '')
 
-  // Generate signed URL for resume if it exists (bucket is private)
+  // Generate signed URL for resume
   let resumeSignedUrl: string | null = null
   if (application.resume_url) {
     const isFullUrl = application.resume_url.startsWith('http')
     if (isFullUrl) {
-      // Legacy full URL — try to extract path
       const match = application.resume_url.match(/\/resumes\/(.+)$/)
       if (match) {
         const { data } = await supabase.storage.from('resumes').createSignedUrl(match[1], 3600)
@@ -53,37 +53,32 @@ export default async function ApplicantDetailPage({ params }: { params: Promise<
         resumeSignedUrl = application.resume_url
       }
     } else {
-      // Path-only (new format)
       const { data } = await supabase.storage.from('resumes').createSignedUrl(application.resume_url, 3600)
       resumeSignedUrl = data?.signedUrl || null
     }
   }
 
   const statusLabels: Record<string, string> = {
-    applied: 'Applied',
-    screening: 'Screening',
-    interview: 'Interview',
-    technical_review: 'Technical Review',
-    final_interview: 'Final Interview',
-    offer: 'Offer',
-    hired: 'Hired',
-    rejected: 'Rejected',
-    withdrawn: 'Withdrawn',
+    applied: 'Applied', screening: 'Screening', interview: 'Interview',
+    technical_review: 'Technical Review', final_interview: 'Final Interview',
+    offer: 'Offer', hired: 'Hired', rejected: 'Rejected', withdrawn: 'Withdrawn',
   }
-
   const statusColors: Record<string, string> = {
-    applied: 'bg-gray-100 text-gray-700 border-gray-200',
-    screening: 'bg-blue-100 text-blue-700 border-blue-200',
-    interview: 'bg-indigo-100 text-indigo-700 border-indigo-200',
+    applied:          'bg-gray-100 text-gray-700 border-gray-200',
+    screening:        'bg-blue-100 text-blue-700 border-blue-200',
+    interview:        'bg-indigo-100 text-indigo-700 border-indigo-200',
     technical_review: 'bg-purple-100 text-purple-700 border-purple-200',
-    final_interview: 'bg-amber-100 text-amber-700 border-amber-200',
-    offer: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-    hired: 'bg-green-100 text-green-700 border-green-200',
-    rejected: 'bg-red-100 text-red-700 border-red-200',
-    withdrawn: 'bg-gray-100 text-gray-500 border-gray-200',
+    final_interview:  'bg-amber-100 text-amber-700 border-amber-200',
+    offer:            'bg-emerald-100 text-emerald-700 border-emerald-200',
+    hired:            'bg-green-100 text-green-700 border-green-200',
+    rejected:         'bg-red-100 text-red-700 border-red-200',
+    withdrawn:        'bg-gray-100 text-gray-500 border-gray-200',
   }
 
   const app = application as any
+  const job = app.jobs as any
+  const historyList = (app.application_status_history || []) as any[]
+  const historyCount = historyList.length
 
   return (
     <div className="space-y-6">
@@ -101,27 +96,20 @@ export default async function ApplicantDetailPage({ params }: { params: Promise<
               {app.first_name.charAt(0)}{app.last_name.charAt(0)}
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-navy-950">
-                {app.first_name} {app.last_name}
-              </h1>
-              {app.headline && (
-                <p className="text-gray-600 mt-0.5">{app.headline}</p>
-              )}
+              <h1 className="text-2xl font-bold text-navy-950">{app.first_name} {app.last_name}</h1>
+              {app.headline && <p className="text-gray-600 mt-0.5">{app.headline}</p>}
               <div className="flex flex-wrap items-center gap-3 mt-2">
                 <a href={`mailto:${app.email}`} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-brand-600 transition-colors">
-                  <Mail className="w-4 h-4" />
-                  {app.email}
+                  <Mail className="w-4 h-4" />{app.email}
                 </a>
                 {app.phone && (
                   <span className="inline-flex items-center gap-1.5 text-sm text-gray-500">
-                    <Phone className="w-4 h-4" />
-                    {app.phone}
+                    <Phone className="w-4 h-4" />{app.phone}
                   </span>
                 )}
                 {app.address && (
                   <span className="inline-flex items-center gap-1.5 text-sm text-gray-500">
-                    <MapPin className="w-4 h-4" />
-                    {app.address}
+                    <MapPin className="w-4 h-4" />{app.address}
                   </span>
                 )}
               </div>
@@ -133,7 +121,7 @@ export default async function ApplicantDetailPage({ params }: { params: Promise<
             </span>
             <ShareApplicantButton
               applicantName={`${app.first_name} ${app.last_name}`}
-              position={app.jobs?.title || 'Unknown Position'}
+              position={job?.title || 'Unknown Position'}
               email={app.email}
               phone={app.phone}
               linkedin={app.linkedin_url}
@@ -147,16 +135,14 @@ export default async function ApplicantDetailPage({ params }: { params: Promise<
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main content */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Applied to */}
+          {/* Applied position */}
           <div className="bg-white rounded-xl border border-gray-100 p-6">
             <h2 className="text-lg font-semibold text-navy-950 mb-3">Applied Position</h2>
-            <Link href={`/careers/${app.jobs?.slug}`} target="_blank" className="inline-flex items-center gap-2 text-brand-600 hover:text-brand-700 font-medium text-sm transition-colors">
-              {app.jobs?.title || 'Unknown Position'}
+            <Link href={`/careers/${job?.slug}`} target="_blank" className="inline-flex items-center gap-2 text-brand-600 hover:text-brand-700 font-medium text-sm transition-colors">
+              {job?.title || 'Unknown Position'}
               <Globe className="w-4 h-4" />
             </Link>
-            {app.jobs?.department && (
-              <p className="text-sm text-gray-500 mt-1">Department: {app.jobs.department}</p>
-            )}
+            {job?.department && <p className="text-sm text-gray-500 mt-1">Department: {job.department}</p>}
           </div>
 
           {/* Profile links */}
@@ -164,12 +150,7 @@ export default async function ApplicantDetailPage({ params }: { params: Promise<
             <h2 className="text-lg font-semibold text-navy-950 mb-4">Profile</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {resumeSignedUrl && (
-                <a
-                  href={resumeSignedUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:border-brand-200 hover:bg-brand-50/50 transition-all group"
-                >
+                <a href={resumeSignedUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:border-brand-200 hover:bg-brand-50/50 transition-all group">
                   <FileText className="w-5 h-5 text-red-500" />
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-navy-950 group-hover:text-brand-600 transition-colors">Resume</p>
@@ -225,9 +206,7 @@ export default async function ApplicantDetailPage({ params }: { params: Promise<
               <div className="space-y-4">
                 {app.application_answers.map((answer: any) => (
                   <div key={answer.id} className="border-b border-gray-50 pb-4 last:border-0 last:pb-0">
-                    <p className="text-sm font-medium text-navy-950 mb-1">
-                      {answer.questions?.question_text || 'Question'}
-                    </p>
+                    <p className="text-sm font-medium text-navy-950 mb-1">{answer.questions?.question_text || 'Question'}</p>
                     <p className="text-sm text-gray-600 whitespace-pre-wrap">
                       {answer.answer_text || (answer.answer_json ? JSON.stringify(answer.answer_json) : '—')}
                     </p>
@@ -238,17 +217,20 @@ export default async function ApplicantDetailPage({ params }: { params: Promise<
           )}
 
           {/* Notes */}
-          <AdminNotes
-            applicationId={app.id}
-            userId={user!.id}
-            initialNotes={app.admin_notes || []}
-          />
+          <AdminNotes applicationId={app.id} userId={user!.id} initialNotes={app.admin_notes || []} />
         </div>
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Status changer */}
-          <StatusChanger applicationId={app.id} currentStatus={app.status} />
+          {/* Status changer — new V2 with justification modals */}
+          <StatusChangerV2
+            applicationId={app.id}
+            currentStatus={app.status}
+            applicantName={`${app.first_name} ${app.last_name}`}
+            jobTitle={job?.title}
+            jobClientId={job?.client_id ?? null}
+            jobCategoryName={job?.job_categories?.name}
+          />
 
           {/* Details */}
           <div className="bg-white rounded-xl border border-gray-100 p-6">
@@ -292,41 +274,35 @@ export default async function ApplicantDetailPage({ params }: { params: Promise<
             </dl>
           </div>
 
-          {/* Status history */}
-          {app.application_status_history && app.application_status_history.length > 0 && (
-            <div className="bg-white rounded-xl border border-gray-100 p-6">
-              <h3 className="text-sm font-semibold text-navy-950 mb-4 uppercase tracking-wider">Pipeline History</h3>
-              <div className="space-y-3">
-                {app.application_status_history
-                  .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-                  .map((entry: any) => (
-                  <div key={entry.id} className="flex items-start gap-3">
-                    <div className="mt-1">
-                      <CheckCircle2 className="w-4 h-4 text-brand-500" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-navy-950">
-                        {entry.from_status ? (
-                          <>
-                            <span className="text-gray-500">{statusLabels[entry.from_status] || entry.from_status}</span>
-                            {' → '}
-                            <span className="font-medium">{statusLabels[entry.to_status] || entry.to_status}</span>
-                          </>
-                        ) : (
-                          <span className="font-medium">{statusLabels[entry.to_status] || entry.to_status}</span>
-                        )}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        {new Date(entry.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                        {entry.profiles?.full_name && ` by ${entry.profiles.full_name}`}
-                      </p>
-                      {entry.note && <p className="text-xs text-gray-500 mt-1">{entry.note}</p>}
-                    </div>
+          {/* Pipeline History */}
+          <div className="bg-white rounded-xl border border-gray-100 p-6">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-navy-950 uppercase tracking-wider">Pipeline History</h3>
+            </div>
+            {historyCount === 0 ? (
+              <p className="text-sm text-gray-400">No status changes recorded yet.</p>
+            ) : (
+              <>
+                {/* Last change preview */}
+                {historyList.slice(0, 1).map((entry: any) => (
+                  <div key={entry.id} className="mb-3 p-3 bg-gray-50 rounded-xl">
+                    <p className="text-sm text-navy-950">
+                      {entry.from_status && (
+                        <><span className="text-gray-500">{statusLabels[entry.from_status] || entry.from_status}</span>{' → '}</>
+                      )}
+                      <span className="font-medium">{statusLabels[entry.to_status] || entry.to_status}</span>
+                    </p>
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      {new Date(entry.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                      {entry.profiles?.full_name && ` · ${entry.profiles.full_name}`}
+                    </p>
+                    {entry.note && <p className="text-xs text-gray-600 mt-1.5 line-clamp-2">{entry.note}</p>}
                   </div>
                 ))}
-              </div>
-            </div>
-          )}
+                <PipelineHistoryDrawer history={historyList} count={historyCount} />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

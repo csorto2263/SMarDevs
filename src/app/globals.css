@@ -2,6 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes slide-in {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+.animate-slide-in {
+  animation: slide-in 0.25s ease-out forwards;
+}
+
+/* SMarty chatbot animations */
+@keyframes smarty-entrance {
+  0%   { transform: scale(0) rotate(-45deg); opacity: 0; }
+  60%  { transform: scale(1.15) rotate(0deg); opacity: 1; }
+  80%  { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+@keyframes smarty-bounce {
+  0%, 100% { transform: translateY(0); }
+  15%      { transform: translateY(-12px); }
+  30%      { transform: translateY(0); }
+  45%      { transform: translateY(-8px); }
+  60%      { transform: translateY(0); }
+  75%      { transform: translateY(-4px); }
+  90%      { transform: translateY(0); }
+}
+@keyframes smarty-speech-in {
+  0%   { opacity: 0; transform: translateY(6px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes smarty-panel-in {
+  0%   { opacity: 0; transform: translateY(16px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-smarty-entrance {
+  animation: smarty-entrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.animate-smarty-bounce {
+  animation: smarty-bounce 1.2s ease-in-out;
+}
+.animate-smarty-speech-in {
+  animation: smarty-speech-in 0.35s ease-out forwards;
+}
+.animate-smarty-panel-in {
+  animation: smarty-panel-in 0.25s ease-out forwards;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 
 :root {

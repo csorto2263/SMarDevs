@@ -54,7 +54,7 @@ const COUNTRIES = [
 ]
 
 function countryFlag(code: string) {
-  return [...code.toUpperCase()].map(c => String.fromCodePoint(0x1F1E6 - 65 + c.charCodeAt(0))).join('')
+  return Array.from(code.toUpperCase()).map(c => String.fromCodePoint(0x1F1E6 - 65 + c.charCodeAt(0))).join('')
 }
 
 function parsePhone(stored: string | null): { dial: string; number: string } {

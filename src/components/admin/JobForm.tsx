@@ -6,9 +6,11 @@ import { createClient } from '@/lib/supabase/client'
 import { Save, ArrowLeft, Plus, X, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import type { JobCategory, Job } from '@/lib/supabase/types'
+import type { Client } from '@/lib/types'
 
 interface JobFormProps {
   categories: JobCategory[]
+  clients:    Client[]
   initialData?: Job
 }
 
@@ -82,7 +84,7 @@ function slugify(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 }
 
-export default function JobForm({ categories, initialData }: JobFormProps) {
+export default function JobForm({ categories, clients, initialData }: JobFormProps) {
   const router = useRouter()
   const isEditing = !!initialData
 
@@ -92,6 +94,8 @@ export default function JobForm({ categories, initialData }: JobFormProps) {
   const [form, setForm] = useState({
     title: initialData?.title || '',
     slug: initialData?.slug || '',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    client_id: (initialData as any)?.client_id || '',
     category_id: initialData?.category_id || '',
     department: initialData?.department || '',
     modality: initialData?.modality || 'remote',
@@ -199,6 +203,16 @@ export default function JobForm({ categories, initialData }: JobFormProps) {
           <div>
             <label className={labelClasses}>Department</label>
             <input value={form.department} onChange={(e) => updateField('department', e.target.value)} placeholder="e.g., Engineering" className={inputClasses} />
+          </div>
+          <div>
+            <label className={labelClasses}>Client *</label>
+            <select value={form.client_id} onChange={(e) => updateField('client_id', e.target.value)} required className={inputClasses}>
+              <option value="">Select client…</option>
+              {clients.map(c => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
+            <p className="mt-1 text-xs text-gray-400">Use "SMarDevs" for internal positions.</p>
           </div>
           <div>
             <label className={labelClasses}>Role Category *</label>

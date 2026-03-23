@@ -16,16 +16,20 @@ import {
   X,
   ChevronRight,
   Building2,
+  UserCheck,
+  Globe,
 } from 'lucide-react'
 import type { User } from '@supabase/supabase-js'
 import type { Profile } from '@/lib/supabase/types'
 
 const navItems = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-  { href: '/admin/jobs', label: 'Jobs', icon: Briefcase },
-  { href: '/admin/applicants', label: 'Applicants', icon: Users },
-  { href: '/admin/users', label: 'Users', icon: UserCog, adminOnly: true },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
+  { href: '/admin',            label: 'Dashboard',  icon: LayoutDashboard, exact: true },
+  { href: '/admin/jobs',       label: 'Jobs',        icon: Briefcase },
+  { href: '/admin/applicants', label: 'Applicants',  icon: Users },
+  { href: '/admin/clients',    label: 'Clients',     icon: Building2,  adminOnly: true },
+  { href: '/admin/employees',  label: 'Employees',   icon: UserCheck,  adminOnly: true },
+  { href: '/admin/users',      label: 'Users',       icon: UserCog,    adminOnly: true },
+  { href: '/admin/settings',   label: 'Settings',    icon: Settings },
 ]
 
 interface AdminSidebarProps {
@@ -100,7 +104,7 @@ export default function AdminSidebar({ user, profile }: AdminSidebarProps) {
           target="_blank"
           className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-500 hover:bg-white/5 hover:text-gray-300 transition-all"
         >
-          <Building2 className="w-5 h-5" />
+          <Globe className="w-5 h-5" />
           <span>View Website</span>
         </Link>
       </div>
