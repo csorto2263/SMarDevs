@@ -6,12 +6,16 @@ import { useState, useCallback } from 'react'
 
 interface Props {
   jobs: { id: string; title: string }[]
+  countries: { code: string; name: string }[]
   currentJob?: string
   currentStatus?: string
   currentSearch?: string
+  currentCountry?: string
+  currentFrom?: string
+  currentTo?: string
 }
 
-export default function ApplicantFilters({ jobs, currentJob, currentStatus, currentSearch }: Props) {
+export default function ApplicantFilters({ jobs, countries, currentJob, currentStatus, currentSearch, currentCountry, currentFrom, currentTo }: Props) {
   const router = useRouter()
   const pathname = usePathname()
   const [search, setSearch] = useState(currentSearch || '')
@@ -21,9 +25,12 @@ export default function ApplicantFilters({ jobs, currentJob, currentStatus, curr
     if (currentJob && key !== 'job') params.set('job', currentJob)
     if (currentStatus && key !== 'status') params.set('status', currentStatus)
     if (currentSearch && key !== 'search') params.set('search', currentSearch)
+    if (currentCountry && key !== 'country') params.set('country', currentCountry)
+    if (currentFrom && key !== 'from') params.set('from', currentFrom)
+    if (currentTo && key !== 'to') params.set('to', currentTo)
     if (value) params.set(key, value)
     router.push(`${pathname}?${params.toString()}`)
-  }, [router, pathname, currentJob, currentStatus, currentSearch])
+  }, [router, pathname, currentJob, currentStatus, currentSearch, currentCountry, currentFrom, currentTo])
 
   const clearAll = () => {
     router.push(pathname)
@@ -35,14 +42,15 @@ export default function ApplicantFilters({ jobs, currentJob, currentStatus, curr
     updateParams('search', search)
   }
 
-  const hasFilters = currentJob || currentStatus || currentSearch
+  const hasFilters = currentJob || currentStatus || currentSearch || currentCountry || currentFrom || currentTo
 
   const selectClasses = 'px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm text-navy-950 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all'
+  const dateClasses = 'px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm text-navy-950 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all'
 
   return (
-    <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+    <div className="flex flex-wrap gap-3 items-center">
       {/* Search */}
-      <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-xs">
+      <form onSubmit={handleSearchSubmit} className="relative flex-1 min-w-[200px] max-w-xs">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
         <input
           value={search}
@@ -80,6 +88,39 @@ export default function ApplicantFilters({ jobs, currentJob, currentStatus, curr
         <option value="hired">Hired</option>
         <option value="rejected">Rejected</option>
       </select>
+
+      {/* Country filter */}
+      {countries.length > 0 && (
+        <select
+          value={currentCountry || ''}
+          onChange={(e) => updateParams('country', e.target.value)}
+          className={selectClasses}
+        >
+          <option value="">All Countries</option>
+          {countries.map(c => (
+            <option key={c.code} value={c.code}>{c.name}</option>
+          ))}
+        </select>
+      )}
+
+      {/* Date range */}
+      <div className="inline-flex items-center gap-1.5">
+        <input
+          type="date"
+          value={currentFrom || ''}
+          onChange={(e) => updateParams('from', e.target.value)}
+          className={dateClasses}
+          title="From date"
+        />
+        <span className="text-xs text-gray-400">to</span>
+        <input
+          type="date"
+          value={currentTo || ''}
+          onChange={(e) => updateParams('to', e.target.value)}
+          className={dateClasses}
+          title="To date"
+        />
+      </div>
 
       {/* Clear */}
       {hasFilters && (

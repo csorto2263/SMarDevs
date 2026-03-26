@@ -32,7 +32,7 @@ const statusColors: Record<string, string> = {
 export default async function AdminApplicantsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ job?: string; status?: string; search?: string }>
+  searchParams: Promise<{ job?: string; status?: string; search?: string; country?: string; from?: string; to?: string }>
 }) {
   const params = await searchParams
   const supabase = await createServerSupabaseClient()
@@ -56,7 +56,7 @@ export default async function AdminApplicantsPage({
 
   const { data: applicants } = await query
 
-  // Client-side search filter applied in component
+  // Client-side filters
   let filtered = applicants || []
   if (params.search) {
     const s = params.search.toLowerCase()
@@ -65,6 +65,32 @@ export default async function AdminApplicantsPage({
       a.email.toLowerCase().includes(s)
     )
   }
+  if (params.country) {
+    filtered = filtered.filter((a: any) => {
+      const countryName = a.country && a.country !== 'Other' ? a.country : null
+      const code = countryName ? countryCodeFromName(countryName) : inferCountryFromPhone(a.phone)
+      return code === params.country
+    })
+  }
+  if (params.from) {
+    filtered = filtered.filter((a: any) => new Date(a.created_at) >= new Date(params.from!))
+  }
+  if (params.to) {
+    const toDate = new Date(params.to!)
+    toDate.setDate(toDate.getDate() + 1)
+    filtered = filtered.filter((a: any) => new Date(a.created_at) < toDate)
+  }
+
+  // Get unique countries from applicants for the filter dropdown
+  const applicantCountries = new Set<string>()
+  ;(applicants || []).forEach((a: any) => {
+    const countryName = a.country && a.country !== 'Other' ? a.country : null
+    const code = countryName ? countryCodeFromName(countryName) : inferCountryFromPhone(a.phone)
+    if (code) applicantCountries.add(code)
+  })
+  const countryOptions = COUNTRIES
+    .filter(c => applicantCountries.has(c.code))
+    .sort((a, b) => a.name.localeCompare(b.name))
 
   return (
     <div className="space-y-6">
@@ -76,9 +102,13 @@ export default async function AdminApplicantsPage({
       {/* Filters */}
       <ApplicantFilters
         jobs={allJobs || []}
+        countries={countryOptions}
         currentJob={params.job}
         currentStatus={params.status}
         currentSearch={params.search}
+        currentCountry={params.country}
+        currentFrom={params.from}
+        currentTo={params.to}
       />
 
       {/* Applicants list */}
