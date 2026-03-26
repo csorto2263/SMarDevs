@@ -72,28 +72,51 @@ const seniorityLabel: Record<string, string> = {
 // ── Action Menu ────────────────────────────────────────────────────────────────
 function ActionMenu({ job, onAction }: { job: Job; onAction: (id: string, action: string) => void }) {
   const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
+  const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({})
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+      if (!btnRef.current?.contains(e.target as Node) && !menuRef.current?.contains(e.target as Node)) {
+        setOpen(false)
+      }
     }
+    const scrollHandler = () => setOpen(false)
     document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
+    document.addEventListener('scroll', scrollHandler, true)
+    return () => {
+      document.removeEventListener('mousedown', handler)
+      document.removeEventListener('scroll', scrollHandler, true)
+    }
   }, [])
+
+  const handleOpen = () => {
+    if (btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect()
+      setMenuStyle({
+        position: 'fixed',
+        top: rect.bottom + 4,
+        right: window.innerWidth - rect.right,
+        zIndex: 9999,
+      })
+    }
+    setOpen(v => !v)
+  }
 
   const act = (action: string) => { setOpen(false); onAction(job.id, action) }
 
   return (
-    <div className="relative flex justify-end" ref={ref}>
+    <div className="flex justify-end">
       <button
-        onClick={() => setOpen(v => !v)}
+        ref={btnRef}
+        onClick={handleOpen}
         className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
       >
         <MoreHorizontal className="w-5 h-5" />
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-xl shadow-xl z-20 py-1.5 animate-fade-in">
+        <div ref={menuRef} style={menuStyle} className="w-48 bg-white border border-gray-200 rounded-xl shadow-xl py-1.5 overflow-hidden">
           <Link
             href={`/admin/jobs/${job.id}/edit`}
             className="flex items-center gap-2.5 px-3.5 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"

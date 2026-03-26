@@ -139,7 +139,7 @@ export default async function RolePage({ params }: PageProps) {
                 <div className="bg-gradient-to-br from-brand-50 to-accent-400/10 rounded-3xl p-8 md:p-12">
                   <div className="grid grid-cols-2 gap-6">
                     <div className="bg-white rounded-2xl p-6 shadow-glass text-center">
-                      <p className="text-4xl font-bold gradient-text">60%</p>
+                      <p className="text-4xl font-bold gradient-text">40-50%</p>
                       <p className="text-sm text-gray-600 mt-2">
                         Average Cost Savings
                       </p>

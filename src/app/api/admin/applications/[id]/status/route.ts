@@ -16,15 +16,19 @@ async function requireStaff() {
   return user
 }
 
-// Which transitions require a written justification (min 80 chars)
+const PIPELINE_ORDER = ['applied', 'screening', 'interview', 'technical_review', 'final_interview', 'offer', 'hired']
+
+function isValidTransition(from: string, to: string): boolean {
+  if (['rejected', 'withdrawn'].includes(to)) return true
+  const fromIdx = PIPELINE_ORDER.indexOf(from)
+  const toIdx = PIPELINE_ORDER.indexOf(to)
+  if (fromIdx === -1 || toIdx === -1) return false
+  return toIdx === fromIdx + 1
+}
+
+// All transitions require a written justification (min 80 chars)
 function requiresJustification(from: string, to: string): boolean {
-  // Terminal/critical destinations always require comment
-  if (['rejected', 'hired', 'withdrawn'].includes(to)) return true
-  // Moves from advanced stages require comment
-  if (['technical_review', 'final_interview', 'offer'].includes(from)) return true
-  // Moves INTO advanced stages require comment
-  if (['technical_review', 'final_interview', 'offer'].includes(to)) return true
-  return false
+  return from !== to
 }
 
 const VALID_STATUSES = [
@@ -53,7 +57,7 @@ export async function POST(
   // Fetch current application
   const { data: application, error: fetchErr } = await admin
     .from('applications')
-    .select('id, status, first_name, last_name, email, job_id, jobs(title, client_id)')
+    .select('id, status, first_name, last_name, email, phone, address, linkedin_url, headline, job_id, jobs(title, client_id)')
     .eq('id', id)
     .single()
 
@@ -65,6 +69,11 @@ export async function POST(
 
   if (currentStatus === new_status) {
     return NextResponse.json({ error: 'Status is already set to that value' }, { status: 400 })
+  }
+
+  // Enforce strict pipeline flow
+  if (!isValidTransition(currentStatus, new_status)) {
+    return NextResponse.json({ error: 'Invalid pipeline transition. Stages must be completed in order.' }, { status: 422 })
   }
 
   // Validate comment requirement
@@ -122,8 +131,11 @@ export async function POST(
       .insert({
         full_name:          `${app.first_name} ${app.last_name}`,
         email:              app.email,
+        phone:              app.phone || null,
+        address:            app.address || null,
+        linkedin_url:       app.linkedin_url || null,
         role_title:         hire_data.role_title,
-        role_category:      hire_data.role_category   || null,
+        role_category:      hire_data.role_category || app.headline || null,
         seniority:          hire_data.seniority        || null,
         start_date:         hire_data.start_date       || null,
         employment_type:    hire_data.employment_type  || null,

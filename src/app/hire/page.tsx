@@ -38,7 +38,7 @@ const benefits = [
   },
   {
     icon: DollarSign,
-    title: "Up to 60% Cost Savings",
+    title: "Up to 40-50% Cost Savings",
     description:
       "Hire senior-level professionals at a fraction of US market rates. Redirect those savings into product development, not overhead.",
   },
@@ -166,7 +166,7 @@ export default function HirePage() {
               <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
                 Access rigorously vetted software engineers, developers,
                 designers, and tech leaders who work in your time zone and
-                deliver from day one — at up to 60% less than US market rates.
+                deliver from day one — at up to 40-50% less than US market rates.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link

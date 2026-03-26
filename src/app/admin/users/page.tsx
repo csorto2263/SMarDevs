@@ -13,5 +13,5 @@ export default async function UsersPage() {
   const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
   if (profile?.role !== 'admin') redirect('/admin')
 
-  return <UsersManager />
+  return <UsersManager key={Date.now()} />
 }

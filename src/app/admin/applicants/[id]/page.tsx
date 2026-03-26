@@ -230,6 +230,7 @@ export default async function ApplicantDetailPage({ params }: { params: Promise<
             jobTitle={job?.title}
             jobClientId={job?.client_id ?? null}
             jobCategoryName={job?.job_categories?.name}
+            applicantHeadline={app.headline}
           />
 
           {/* Details */}

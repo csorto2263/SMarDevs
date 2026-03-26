@@ -142,7 +142,7 @@ const roles = [
 const benefits = [
   {
     icon: DollarSign,
-    title: "Up to 60% Cost Reduction",
+    title: "Up to 40-50% Cost Savings",
     description:
       "Access senior-level LATAM professionals at a fraction of US market rates. Reduce your talent spend without sacrificing quality or output.",
   },

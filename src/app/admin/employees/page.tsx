@@ -16,5 +16,5 @@ export default async function AdminEmployeesPage({
 
   const { client_id } = await searchParams
 
-  return <EmployeesManager initialClientId={client_id} />
+  return <EmployeesManager key={Date.now()} initialClientId={client_id} />
 }

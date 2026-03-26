@@ -19,11 +19,21 @@ const stages = [
 
 const MIN_COMMENT = 80
 
+const PIPELINE_ORDER = ['applied', 'screening', 'interview', 'technical_review', 'final_interview', 'offer', 'hired']
+
 function requiresJustification(from: string, to: string): boolean {
-  if (['rejected', 'hired', 'withdrawn'].includes(to)) return true
-  if (['technical_review', 'final_interview', 'offer'].includes(from)) return true
-  if (['technical_review', 'final_interview', 'offer'].includes(to)) return true
-  return false
+  // All transitions require justification
+  return from !== to
+}
+
+function isValidTransition(from: string, to: string): boolean {
+  // Rejected and withdrawn allowed from any stage
+  if (['rejected', 'withdrawn'].includes(to)) return true
+  const fromIdx = PIPELINE_ORDER.indexOf(from)
+  const toIdx = PIPELINE_ORDER.indexOf(to)
+  if (fromIdx === -1 || toIdx === -1) return false
+  // Only allow moving to the immediate next stage
+  return toIdx === fromIdx + 1
 }
 
 interface Props {
@@ -33,6 +43,7 @@ interface Props {
   jobTitle?: string
   jobClientId?: string | null
   jobCategoryName?: string
+  applicantHeadline?: string
 }
 
 // ── Comment / Justification Modal ─────────────────────────────────────────────
@@ -135,12 +146,13 @@ function CommentModal({
 
 // ── Hire Modal ─────────────────────────────────────────────────────────────────
 function HireModal({
-  applicantName, jobTitle, jobClientId,
+  applicantName, jobTitle, jobClientId, applicantHeadline,
   onConfirm, onCancel, loading,
 }: {
   applicantName: string
   jobTitle?: string
   jobClientId?: string | null
+  applicantHeadline?: string
   onConfirm: (comment: string, hireData: Record<string, unknown>) => void
   onCancel: () => void
   loading: boolean
@@ -152,9 +164,9 @@ function HireModal({
   const [form, setForm] = useState({
     client_id:          jobClientId || '',
     role_title:         jobTitle    || '',
-    role_category:      '',
+    role_category:      applicantHeadline || '',
     seniority:          '',
-    start_date:         '',
+    start_date:         new Date().toISOString().split('T')[0],
     employment_type:    '',
     monthly_salary_usd: '',
   })
@@ -200,6 +212,10 @@ function HireModal({
             <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Employment Details</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
+                <label className={lbl}>Full Name</label>
+                <input value={applicantName} disabled className={`${inp} bg-gray-100 text-gray-500 cursor-not-allowed`} />
+              </div>
+              <div className="md:col-span-2">
                 <label className={lbl}>Client *</label>
                 {fetching ? (
                   <div className="h-10 bg-gray-100 rounded-xl animate-pulse" />
@@ -232,7 +248,7 @@ function HireModal({
               </div>
               <div>
                 <label className={lbl}>Start Date</label>
-                <input type="date" value={form.start_date} onChange={e => set('start_date', e.target.value)} className={inp} />
+                <input type="date" value={form.start_date} onChange={e => set('start_date', e.target.value)} min={new Date().toISOString().split('T')[0]} className={inp} />
               </div>
               <div>
                 <label className={lbl}>Employment Type</label>
@@ -295,7 +311,7 @@ function HireModal({
 
 // ── Main StatusChangerV2 ───────────────────────────────────────────────────────
 export default function StatusChangerV2({
-  applicationId, currentStatus, applicantName, jobTitle, jobClientId,
+  applicationId, currentStatus, applicantName, jobTitle, jobClientId, applicantHeadline,
 }: Props) {
   const router = useRouter()
   const [selected,        setSelected]        = useState(currentStatus)
@@ -307,16 +323,16 @@ export default function StatusChangerV2({
 
   const initiateChange = (newStatus: string) => {
     if (newStatus === selected || loading) return
+    // Enforce strict pipeline flow
+    if (!isValidTransition(selected, newStatus)) return
     setError(null)
     setPendingStatus(newStatus)
 
     if (newStatus === 'hired') {
       setShowHireModal(true)
-    } else if (requiresJustification(selected, newStatus)) {
-      setShowCommentModal(true)
     } else {
-      // No justification needed — change directly
-      executeChange(newStatus, null, null)
+      // All transitions require justification
+      setShowCommentModal(true)
     }
   }
 
@@ -370,6 +386,7 @@ export default function StatusChangerV2({
           applicantName={applicantName}
           jobTitle={jobTitle}
           jobClientId={jobClientId}
+          applicantHeadline={applicantHeadline}
           onConfirm={(comment, hireData) => executeChange('hired', comment, hireData)}
           onCancel={() => { setShowHireModal(false); setPendingStatus(null) }}
           loading={loading}
@@ -388,29 +405,38 @@ export default function StatusChangerV2({
 
         <div className="space-y-2 mb-4">
           {stages.map((stage) => {
-            const isCurrent  = stage.value === selected
-            const isPast     = stages.findIndex(s => s.value === selected) > stages.findIndex(s => s.value === stage.value)
-            const isPending  = stage.value === pendingStatus && loading
-            const needsNote  = requiresJustification(selected, stage.value) || stage.value === 'hired'
+            const isCurrent    = stage.value === selected
+            const isPast       = stages.findIndex(s => s.value === selected) > stages.findIndex(s => s.value === stage.value)
+            const isPending    = stage.value === pendingStatus && loading
+            const canTransition = isValidTransition(selected, stage.value)
+            const isDisabled   = loading || isCurrent || !canTransition
 
             return (
               <button
                 key={stage.value}
                 onClick={() => initiateChange(stage.value)}
-                disabled={loading || isCurrent}
-                title={(!isCurrent && needsNote) ? 'Requires written justification' : undefined}
+                disabled={isDisabled}
+                title={
+                  isCurrent ? 'Current stage' :
+                  !canTransition ? 'Complete previous stages first' :
+                  'Requires written justification'
+                }
                 className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all text-left ${
                   isCurrent
                     ? 'bg-brand-50 border border-brand-200 text-brand-700 shadow-sm cursor-default'
+                    : canTransition
+                    ? isPast
+                      ? 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                      : 'text-gray-500 hover:bg-gray-50 hover:text-gray-600'
                     : isPast
-                    ? 'bg-gray-50 text-gray-600 hover:bg-gray-100'
-                    : 'text-gray-400 hover:bg-gray-50 hover:text-gray-600'
+                    ? 'bg-gray-50/50 text-gray-300 cursor-not-allowed'
+                    : 'text-gray-200 cursor-not-allowed'
                 } disabled:cursor-not-allowed`}
               >
-                <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${isCurrent ? stage.color : isPast ? 'bg-gray-300' : 'bg-gray-200'}`} />
+                <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${isCurrent ? stage.color : isPast ? 'bg-gray-300' : canTransition ? 'bg-gray-300' : 'bg-gray-200'}`} />
                 <span className="flex-1">{stage.label}</span>
                 {isPending && <Loader2 className="w-3.5 h-3.5 ml-auto animate-spin text-brand-500" />}
-                {!isCurrent && !isPending && needsNote && (
+                {!isCurrent && !isPending && canTransition && (
                   <span className="text-[10px] text-gray-400 ml-auto">note req.</span>
                 )}
               </button>

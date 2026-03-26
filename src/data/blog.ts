@@ -25,7 +25,7 @@ export const blogPosts: BlogPost[] = [
     slug: "true-cost-of-hiring-software-engineers-us-vs-latam",
     title: "The True Cost of Hiring Software Engineers: US vs. Latin America",
     excerpt:
-      "Salary is only part of the equation. When you factor in recruiting costs, benefits, office space, turnover, and ramp-up time, the total cost of a US-based software engineer can exceed $200,000 annually. We break down the real numbers and show how LATAM staff augmentation can cut your engineering costs by 40-60% without sacrificing quality.",
+      "Salary is only part of the equation. When you factor in recruiting costs, benefits, office space, turnover, and ramp-up time, the total cost of a US-based software engineer can exceed $200,000 annually. We break down the real numbers and show how LATAM staff augmentation can cut your engineering costs by 40-50% without sacrificing quality.",
     author: "Carolina Restrepo",
     date: "2026-03-08",
     readTime: "10 min read",

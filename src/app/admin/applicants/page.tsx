@@ -3,6 +3,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Users, ExternalLink, FileText, Mail, Building2 } from 'lucide-react'
 import ApplicantFilters from '@/components/admin/ApplicantFilters'
+import { countryFlag, countryCodeFromName, inferCountryFromPhone } from '@/lib/countries'
 
 const statusLabels: Record<string, string> = {
   applied: 'Applied',
@@ -102,6 +103,7 @@ export default async function AdminApplicantsPage({
                   <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Client</th>
                   <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
                   <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">English</th>
+                  <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Country</th>
                   <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Salary Exp.</th>
                   <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Applied</th>
                   <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Links</th>
@@ -148,6 +150,17 @@ export default async function AdminApplicantsPage({
                     </td>
                     <td className="px-5 py-4">
                       <span className="text-sm text-gray-600">{app.english_level || '—'}</span>
+                    </td>
+                    <td className="px-5 py-4">
+                      {(() => {
+                        const countryName = app.country && app.country !== 'Other' ? app.country : null
+                        const code = countryName ? countryCodeFromName(countryName) : inferCountryFromPhone(app.phone)
+                        return code ? (
+                          <span className="text-base" title={countryName || code}>{countryFlag(code)}</span>
+                        ) : (
+                          <span className="text-sm text-gray-400">—</span>
+                        )
+                      })()}
                     </td>
                     <td className="px-5 py-4">
                       <span className="text-sm text-gray-600">

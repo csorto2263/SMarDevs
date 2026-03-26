@@ -19,6 +19,7 @@ export default async function AdminJobsPage() {
 
   return (
     <JobsManager
+      key={Date.now()}
       initialClients={clients || []}
       initialCategories={categories || []}
     />

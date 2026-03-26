@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import {
   Search, MoreVertical, Pencil, Archive, ArchiveRestore, Eye,
@@ -186,33 +186,66 @@ function ActionMenu({ employee, onEdit, onArchive, onStatusChange }: {
   onStatusChange: (e: Employee) => void
 }) {
   const [open, setOpen] = useState(false)
+  const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({})
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (!btnRef.current?.contains(e.target as Node) && !menuRef.current?.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    const scrollHandler = () => setOpen(false)
+    document.addEventListener('mousedown', handler)
+    document.addEventListener('scroll', scrollHandler, true)
+    return () => {
+      document.removeEventListener('mousedown', handler)
+      document.removeEventListener('scroll', scrollHandler, true)
+    }
+  }, [])
+
+  const handleOpen = () => {
+    if (btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect()
+      setMenuStyle({
+        position: 'fixed',
+        top: rect.bottom + 4,
+        right: window.innerWidth - rect.right,
+        zIndex: 9999,
+      })
+    }
+    setOpen(v => !v)
+  }
+
   return (
-    <div className="relative">
-      <button onClick={() => setOpen(o => !o)} className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+    <>
+      <button
+        ref={btnRef}
+        onClick={handleOpen}
+        className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+      >
         <MoreVertical className="w-4 h-4" />
       </button>
       {open && (
-        <>
-          <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-8 z-20 w-48 bg-white border border-gray-100 rounded-xl shadow-xl overflow-hidden">
-            <Link href={`/admin/employees/${employee.id}`} onClick={() => setOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-              <Eye className="w-4 h-4 text-gray-400" /> View Details
-            </Link>
-            <button onClick={() => { setOpen(false); onEdit(employee) }} className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-              <Pencil className="w-4 h-4 text-gray-400" /> Edit
-            </button>
-            <button onClick={() => { setOpen(false); onStatusChange(employee) }} className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-              <UserCheck className="w-4 h-4 text-gray-400" /> Change Status
-            </button>
-            <div className="border-t border-gray-100" />
-            <button onClick={() => { setOpen(false); onArchive(employee) }} className={`flex items-center gap-2.5 w-full px-4 py-2.5 text-sm transition-colors ${employee.is_archived ? 'text-brand-600 hover:bg-brand-50' : 'text-amber-600 hover:bg-amber-50'}`}>
-              {employee.is_archived ? <ArchiveRestore className="w-4 h-4" /> : <Archive className="w-4 h-4" />}
-              {employee.is_archived ? 'Unarchive' : 'Archive'}
-            </button>
-          </div>
-        </>
+        <div ref={menuRef} style={menuStyle} className="w-48 bg-white border border-gray-100 rounded-xl shadow-xl py-1 overflow-hidden">
+          <Link href={`/admin/employees/${employee.id}`} onClick={() => setOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+            <Eye className="w-4 h-4 text-gray-400" /> View Details
+          </Link>
+          <button onClick={() => { setOpen(false); onEdit(employee) }} className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+            <Pencil className="w-4 h-4 text-gray-400" /> Edit
+          </button>
+          <button onClick={() => { setOpen(false); onStatusChange(employee) }} className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+            <UserCheck className="w-4 h-4 text-gray-400" /> Change Status
+          </button>
+          <div className="border-t border-gray-100" />
+          <button onClick={() => { setOpen(false); onArchive(employee) }} className={`flex items-center gap-2.5 w-full px-4 py-2.5 text-sm transition-colors ${employee.is_archived ? 'text-brand-600 hover:bg-brand-50' : 'text-amber-600 hover:bg-amber-50'}`}>
+            {employee.is_archived ? <ArchiveRestore className="w-4 h-4" /> : <Archive className="w-4 h-4" />}
+            {employee.is_archived ? 'Unarchive' : 'Archive'}
+          </button>
+        </div>
       )}
-    </div>
+    </>
   )
 }
 

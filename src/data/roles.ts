@@ -31,7 +31,7 @@ export const roles: Role[] = [
     whyHire: [
       "Accelerate product development without the overhead of traditional hiring, reducing time-to-hire from months to weeks.",
       "Gain access to engineers proficient in modern architectures including microservices, event-driven systems, and cloud-native applications.",
-      "Reduce engineering costs by 40-60% compared to US-based hires while maintaining the same quality standards and output.",
+      "Reduce engineering costs by 40-50% compared to US-based hires while maintaining the same quality standards and output.",
       "Scale your engineering team up or down based on project demands without long-term contractual obligations.",
       "Work with professionals in overlapping time zones who participate in standups, code reviews, and sprint ceremonies in real time.",
     ],
@@ -133,7 +133,7 @@ export const roles: Role[] = [
       "Ship polished user interfaces faster with developers who specialize in component-driven architecture and modern CSS.",
       "Improve Core Web Vitals and page performance with engineers trained in optimization techniques and lazy loading strategies.",
       "Ensure accessibility compliance (WCAG 2.1) across your web applications with developers experienced in inclusive design patterns.",
-      "Reduce frontend development costs by 40-60% without compromising on code quality or user experience standards.",
+      "Reduce frontend development costs by 40-50% without compromising on code quality or user experience standards.",
       "Get developers who bridge the gap between design and engineering, translating Figma mockups into production-ready components.",
     ],
     advantages: [
@@ -233,7 +233,7 @@ export const roles: Role[] = [
     whyHire: [
       "Build robust, secure APIs and services that scale with your user base without costly re-architecture projects.",
       "Leverage deep expertise in database design, caching strategies, and message queuing for high-performance systems.",
-      "Reduce backend development costs by 40-60% while accessing engineers with experience at enterprise-scale companies.",
+      "Reduce backend development costs by 40-50% while accessing engineers with experience at enterprise-scale companies.",
       "Accelerate delivery with developers experienced in event-driven architecture, CQRS, and domain-driven design.",
       "Get engineers who understand security best practices including authentication, authorization, and data encryption.",
     ],
@@ -433,10 +433,10 @@ export const roles: Role[] = [
     heroDescription:
       "Strengthen your release confidence with QA engineers from Latin America who bring systematic testing expertise and a sharp eye for detail. Catch bugs earlier, reduce regressions, and ship with confidence.",
     whyHire: [
-      "Reduce production defects by up to 60% with engineers who design comprehensive test plans covering functional, regression, and edge-case scenarios.",
+      "Reduce production defects by up to 50% with engineers who design comprehensive test plans covering functional, regression, and edge-case scenarios.",
       "Improve release cadence by having dedicated QA resources who can validate features in parallel with development work.",
       "Get QA engineers who think critically about user workflows, data integrity, and cross-browser compatibility from day one.",
-      "Save 40-60% compared to US-based QA hires while getting engineers with experience in enterprise software testing.",
+      "Save 40-50% compared to US-based QA hires while getting engineers with experience in enterprise software testing.",
       "Ensure compliance and regulatory adherence with testers experienced in documenting test evidence and audit trails.",
     ],
     advantages: [
@@ -538,7 +538,7 @@ export const roles: Role[] = [
       "Enable continuous deployment confidence with automated test suites integrated directly into your CI/CD pipeline.",
       "Free your manual QA team to focus on exploratory testing and complex scenarios while automation handles the regression suite.",
       "Catch defects earlier in the development cycle with shift-left testing strategies and pre-merge automated validation.",
-      "Save 40-60% compared to US-based automation engineers while getting experts in modern test frameworks and tools.",
+      "Save 40-50% compared to US-based automation engineers while getting experts in modern test frameworks and tools.",
     ],
     advantages: [
       "Automation candidates are assessed through framework design challenges and practical test scripting exercises.",
@@ -639,7 +639,7 @@ export const roles: Role[] = [
       "Cut cloud infrastructure costs by 20-40% through right-sizing, reserved capacity planning, and automated resource management.",
       "Improve system reliability with monitoring, alerting, and incident response automation that reduces mean time to recovery.",
       "Enable your development team to ship independently with self-service deployment tools and well-documented runbooks.",
-      "Save 40-60% compared to US-based DevOps engineers while accessing professionals experienced with enterprise-scale infrastructure.",
+      "Save 40-50% compared to US-based DevOps engineers while accessing professionals experienced with enterprise-scale infrastructure.",
     ],
     advantages: [
       "DevOps candidates are assessed through real-world infrastructure challenges including architecture design and troubleshooting scenarios.",
@@ -739,7 +739,7 @@ export const roles: Role[] = [
       "Increase user engagement and conversion rates with designs informed by research, usability testing, and data-driven iteration.",
       "Reduce development rework by delivering well-documented, developer-friendly design specifications and interactive prototypes.",
       "Build a consistent brand experience across all touchpoints with designers experienced in creating and maintaining design systems.",
-      "Save 40-60% compared to US-based designers while accessing talent trained at top design programs and experienced at leading companies.",
+      "Save 40-50% compared to US-based designers while accessing talent trained at top design programs and experienced at leading companies.",
       "Bridge the gap between business goals and user needs with designers who think strategically about product outcomes.",
     ],
     advantages: [
@@ -841,7 +841,7 @@ export const roles: Role[] = [
       "Free your engineering leads from coordination overhead so they can focus on technical leadership and code quality.",
       "Gain clear visibility into project status with structured reporting, burn-down tracking, and stakeholder communication cadences.",
       "Reduce scope creep and budget overruns with proactive requirements management and change control processes.",
-      "Save 40-60% compared to US-based project managers while accessing PMs experienced with distributed software teams.",
+      "Save 40-50% compared to US-based project managers while accessing PMs experienced with distributed software teams.",
     ],
     advantages: [
       "PM candidates are evaluated through scenario-based assessments covering stakeholder management, risk mitigation, and team coordination.",
@@ -941,7 +941,7 @@ export const roles: Role[] = [
       "Reduce development rework by up to 40% with clear, well-documented requirements that leave no room for ambiguity.",
       "Align stakeholder expectations with technical feasibility early in the project lifecycle, preventing costly mid-sprint pivots.",
       "Accelerate discovery and requirements phases with BAs who use proven elicitation techniques and structured documentation.",
-      "Save 40-60% compared to US-based business analysts while accessing professionals experienced in enterprise software projects.",
+      "Save 40-50% compared to US-based business analysts while accessing professionals experienced in enterprise software projects.",
       "Improve product outcomes by having a dedicated professional who understands both the business context and the technical implementation.",
     ],
     advantages: [

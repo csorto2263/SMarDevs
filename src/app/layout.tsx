@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     template: "%s | SMarDevs",
   },
   description:
-    "Connect with rigorously vetted software engineers, developers, QA specialists, and tech professionals from Latin America. Reduce costs by up to 60% while maintaining world-class quality.",
+    "Connect with rigorously vetted software engineers, developers, QA specialists, and tech professionals from Latin America. Reduce costs by up to 40-50% while maintaining world-class quality.",
   keywords: [
     "nearshore staffing",
     "remote developers",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SMarDevs | Elite Nearshore Tech Talent",
     description:
-      "Rigorously vetted tech talent from Latin America. Save up to 60% on hiring costs.",
+      "Rigorously vetted tech talent from Latin America. Save up to 40-50% on hiring costs.",
   },
   robots: {
     index: true,

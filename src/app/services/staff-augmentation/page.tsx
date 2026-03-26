@@ -33,7 +33,7 @@ const benefits = [
   },
   {
     icon: DollarSign,
-    title: "Up to 60% Cost Reduction",
+    title: "Up to 40-50% Cost Savings",
     description:
       "Access senior-level talent at LATAM rates that represent a fraction of equivalent US market costs — without compromising output quality, communication standards, or professional reliability.",
   },
@@ -229,7 +229,7 @@ export default function StaffAugmentationPage() {
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { icon: Code2, label: "Avg. Onboarding Time", value: "3–5 Days" },
-                  { icon: DollarSign, label: "Average Cost Savings", value: "Up to 60%" },
+                  { icon: DollarSign, label: "Average Cost Savings", value: "Up to 40-50%" },
                   { icon: Users, label: "Retention Rate", value: "97%" },
                   { icon: BarChart3, label: "Profiles Delivered", value: "Within 48h" },
                 ].map((stat) => (

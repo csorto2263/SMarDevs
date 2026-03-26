@@ -55,6 +55,7 @@ export default function ApplicationForm({ jobId, jobSlug, jobTitle, questions }:
   const [availability, setAvailability] = useState('')
   const [resumeFile, setResumeFile] = useState<File | null>(null)
   const [emailError, setEmailError] = useState('')
+  const [eligibilityMessage, setEligibilityMessage] = useState<{ type: 'duplicate' | 'rejection_cooldown'; message: string } | null>(null)
 
   // Dynamic question answers
   const [answers, setAnswers] = useState<Record<string, string>>({})
@@ -97,8 +98,23 @@ export default function ApplicationForm({ jobId, jobSlug, jobTitle, questions }:
 
     setFormState('submitting')
     setErrorMessage('')
+    setEligibilityMessage(null)
 
     try {
+      // Check eligibility (duplicate + rejection block)
+      const eligRes = await fetch('/api/careers/check-eligibility', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, phone, first_name: firstName, last_name: lastName, job_id: jobId }),
+      })
+      const eligData = await eligRes.json()
+      if (!eligData.eligible) {
+        setEligibilityMessage({ type: eligData.reason, message: eligData.message })
+        setFormState('idle')
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+        return
+      }
+
       const supabase = createClient()
 
       // Upload resume if provided
@@ -133,6 +149,7 @@ export default function ApplicationForm({ jobId, jobSlug, jobTitle, questions }:
           phone: phone || null,
           headline: headline || null,
           address: [streetAddress, city, stateProvince, country].filter(Boolean).join(', ') || null,
+          country: country || null,
           resume_url: resumeUrl || null,
           resume_filename: resumeFilename || null,
           linkedin_url: linkedinUrl || null,
@@ -208,6 +225,22 @@ export default function ApplicationForm({ jobId, jobSlug, jobTitle, questions }:
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Eligibility message — duplicate */}
+      {eligibilityMessage?.type === 'duplicate' && (
+        <div className="flex items-center gap-3 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">
+          <CheckCircle2 className="w-5 h-5 shrink-0" />
+          <span>{eligibilityMessage.message}</span>
+        </div>
+      )}
+
+      {/* Eligibility message — rejection cooldown */}
+      {eligibilityMessage?.type === 'rejection_cooldown' && (
+        <div className="flex items-center gap-3 bg-amber-50 border border-amber-200 text-amber-700 px-4 py-3 rounded-xl text-sm">
+          <AlertCircle className="w-5 h-5 shrink-0" />
+          <span>{eligibilityMessage.message}</span>
+        </div>
+      )}
+
       {/* Error */}
       {(formState === 'error' || errorMessage) && (
         <div className="flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
@@ -246,12 +279,12 @@ export default function ApplicationForm({ jobId, jobSlug, jobTitle, questions }:
             <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+504 9999-9999" className={inputClasses} />
           </div>
           <div className="md:col-span-2">
-            <label className={labelClasses}>Headline <span className="text-gray-400 font-normal">(optional)</span></label>
-            <input value={headline} onChange={(e) => setHeadline(e.target.value)} placeholder="e.g., Senior React Developer with 6 years of experience" className={inputClasses} />
+            <label className={labelClasses}>Headline *</label>
+            <input value={headline} onChange={(e) => setHeadline(e.target.value)} required placeholder="e.g., Senior React Developer with 6 years of experience" className={inputClasses} />
           </div>
           <div className="md:col-span-2">
-            <label className={labelClasses}>Address <span className="text-gray-400 font-normal">(optional)</span></label>
-            <input value={streetAddress} onChange={(e) => setStreetAddress(e.target.value)} placeholder="e.g., 123 Main Street, Suite 4" className={inputClasses} />
+            <label className={labelClasses}>Address *</label>
+            <input value={streetAddress} onChange={(e) => setStreetAddress(e.target.value)} required placeholder="e.g., 123 Main Street, Suite 4" className={inputClasses} />
           </div>
           <div className="md:col-span-2">
             <label className={labelClasses}>Location</label>

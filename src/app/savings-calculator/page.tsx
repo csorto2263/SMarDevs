@@ -32,7 +32,7 @@ const roles = [
 type Role = (typeof roles)[number];
 type Seniority = "Junior" | "Mid-Level" | "Senior";
 
-// LATAM cost = 60% of US cost (40% savings shown to client; remainder is negotiation margin)
+// LATAM cost = 50-60% of US cost (40-50% savings shown to client; remainder is negotiation margin)
 const salaryData: Record<Role, Record<Seniority, { us: number; latam: number }>> = {
   "Software Engineer": {
     Junior:     { us: 8500,  latam: 5100 },
