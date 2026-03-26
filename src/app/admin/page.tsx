@@ -88,15 +88,14 @@ export default async function AdminDashboardPage() {
           <Link
             key={stat.label}
             href={stat.href}
-            className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md hover:border-gray-200 transition-all group"
+            className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md hover:border-gray-200 transition-all group text-center"
           >
-            <div className="flex items-center justify-between">
+            <div className="flex justify-center mb-3">
               <div className={`p-2.5 rounded-xl ${stat.color}`}>
                 <stat.icon className="w-5 h-5" />
               </div>
-              <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-gray-500 group-hover:translate-x-0.5 transition-all" />
             </div>
-            <p className="text-2xl font-bold text-navy-950 mt-3">{stat.value}</p>
+            <p className="text-2xl font-bold text-navy-950">{stat.value}</p>
             <p className="text-sm text-gray-500 mt-0.5">{stat.label}</p>
           </Link>
         ))}
@@ -107,12 +106,16 @@ export default async function AdminDashboardPage() {
         <h2 className="text-lg font-semibold text-navy-950 mb-4">Pipeline Overview</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
           {pipelineStages.map(stage => (
-            <div key={stage.key} className="text-center p-3 rounded-xl bg-gray-50">
+            <Link
+              key={stage.key}
+              href={`/admin/applicants?status=${stage.key}`}
+              className="text-center p-3 rounded-xl bg-gray-50 hover:bg-gray-100 hover:shadow-sm transition-all cursor-pointer"
+            >
               <p className="text-2xl font-bold text-navy-950">{pipelineCounts[stage.key] || 0}</p>
               <span className={`inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-medium ${stage.color}`}>
                 {stage.label}
               </span>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
