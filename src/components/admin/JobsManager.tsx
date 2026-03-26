@@ -94,9 +94,12 @@ function ActionMenu({ job, onAction }: { job: Job; onAction: (id: string, action
   const handleOpen = () => {
     if (btnRef.current) {
       const rect = btnRef.current.getBoundingClientRect()
+      const spaceBelow = window.innerHeight - rect.bottom
+      const menuHeight = 260
+      const openAbove = spaceBelow < menuHeight
       setMenuStyle({
         position: 'fixed',
-        top: rect.bottom + 4,
+        ...(openAbove ? { bottom: window.innerHeight - rect.top + 4 } : { top: rect.bottom + 4 }),
         right: window.innerWidth - rect.right,
         zIndex: 9999,
       })
