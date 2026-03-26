@@ -342,11 +342,8 @@ export default function HomePage() {
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {processSteps.map((step, index) => (
+              {processSteps.map((step) => (
                 <div key={step.step} className="relative">
-                  {index < processSteps.length - 1 && (
-                    <div className="hidden lg:block absolute top-8 left-full w-full h-px bg-gradient-to-r from-brand-500/50 to-transparent z-0" />
-                  )}
                   <div className="relative z-10">
                     <span className="text-5xl font-bold text-white/10 block mb-4">
                       {step.step}
