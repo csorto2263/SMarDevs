@@ -34,6 +34,10 @@ export function countryFlag(code: string): string {
   return Array.from(code.toUpperCase()).map(c => String.fromCodePoint(0x1F1E6 - 65 + c.charCodeAt(0))).join('')
 }
 
+export function countryFlagUrl(code: string): string {
+  return `https://flagcdn.com/w40/${code.toLowerCase()}.png`
+}
+
 export function countryCodeFromName(name: string): string | null {
   const c = COUNTRIES.find(c => c.name.toLowerCase() === name.toLowerCase())
   return c?.code || null

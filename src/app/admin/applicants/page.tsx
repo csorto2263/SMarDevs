@@ -3,7 +3,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { Users, ExternalLink, FileText, Mail, Building2 } from 'lucide-react'
 import ApplicantFilters from '@/components/admin/ApplicantFilters'
-import { countryFlag, countryCodeFromName, inferCountryFromPhone } from '@/lib/countries'
+import { countryFlagUrl, countryCodeFromName, inferCountryFromPhone, COUNTRIES } from '@/lib/countries'
 
 const statusLabels: Record<string, string> = {
   applied: 'Applied',
@@ -155,8 +155,13 @@ export default async function AdminApplicantsPage({
                       {(() => {
                         const countryName = app.country && app.country !== 'Other' ? app.country : null
                         const code = countryName ? countryCodeFromName(countryName) : inferCountryFromPhone(app.phone)
+                        const displayName = countryName || COUNTRIES.find(c => c.code === code)?.name || code
                         return code ? (
-                          <span className="text-base" title={countryName || code}>{countryFlag(code)}</span>
+                          <span className="inline-flex items-center gap-1.5" title={displayName || ''}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={countryFlagUrl(code)} alt={displayName || code} className="w-5 h-auto rounded-sm shadow-sm" />
+                            <span className="text-xs text-gray-500">{code}</span>
+                          </span>
                         ) : (
                           <span className="text-sm text-gray-400">—</span>
                         )
