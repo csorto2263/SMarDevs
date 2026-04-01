@@ -26,6 +26,8 @@ export async function POST(req: NextRequest) {
   }
 
   // Check if user has a staff profile (admin, recruiter, hiring_manager)
+  const STAFF_ROLES = ['admin', 'recruiter', 'hiring_manager']
+
   const { data: profile } = await admin
     .from('profiles')
     .select('role')
@@ -36,6 +38,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { error: 'No account found with this email address.' },
       { status: 404 }
+    )
+  }
+
+  if (!STAFF_ROLES.includes(profile.role)) {
+    return NextResponse.json(
+      { error: 'This email is not associated with a staff account. Applicants must reset their password from the applicant portal.' },
+      { status: 403 }
     )
   }
 
