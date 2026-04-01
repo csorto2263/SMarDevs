@@ -261,6 +261,7 @@ export default function EmployeesManager({ initialClientId }: { initialClientId?
   const [search,       setSearch]       = useState('')
   const [clientFilter, setClientFilter] = useState(initialClientId || '')
   const [statusFilter, setStatusFilter] = useState('')
+  const [roleFilter,   setRoleFilter]   = useState('')
   const [showArchived, setShowArchived] = useState(false)
   const [clients,      setClients]      = useState<Client[]>([])
 
@@ -285,15 +286,16 @@ export default function EmployeesManager({ initialClientId }: { initialClientId?
       const params = new URLSearchParams({
         page:     String(page),
         archived: String(showArchived),
-        ...(search        ? { search }                : {}),
-        ...(clientFilter  ? { client_id: clientFilter } : {}),
-        ...(statusFilter  ? { status: statusFilter }  : {}),
+        ...(search        ? { search }                          : {}),
+        ...(clientFilter  ? { client_id: clientFilter }         : {}),
+        ...(statusFilter  ? { status: statusFilter }            : {}),
+        ...(roleFilter    ? { role_category: roleFilter }       : {}),
       })
       const res  = await fetch(`/api/admin/employees?${params}`)
       const data = await res.json()
       if (res.ok) { setEmployees(data.employees || []); setTotal(data.total || 0) }
     } finally { setLoading(false) }
-  }, [page, search, clientFilter, statusFilter, showArchived])
+  }, [page, search, clientFilter, statusFilter, roleFilter, showArchived])
 
   useEffect(() => { fetchEmployees() }, [fetchEmployees])
 
@@ -400,6 +402,22 @@ export default function EmployeesManager({ initialClientId }: { initialClientId?
         >
           <option value="">All Clients</option>
           {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+        </select>
+        <select
+          value={roleFilter}
+          onChange={e => { setRoleFilter(e.target.value); setPage(1) }}
+          className="px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-navy-950 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all"
+        >
+          <option value="">All Roles</option>
+          <option value="Frontend Development">Frontend</option>
+          <option value="Backend Development">Backend</option>
+          <option value="Full Stack Development">Full Stack</option>
+          <option value="Mobile Development">Mobile</option>
+          <option value="DevOps">DevOps</option>
+          <option value="Quality Assurance">QA</option>
+          <option value="UI/UX Design">UI/UX Design</option>
+          <option value="Data Engineering">Data Engineering</option>
+          <option value="Project Management">Project Management</option>
         </select>
         <select
           value={statusFilter}

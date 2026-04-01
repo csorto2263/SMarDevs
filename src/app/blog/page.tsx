@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   BookOpen,
@@ -66,9 +67,22 @@ export default function BlogPage() {
                     key={post.slug}
                     className="group flex flex-col rounded-2xl shadow-glass bg-white/5 border border-white/10 hover:border-brand-600/50 transition-all overflow-hidden"
                   >
-                    {/* Cover Image Placeholder */}
-                    <div className="relative h-48 bg-gradient-to-br from-brand-600/20 to-accent-500/20 flex items-center justify-center">
-                      <BookOpen className="w-12 h-12 text-white/20" />
+                    {/* Cover Image */}
+                    <div className="relative h-48 overflow-hidden">
+                      {post.coverImage ? (
+                        <Image
+                          src={post.coverImage}
+                          alt={post.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-brand-600/20 to-accent-500/20 flex items-center justify-center">
+                          <BookOpen className="w-12 h-12 text-white/20" />
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                       <div className="absolute top-4 left-4">
                         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-600/90 text-white text-xs font-medium">
                           <Tag className="w-3 h-3" />

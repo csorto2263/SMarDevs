@@ -9,10 +9,11 @@ export async function GET(req: NextRequest) {
   if (!caller) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
   const { searchParams } = new URL(req.url)
-  const search     = searchParams.get('search')    || ''
-  const client_id  = searchParams.get('client_id') || ''
-  const status     = searchParams.get('status')    || ''
-  const archived   = searchParams.get('archived')  === 'true'
+  const search        = searchParams.get('search')        || ''
+  const client_id     = searchParams.get('client_id')     || ''
+  const status        = searchParams.get('status')        || ''
+  const role_category = searchParams.get('role_category') || ''
+  const archived      = searchParams.get('archived')      === 'true'
   const page       = parseInt(searchParams.get('page') || '1')
   const limit      = 10
   const offset     = (page - 1) * limit
@@ -26,8 +27,9 @@ export async function GET(req: NextRequest) {
   if (search) {
     query = query.or(`full_name.ilike.%${search}%,email.ilike.%${search}%,role_title.ilike.%${search}%`)
   }
-  if (client_id) query = query.eq('client_id', client_id)
-  if (status)    query = query.eq('status', status)
+  if (client_id)     query = query.eq('client_id', client_id)
+  if (status)        query = query.eq('status', status)
+  if (role_category) query = query.eq('role_category', role_category)
 
   query = query.order('created_at', { ascending: false }).range(offset, offset + limit - 1)
 

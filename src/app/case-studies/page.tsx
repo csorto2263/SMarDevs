@@ -50,9 +50,10 @@ export default function CaseStudiesPage() {
               {caseStudies.map((study) => {
                 const metricEntries = Object.entries(study.metrics).slice(0, 3);
                 return (
-                  <div
+                  <Link
                     key={study.slug}
-                    className="bg-white rounded-2xl shadow-glass hover:shadow-glass-lg transition-all duration-300 overflow-hidden group"
+                    href={`/case-studies/${study.slug}`}
+                    className="bg-white rounded-2xl shadow-glass hover:shadow-glass-lg transition-all duration-300 overflow-hidden group hover:-translate-y-1 block"
                   >
                     <div className="p-8">
                       <div className="inline-flex items-center gap-2 bg-brand-50 text-brand-600 rounded-full px-3 py-1 text-xs font-semibold mb-4">
@@ -86,15 +87,12 @@ export default function CaseStudiesPage() {
                         ))}
                       </div>
 
-                      <Link
-                        href={`/case-studies/${study.slug}`}
-                        className="inline-flex items-center gap-2 text-brand-600 font-semibold text-sm group-hover:gap-3 transition-all"
-                      >
+                      <span className="inline-flex items-center gap-2 text-brand-600 font-semibold text-sm group-hover:gap-3 transition-all">
                         Read Full Study
                         <ArrowRight className="w-4 h-4" />
-                      </Link>
+                      </span>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>

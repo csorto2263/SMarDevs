@@ -497,19 +497,19 @@ export default function HomePage() {
                   href={`/case-studies/${study.slug}`}
                   className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-glass hover:shadow-glass-lg transition-all duration-300 hover:-translate-y-1"
                 >
-                  <div className="h-48 bg-gradient-to-br from-navy-900 to-brand-700 flex items-center justify-center">
-                    <span className="text-white/20 text-6xl font-bold">
+                  <div className="h-48 bg-gradient-to-br from-navy-900 to-brand-700 flex flex-col items-center justify-center gap-1">
+                    <span className="text-white text-5xl font-bold">
                       {study.metric}
                     </span>
+                    <span className="text-white/50 text-sm">{study.outcome}</span>
                   </div>
-                  <div className="p-6">
+                  <div className="p-6 text-center">
                     <span className="text-xs font-medium text-brand-600 uppercase tracking-wider">
                       {study.industry}
                     </span>
-                    <h3 className="text-xl font-semibold mt-2 mb-2 group-hover:text-brand-600 transition-colors">
+                    <h3 className="text-xl font-semibold mt-2 group-hover:text-brand-600 transition-colors">
                       {study.title}
                     </h3>
-                    <p className="text-gray-500 text-sm">{study.outcome}</p>
                   </div>
                 </Link>
               ))}

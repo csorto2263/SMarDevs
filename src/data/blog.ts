@@ -19,7 +19,7 @@ export const blogPosts: BlogPost[] = [
     date: "2026-03-15",
     readTime: "8 min read",
     category: "Nearshoring",
-    coverImage: "/images/blog/nearshoring-replacing-offshoring.jpg",
+    coverImage: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
   },
   {
     slug: "true-cost-of-hiring-software-engineers-us-vs-latam",
@@ -30,7 +30,7 @@ export const blogPosts: BlogPost[] = [
     date: "2026-03-08",
     readTime: "10 min read",
     category: "Cost Optimization",
-    coverImage: "/images/blog/hiring-cost-comparison.jpg",
+    coverImage: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
   },
   {
     slug: "building-high-performing-remote-engineering-teams",
@@ -41,7 +41,7 @@ export const blogPosts: BlogPost[] = [
     date: "2026-02-28",
     readTime: "12 min read",
     category: "Remote Teams",
-    coverImage: "/images/blog/remote-engineering-teams.jpg",
+    coverImage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
   },
   {
     slug: "qa-automation-strategy-when-to-automate-what-to-skip",
@@ -52,7 +52,7 @@ export const blogPosts: BlogPost[] = [
     date: "2026-02-20",
     readTime: "9 min read",
     category: "Quality Assurance",
-    coverImage: "/images/blog/qa-automation-strategy.jpg",
+    coverImage: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
   },
   {
     slug: "staff-augmentation-vs-outsourcing-which-model-fits",
@@ -63,7 +63,7 @@ export const blogPosts: BlogPost[] = [
     date: "2026-02-12",
     readTime: "7 min read",
     category: "Hiring",
-    coverImage: "/images/blog/staff-augmentation-vs-outsourcing.jpg",
+    coverImage: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80",
   },
   {
     slug: "scaling-engineering-teams-without-breaking-culture",
@@ -74,6 +74,6 @@ export const blogPosts: BlogPost[] = [
     date: "2026-01-30",
     readTime: "11 min read",
     category: "Remote Teams",
-    coverImage: "/images/blog/scaling-engineering-culture.jpg",
+    coverImage: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80",
   },
 ];

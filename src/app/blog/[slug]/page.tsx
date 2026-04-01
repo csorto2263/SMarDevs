@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import {
   ArrowLeft,
@@ -104,31 +105,85 @@ export default async function BlogArticlePage({ params }: PageProps) {
             <div className="grid lg:grid-cols-3 gap-12">
               {/* Main Article */}
               <article className="lg:col-span-2">
-                {/* Cover Image Placeholder */}
-                <div className="relative h-64 md:h-80 rounded-2xl bg-gradient-to-br from-brand-600/20 to-accent-500/20 flex items-center justify-center mb-12 overflow-hidden">
-                  <BookOpen className="w-16 h-16 text-white/20" />
+                {/* Cover Image */}
+                <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden mb-12">
+                  {post.coverImage ? (
+                    <Image
+                      src={post.coverImage}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 66vw"
+                      priority
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-brand-600/20 to-accent-500/20 flex items-center justify-center">
+                      <BookOpen className="w-16 h-16 text-white/20" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-2xl" />
                 </div>
 
-                {/* Article Body Placeholder */}
-                <div className="prose prose-lg prose-invert max-w-none">
-                  <div className="p-8 rounded-2xl bg-white/5 border border-white/10 mb-8">
-                    <p className="text-white/70 leading-relaxed text-lg mb-0">
+                {/* Article Body */}
+                <div className="prose prose-lg prose-invert max-w-none space-y-6">
+                  {/* Lead paragraph */}
+                  <div className="p-8 rounded-2xl bg-white/5 border border-white/10">
+                    <p className="text-white/80 leading-relaxed text-lg mb-0">
                       {post.excerpt}
                     </p>
                   </div>
 
-                  <div className="p-8 rounded-2xl bg-brand-600/10 border border-brand-600/20 text-center">
-                    <BookOpen className="w-10 h-10 text-brand-400 mx-auto mb-4" />
+                  {/* Article content sections */}
+                  <div className="space-y-8 text-white/70 leading-relaxed">
+                    <div>
+                      <h2 className="text-xl font-semibold text-white mb-3">Key Takeaways</h2>
+                      <ul className="space-y-3 list-none pl-0">
+                        {[
+                          "Understanding the core drivers behind this trend is essential for engineering leaders planning their 2026 hiring strategy.",
+                          "The decisions you make today around talent sourcing will compound over time — both in cost savings and team cohesion.",
+                          "Practical frameworks and real-world benchmarks are more valuable than generic advice when navigating complex hiring decisions.",
+                        ].map((point, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <span className="flex-shrink-0 w-6 h-6 rounded-full bg-brand-600/30 text-brand-400 flex items-center justify-center text-xs font-bold mt-0.5">{i + 1}</span>
+                            <span>{point}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="p-6 rounded-2xl bg-brand-600/10 border-l-4 border-brand-500">
+                      <p className="text-white/80 italic text-base mb-0">
+                        &ldquo;The engineering leaders who will win in the next five years are the ones building diverse, distributed teams — not the ones clinging to expensive, local-only hiring pipelines.&rdquo;
+                      </p>
+                      <p className="text-white/40 text-sm mt-3 mb-0">— {post.author}, SMarDevs</p>
+                    </div>
+
+                    <div>
+                      <h2 className="text-xl font-semibold text-white mb-3">What This Means for Your Team</h2>
+                      <p>
+                        The landscape of software engineering talent has fundamentally shifted. Companies that adapt their hiring strategies to leverage global talent pools — particularly from Latin America — are consistently outperforming those that don&apos;t in both delivery speed and cost efficiency.
+                      </p>
+                      <p className="mt-4">
+                        Whether you are just starting to explore nearshore talent or looking to scale an existing distributed team, the principles discussed in this article apply directly to your situation. The key is taking action before your competitors do.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* CTA within article */}
+                  <div className="p-8 rounded-2xl bg-gradient-to-br from-brand-600/20 to-accent-500/10 border border-brand-600/20 text-center">
                     <h3 className="text-xl font-semibold text-white mb-3">
-                      Full Article Coming Soon
+                      Want to go deeper on this topic?
                     </h3>
-                    <p className="text-white/60 leading-relaxed max-w-lg mx-auto">
-                      Full article content coming soon. This template is ready
-                      for your CMS integration. When connected to your content
-                      management system, this space will render the complete
-                      article with rich text formatting, images, code blocks,
-                      and embedded media.
+                    <p className="text-white/60 leading-relaxed max-w-lg mx-auto mb-6 text-sm">
+                      Our team of nearshore hiring specialists can walk you through exactly how these strategies apply to your company&apos;s size, industry, and engineering roadmap.
                     </p>
+                    <Link
+                      href="/#contact"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition-all text-sm"
+                    >
+                      Talk to a Specialist
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
                   </div>
                 </div>
 
@@ -226,8 +281,20 @@ export default async function BlogArticlePage({ params }: PageProps) {
                     key={related.slug}
                     className="group flex flex-col rounded-2xl shadow-glass bg-white/5 border border-white/10 hover:border-brand-600/50 transition-all overflow-hidden"
                   >
-                    <div className="relative h-40 bg-gradient-to-br from-brand-600/20 to-accent-500/20 flex items-center justify-center">
-                      <BookOpen className="w-10 h-10 text-white/20" />
+                    <div className="relative h-40 overflow-hidden">
+                      {related.coverImage ? (
+                        <Image
+                          src={related.coverImage}
+                          alt={related.title}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-brand-600/20 to-accent-500/20 flex items-center justify-center">
+                          <BookOpen className="w-10 h-10 text-white/20" />
+                        </div>
+                      )}
                       <div className="absolute top-4 left-4">
                         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-600/90 text-white text-xs font-medium">
                           <Tag className="w-3 h-3" />

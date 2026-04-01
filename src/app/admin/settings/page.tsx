@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { User, Mail, Shield, Save, Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
+import { User, Mail, Shield, Save, Loader2, CheckCircle2, AlertCircle, Lock, Eye, EyeOff } from 'lucide-react'
 
 export default function AdminSettingsPage() {
   const supabase = createClient()
@@ -15,6 +15,15 @@ export default function AdminSettingsPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+  // Password change state
+  const [newPassword,     setNewPassword]     = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [showNew,         setShowNew]         = useState(false)
+  const [showConfirm,     setShowConfirm]     = useState(false)
+  const [pwSaving,        setPwSaving]        = useState(false)
+  const [pwStatus,        setPwStatus]        = useState<'idle' | 'success' | 'error'>('idle')
+  const [pwError,         setPwError]         = useState('')
 
   useEffect(() => {
     async function load() {
@@ -57,6 +66,31 @@ export default function AdminSettingsPage() {
     setSaving(false)
     setStatus(error ? 'error' : 'success')
     if (!error) setTimeout(() => setStatus('idle'), 3000)
+  }
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setPwError('')
+    if (newPassword.length < 8) {
+      setPwError('Password must be at least 8 characters.')
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setPwError('Passwords do not match.')
+      return
+    }
+    setPwSaving(true)
+    const { error } = await supabase.auth.updateUser({ password: newPassword })
+    setPwSaving(false)
+    if (error) {
+      setPwError(error.message)
+      setPwStatus('error')
+    } else {
+      setPwStatus('success')
+      setNewPassword('')
+      setConfirmPassword('')
+      setTimeout(() => setPwStatus('idle'), 3500)
+    }
   }
 
   const inputClasses = 'w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-navy-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all'
@@ -143,20 +177,68 @@ export default function AdminSettingsPage() {
         </div>
       </form>
 
-      <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 text-sm text-blue-800">
-        <p className="font-medium mb-1">Need to update your password?</p>
-        <p className="text-blue-600">
-          Password changes can be done through the{' '}
-          <a
-            href="https://supabase.com/dashboard/project/mwalppgmkrmclwwugaev/auth/users"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-blue-800"
+      <form onSubmit={handlePasswordChange} className="bg-white rounded-xl border border-gray-100 p-6 space-y-6">
+        <h2 className="text-lg font-semibold text-navy-950 flex items-center gap-2">
+          <Lock className="w-5 h-5 text-brand-600" />
+          Change Password
+        </h2>
+
+        {pwError && (
+          <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-200 px-4 py-3 rounded-xl">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            {pwError}
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">New Password</label>
+            <div className="relative">
+              <input
+                type={showNew ? 'text' : 'password'}
+                value={newPassword}
+                onChange={e => setNewPassword(e.target.value)}
+                placeholder="Min. 8 characters"
+                className={inputClasses + ' pr-10'}
+              />
+              <button type="button" onClick={() => setShowNew(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Confirm New Password</label>
+            <div className="relative">
+              <input
+                type={showConfirm ? 'text' : 'password'}
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
+                placeholder="Repeat new password"
+                className={inputClasses + ' pr-10'}
+              />
+              <button type="button" onClick={() => setShowConfirm(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4 pt-2">
+          <button
+            type="submit"
+            disabled={pwSaving || !newPassword || !confirmPassword}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-60"
           >
-            Supabase Auth dashboard
-          </a>.
-        </p>
-      </div>
+            {pwSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Lock className="w-4 h-4" />}
+            {pwSaving ? 'Updating...' : 'Update Password'}
+          </button>
+          {pwStatus === 'success' && (
+            <div className="flex items-center gap-1.5 text-sm text-green-600">
+              <CheckCircle2 className="w-4 h-4" /> Password updated successfully
+            </div>
+          )}
+        </div>
+      </form>
     </div>
   )
 }
