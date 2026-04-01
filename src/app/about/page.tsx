@@ -16,7 +16,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "About Us | SMarDevs",
+  title: "About Us",
   description:
     "SMarDevs connects exceptional LATAM technical talent with companies building world-class teams. Learn about our mission, values, and the people behind your next great hire.",
 };

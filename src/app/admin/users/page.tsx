@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import UsersManager from '@/components/admin/UsersManager'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = { title: 'Users | SMarDevs Admin' }
+export const metadata: Metadata = { title: 'Users | Admin' }
 
 export default async function UsersPage() {
   const supabase = await createServerSupabaseClient()

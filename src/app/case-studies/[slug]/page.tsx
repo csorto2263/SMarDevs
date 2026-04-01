@@ -29,10 +29,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const study = caseStudies.find((s) => s.slug === slug);
   if (!study) {
-    return { title: "Case Study Not Found | SMarDevs" };
+    return { title: "Case Study Not Found" };
   }
   return {
-    title: `${study.title} | SMarDevs Case Study`,
+    title: `${study.title} | Case Study`,
     description: study.outcome,
   };
 }

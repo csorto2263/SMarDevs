@@ -19,7 +19,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Staff Augmentation | SMarDevs",
+  title: "Staff Augmentation",
   description:
     "Embed pre-vetted LATAM engineers directly into your existing team. Fill skill gaps, accelerate sprints, and scale your engineering capacity without the overhead of full-time hiring.",
 };

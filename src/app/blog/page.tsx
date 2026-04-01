@@ -14,7 +14,7 @@ import { blogPosts } from "@/data/blog";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog | SMarDevs",
+  title: "Blog",
   description:
     "Insights, strategies, and best practices for engineering leaders building distributed teams with LATAM talent.",
 };

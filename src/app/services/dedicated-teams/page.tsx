@@ -19,7 +19,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Dedicated Teams | SMarDevs",
+  title: "Dedicated Teams",
   description:
     "Build a fully managed, autonomous engineering squad tailored to your product. SMarDevs assembles dedicated LATAM teams with developers, QA, DevOps, and designers — ready to deliver from sprint one.",
 };

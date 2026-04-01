@@ -31,10 +31,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
   if (!post) {
-    return { title: "Article Not Found | SMarDevs" };
+    return { title: "Article Not Found" };
   }
   return {
-    title: `${post.title} | Blog | SMarDevs`,
+    title: `${post.title} | Blog`,
     description: post.excerpt,
   };
 }

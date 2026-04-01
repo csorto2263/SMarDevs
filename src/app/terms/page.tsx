@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | SMarDevs",
+  title: "Terms of Service",
 };
 
 const sections = [

@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SMarDevs — B2B Talent Solutions</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #0A1628;
+    --navy2:   #0f2744;
+    --navy3:   #1e3a5f;
+    --blue:    #2563eb;
+    --accent:  #0ea5e9;
+    --white:   #ffffff;
+    --off:     #F0F4FF;
+    --light:   #DBEAFE;
+    --muted:   #94A3B8;
+    --dark:    #1E293B;
+    --slate:   #64748B;
+    --green:   #10B981;
+    --amber:   #F59E0B;
+    --border:  #E2E8F0;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: #111827;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* ── Navigation ── */
+  #nav {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(10,22,40,0.92); border: 1px solid rgba(37,99,235,0.3);
+    backdrop-filter: blur(12px);
+    padding: 10px 20px; border-radius: 50px;
+    z-index: 9999;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  #nav button {
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    font-size: 18px; padding: 4px 10px; border-radius: 6px;
+    transition: color .2s, background .2s;
+  }
+  #nav button:hover { color: var(--white); background: rgba(255,255,255,0.08); }
+  #nav button:disabled { opacity: 0.3; cursor: default; }
+  #slide-counter { color: var(--muted); font-size: 13px; min-width: 52px; text-align: center; }
+  #dots { display: flex; gap: 5px; }
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--slate); cursor: pointer; transition: all .2s;
+  }
+  .dot.active { background: var(--accent); transform: scale(1.4); }
+
+  /* ── Slide container ── */
+  #deck {
+    width: 100vw; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute;
+    width: min(calc(100vh * 16/9), 100vw);
+    height: min(calc(100vw * 9/16), 100vh);
+    display: none;
+    opacity: 0;
+    transition: opacity .45s ease;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  }
+  .slide.active {
+    display: flex;
+    opacity: 1;
+  }
+  .slide.entering { animation: slideIn .45s ease forwards; }
+  .slide.leaving  { animation: slideOut .35s ease forwards; }
+
+  @keyframes slideIn  { from { opacity:0; transform:translateX(40px) } to { opacity:1; transform:none } }
+  @keyframes slideOut { from { opacity:1; transform:none }  to { opacity:0; transform:translateX(-40px) } }
+
+  /* ── Accent bar ── */
+  .accent-top {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 4px; background: var(--accent); z-index: 2;
+  }
+  .accent-top.blue { background: var(--blue); }
+
+  /* ── Shared utilities ── */
+  .logo { display: flex; align-items: center; gap: 8px; }
+  .logo-mark {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--blue); border: 2px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 14px; color: #fff; flex-shrink: 0;
+  }
+  .logo-text { font-size: 16px; font-weight: 700; color: #fff; }
+  .logo-text span { color: var(--accent); }
+
+  .slide-num {
+    font-size: 48px; font-weight: 900; color: var(--navy3);
+    letter-spacing: -2px; line-height: 1; user-select: none;
+  }
+  .slide-num.light { color: var(--light); opacity: .4; }
+
+  .footer {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 28px; background: var(--navy);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; z-index: 2;
+  }
+  .footer span { font-size: 10px; color: var(--slate); }
+
+  /* ── SLIDE 1: Cover ── */
+  #s1 {
+    background: var(--navy);
+    flex-direction: row;
+  }
+  #s1 .left {
+    flex: 1; padding: 40px 40px 45px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  #s1 .right {
+    width: 38%; background: var(--navy3);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  #s1 .right::before {
+    content: '';
+    position: absolute; width: 320px; height: 320px;
+    border-radius: 50%; border: 1px solid rgba(14,165,233,.25);
+    top: -60px; right: -60px;
+  }
+  #s1 .right::after {
+    content: '';
+    position: absolute; width: 220px; height: 220px;
+    border-radius: 50%; background: rgba(37,99,235,.12);
+    bottom: 60px; right: 40px;
+  }
+  #s1 .grid-dots {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle, rgba(148,163,184,.3) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  #s1 h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.15;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  #s1 h1 span { color: var(--accent); display: block; }
+  #s1 .sub {
+    font-size: clamp(11px, 1.4vw, 14px);
+    color: var(--light);
+    line-height: 1.6;
+    max-width: 440px;
+    margin-top: 12px;
+  }
+  #s1 .stats {
+    display: flex; gap: 10px; margin-top: 24px;
+  }
+  #s1 .stat {
+    flex: 1; border: 1px solid rgba(37,99,235,.4);
+    background: var(--navy3); border-radius: 8px;
+    padding: 10px 8px; text-align: center;
+  }
+  #s1 .stat-val { font-size: clamp(18px, 2.5vw, 24px); font-weight: 800; color: var(--accent); }
+  #s1 .stat-lbl { font-size: 9px; color: var(--muted); margin-top: 3px; }
+  #s1 .tag {
+    font-size: 9px; letter-spacing: 2px; color: var(--slate);
+    text-transform: uppercase; margin-top: 20px;
+  }
+  #s1 .center-emblem {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    padding: 20px;
+  }
+  #s1 .big-s {
+    width: 100px; height: 100px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px; font-weight: 900; color: #fff;
+    box-shadow: 0 12px 40px rgba(14,165,233,.35);
+  }
+  #s1 .tagline {
+    font-family: Georgia, serif;
+    font-size: clamp(13px, 1.8vw, 17px);
+    color: var(--light); text-align: center; line-height: 1.5;
+  }
+
+  /* ── SLIDE 2: The Challenge ── */
+  #s2 {
+    background: var(--off);
+    flex-direction: row;
+  }
+  #s2 .left {
+    width: 32%; background: var(--navy);
+    padding: 36px 28px; display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+  #s2 .right {
+    flex: 1; padding: 30px 30px 40px;
+    display: flex; flex-direction: column; gap: 14px;
+    justify-content: center;
+  }
+  #s2 h2 {
+    font-family: Georgia, serif;
+    font-size: clamp(24px, 3.5vw, 34px);
+    color: var(--white); line-height: 1.2;
+  }
+  #s2 .desc { font-size: 12px; color: var(--light); line-height: 1.6; }
+  .pain-card {
+    background: var(--white); border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 16px 18px; display: flex; gap: 14px; align-items: flex-start;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    border-left: 5px solid var(--blue);
+  }
+  .pain-card .icon { font-size: 26px; flex-shrink: 0; }
+  .pain-card h4 { font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 5px; }
+  .pain-card p  { font-size: 11px; color: var(--slate); line-height: 1.55; }
+
+  /* ── SLIDE 3: Why SMarDevs ── */
+  #s3 { background: var(--white); flex-direction: column; padding: 32px 36px 36px; }
+  #s3 .header { margin-bottom: 22px; }
+  #s3 h2 { font-family: Georgia, serif; font-size: clamp(22px, 3vw, 30px); color: var(--navy); }
+  #s3 .sub { font-size: 12px; color: var(--slate); margin-top: 5px; }
+  #s3 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex: 1; }
+  .feat-card {
+    background: var(--off); border: 1px solid var(--border); border-radius: 10px;
+    padding: 18px; box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    border-top: 4px solid var(--blue);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .feat-card.blue  { border-top-color: var(--blue); }
+  .feat-card.sky   { border-top-color: var(--accent); }
+  .feat-card.green { border-top-color: var(--green); }
+  .feat-card.amber { border-top-color: var(--amber); }
+  .feat-card h4 { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .feat-card p  { font-size: 11px; color: var(--slate); line-height: 1.6; }
+
+  /* ── SLIDE 4: Cost Savings ── */
+  #s4 {
+    background: var(--navy);
+    flex-direction: row;
+  }
+  #s4 .left {
+    flex: 1; padding: 36px 36px 40px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  #s4 .right {
+    width: 36%; background: var(--navy3);
+    padding: 32px 24px; display: flex; flex-direction: column; gap: 14px;
+  }
+  #s4 h2 {
+    font-family: Georgia, serif;
+    font-size: clamp(22px, 3vw, 30px); color: var(--white); line-height: 1.2;
+  }
+  #s4 .big-num {
+    font-family: Georgia, serif;
+    font-size: clamp(56px, 8vw, 88px);
+    font-weight: 900; color: var(--accent); line-height: 1;
+    margin: 8px 0 4px;
+  }
+  #s4 .big-lbl { font-size: 12px; color: var(--light); }
+  #s4 .sub { font-size: 11px; color: var(--muted); line-height: 1.6; max-width: 380px; margin-top: 12px; }
+  #s4 .results-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 3px;
+    color: var(--accent); text-transform: uppercase;
+  }
+  .case-card {
+    background: var(--navy2); border: 1px solid rgba(37,99,235,.35);
+    border-radius: 8px; padding: 14px; display: flex; gap: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  }
+  .case-num { font-family: Georgia, serif; font-size: 36px; font-weight: 900; color: var(--accent); line-height: 1; }
+  .case-saved { font-size: 9px; color: var(--muted); }
+  .case-name { font-size: 11px; font-weight: 700; color: var(--white); }
+  .case-role { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+  /* ── SLIDE 5: LATAM ── */
+  #s5 { background: var(--white); flex-direction: column; padding: 28px 36px 36px; }
+  #s5 h2 { font-family: Georgia, serif; font-size: clamp(20px, 2.8vw, 28px); color: var(--navy); }
+  #s5 .sub { font-size: 12px; color: var(--slate); margin-top: 4px; margin-bottom: 16px; }
+  #s5 .big-stats {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px;
+  }
+  .big-stat-card {
+    background: var(--navy); border-radius: 10px; padding: 14px 10px; text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,.15);
+  }
+  .big-stat-card .val { font-family: Georgia, serif; font-size: clamp(22px, 3vw, 30px); font-weight: 900; color: var(--accent); }
+  .big-stat-card .lbl { font-size: 9.5px; color: var(--light); margin-top: 5px; line-height: 1.4; }
+  .latam-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 3px;
+    color: var(--blue); text-transform: uppercase; margin-bottom: 8px;
+  }
+  #s5 .countries {
+    display: flex; gap: 10px; margin-bottom: 14px;
+  }
+  .country-chip {
+    flex: 1; background: var(--off); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 6px; text-align: center;
+  }
+  .country-chip .flag { font-size: 20px; }
+  .country-chip .name { font-size: 9px; color: var(--dark); margin-top: 3px; }
+  #s5 .tz-bar {
+    background: var(--navy); border-radius: 10px; padding: 12px 18px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .tz-bar-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 2px;
+    color: var(--accent); white-space: nowrap;
+  }
+  .tz-item { font-size: 11px; color: var(--light); }
+  .tz-item.highlight { color: var(--accent); font-weight: 700; }
+
+  /* ── SLIDE 6: Services ── */
+  #s6 { background: var(--off); flex-direction: column; padding: 28px 36px 36px; }
+  #s6 h2 { font-family: Georgia, serif; font-size: clamp(20px, 2.8vw, 28px); color: var(--navy); }
+  #s6 .sub { font-size: 12px; color: var(--slate); margin-top: 4px; margin-bottom: 18px; }
+  #s6 .cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; flex: 1; }
+  .svc-card {
+    background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+    padding: 20px 16px; display: flex; flex-direction: column; gap: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08); position: relative; overflow: hidden;
+    border-top: 5px solid var(--blue);
+  }
+  .svc-card.blue  { border-top-color: var(--blue); }
+  .svc-card.sky   { border-top-color: var(--accent); }
+  .svc-card.green { border-top-color: var(--green); }
+  .svc-badge {
+    display: inline-block;
+    font-size: 9px; font-weight: 700;
+    padding: 3px 8px; border-radius: 20px;
+    background: rgba(37,99,235,.1); color: var(--blue);
+    border: 1px solid rgba(37,99,235,.25);
+    width: fit-content;
+  }
+  .svc-badge.sky   { background: rgba(14,165,233,.1); color: var(--accent); border-color: rgba(14,165,233,.25); }
+  .svc-badge.green { background: rgba(16,185,129,.1); color: var(--green); border-color: rgba(16,185,129,.25); }
+  .svc-card .icon { font-size: 28px; }
+  .svc-card h3 { font-family: Georgia, serif; font-size: 17px; color: var(--navy); line-height: 1.2; }
+  .svc-card p  { font-size: 10.5px; color: var(--slate); line-height: 1.6; flex: 1; }
+  .svc-card ul { list-style: none; margin-top: 6px; display: flex; flex-direction: column; gap: 4px; }
+  .svc-card li { font-size: 10px; color: var(--green); font-weight: 600; }
+  .svc-card li::before { content: '✓  '; }
+
+  /* ── SLIDE 7: Process ── */
+  #s7 { background: var(--navy); flex-direction: column; padding: 28px 36px 40px; }
+  #s7 h2 { font-family: Georgia, serif; font-size: clamp(20px, 2.8vw, 28px); color: var(--white); }
+  #s7 .sub { font-size: 12px; color: var(--muted); margin-top: 4px; margin-bottom: 24px; }
+  #s7 .steps { display: flex; gap: 0; flex: 1; align-items: flex-start; position: relative; }
+  #s7 .steps::before {
+    content: '';
+    position: absolute; top: 28px; left: 36px; right: 36px; height: 2px;
+    background: repeating-linear-gradient(90deg, var(--navy3) 0, var(--navy3) 8px, transparent 8px, transparent 16px);
+  }
+  .step {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px;
+    position: relative; z-index: 1;
+  }
+  .step-circle {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--blue); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 900;
+    box-shadow: 0 6px 20px rgba(37,99,235,.4);
+    flex-shrink: 0;
+  }
+  .step-circle.sky { background: var(--accent); box-shadow: 0 6px 20px rgba(14,165,233,.4); }
+  .step-icon { font-size: 20px; }
+  .step-title { font-size: 10.5px; font-weight: 700; color: var(--white); text-align: center; line-height: 1.3; }
+  .step-desc { font-size: 9.5px; color: var(--muted); text-align: center; line-height: 1.45; max-width: 110px; }
+
+  /* ── SLIDE 8: Social Proof ── */
+  #s8 { background: var(--white); flex-direction: column; padding: 28px 36px 36px; }
+  #s8 h2 { font-family: Georgia, serif; font-size: clamp(20px, 2.8vw, 28px); color: var(--navy); }
+  #s8 .sub { font-size: 12px; color: var(--slate); margin-top: 4px; margin-bottom: 18px; }
+  #s8 .testimonials { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; flex: 1; }
+  .t-card {
+    background: var(--off); border: 1px solid var(--border); border-radius: 10px;
+    padding: 18px 16px; display: flex; flex-direction: column; gap: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    border-top: 4px solid var(--blue);
+  }
+  .t-card.sky   { border-top-color: var(--accent); }
+  .t-card.green { border-top-color: var(--green); }
+  .t-quote { font-size: 32px; line-height: 1; color: var(--blue); font-family: Georgia, serif; font-weight: 900; }
+  .t-quote.sky   { color: var(--accent); }
+  .t-quote.green { color: var(--green); }
+  .t-text { font-size: 11px; color: var(--dark); line-height: 1.6; font-style: italic; flex: 1; }
+  .t-author { display: flex; align-items: center; gap: 10px; }
+  .t-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--blue); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; flex-shrink: 0;
+  }
+  .t-avatar.sky   { background: var(--accent); }
+  .t-avatar.green { background: var(--green); }
+  .t-name { font-size: 11px; font-weight: 700; color: var(--navy); }
+  .t-role { font-size: 9.5px; color: var(--slate); }
+  .logos-bar {
+    background: var(--navy); border-radius: 8px;
+    padding: 10px 18px; display: flex; align-items: center; gap: 16px;
+    margin-top: 12px;
+  }
+  .logos-bar-label { font-size: 8px; font-weight: 700; letter-spacing: 2px; color: var(--muted); white-space: nowrap; }
+  .logos-bar-names { display: flex; gap: 16px; flex: 1; }
+  .client-name { font-size: 10px; font-weight: 700; color: var(--light); white-space: nowrap; }
+
+  /* ── SLIDE 9: Benefits ── */
+  #s9 { background: var(--off); flex-direction: column; padding: 28px 36px 36px; }
+  #s9 h2 { font-family: Georgia, serif; font-size: clamp(20px, 2.8vw, 28px); color: var(--navy); }
+  #s9 .sub { font-size: 12px; color: var(--slate); margin-top: 4px; margin-bottom: 18px; }
+  #s9 .benefits { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; flex: 1; }
+  .benefit-card {
+    background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; display: flex; flex-direction: column; gap: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .benefit-card .b-icon { font-size: 22px; }
+  .benefit-card h4 { font-size: 12px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+  .benefit-card p  { font-size: 10.5px; color: var(--slate); line-height: 1.55; flex: 1; }
+  #s9 .closing-quote {
+    background: var(--navy); border-radius: 8px;
+    padding: 12px 20px; text-align: center;
+    font-size: 11px; color: var(--light); font-style: italic;
+    margin-top: 8px;
+  }
+
+  /* ── SLIDE 10: CTA ── */
+  #s10 { background: var(--navy); flex-direction: row; }
+  #s10 .left {
+    flex: 1; padding: 40px 40px 40px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  #s10 .right {
+    width: 38%; background: var(--blue);
+    padding: 36px 28px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  #s10 .right::before {
+    content: '';
+    position: absolute; width: 280px; height: 280px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.15);
+    top: -80px; right: -80px;
+  }
+  #s10 .right::after {
+    content: '';
+    position: absolute; width: 200px; height: 200px; border-radius: 50%;
+    background: rgba(255,255,255,.06);
+    bottom: 20px; right: -40px;
+  }
+  #s10 h2 {
+    font-family: Georgia, serif;
+    font-size: clamp(28px, 4vw, 40px); color: var(--white); line-height: 1.2;
+  }
+  #s10 .sub { font-size: 12.5px; color: var(--light); line-height: 1.65; max-width: 380px; margin-top: 12px; }
+  #s10 .cta-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--accent); color: white; font-weight: 700; font-size: 14px;
+    padding: 14px 28px; border-radius: 8px;
+    border: none; cursor: default;
+    box-shadow: 0 8px 24px rgba(14,165,233,.4);
+    width: fit-content; margin-top: 20px;
+    transition: transform .2s;
+  }
+  #s10 .contact-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 3px;
+    color: rgba(255,255,255,.7); text-transform: uppercase;
+    position: relative; z-index: 1;
+  }
+  #s10 .contact-items { display: flex; flex-direction: column; gap: 14px; position: relative; z-index: 1; }
+  .contact-item { display: flex; align-items: flex-start; gap: 10px; }
+  .contact-item .c-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .contact-item .c-label { font-size: 8.5px; font-weight: 700; letter-spacing: 1.5px; color: rgba(255,255,255,.6); text-transform: uppercase; }
+  .contact-item .c-val { font-size: 12px; color: var(--white); margin-top: 1px; }
+  #s10 .right-logo { position: relative; z-index: 1; }
+
+  /* ── Keyboard hint ── */
+  #hint {
+    position: fixed; top: 16px; right: 16px;
+    font-size: 10px; color: rgba(255,255,255,.3);
+    background: rgba(0,0,0,.4); padding: 5px 10px; border-radius: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div id="deck">
+
+  <!-- ─── SLIDE 1: Cover ─────────────────────────────────────────────── -->
+  <div class="slide active" id="s1">
+    <div class="accent-top"></div>
+    <div class="left">
+      <div class="logo">
+        <div class="logo-mark">S</div>
+        <div class="logo-text">SMar<span>Devs</span></div>
+      </div>
+      <div>
+        <h1>Exceptional Tech Talent.<span>Borderless Potential.</span></h1>
+        <p class="sub">Pre-vetted Latin American engineers — in your time zone, aligned with your standards, and ready within 48 hours.</p>
+        <div class="stats">
+          <div class="stat"><div class="stat-val">40–50%</div><div class="stat-lbl">Cost Savings</div></div>
+          <div class="stat"><div class="stat-val">48hrs</div><div class="stat-lbl">Candidate Delivery</div></div>
+          <div class="stat"><div class="stat-val">97%</div><div class="stat-lbl">Retention Rate</div></div>
+        </div>
+      </div>
+      <div class="tag">CONFIDENTIAL &nbsp;|&nbsp; B2B OVERVIEW &nbsp;|&nbsp; 2025</div>
+    </div>
+    <div class="right">
+      <div class="grid-dots"></div>
+      <div class="center-emblem">
+        <div class="big-s">S</div>
+        <p class="tagline">Backed by a team with<br>10+ years in tech recruiting</p>
+      </div>
+    </div>
+    <div class="footer"><span>smardevs.com</span><span>Confidential — SMarDevs 2025</span></div>
+  </div>
+
+  <!-- ─── SLIDE 2: The Challenge ────────────────────────────────────── -->
+  <div class="slide" id="s2">
+    <div class="accent-top"></div>
+    <div class="left">
+      <div class="slide-num">01</div>
+      <h2>The Hiring Problem</h2>
+      <p class="desc">Traditional US tech hiring is slow, expensive, and increasingly unsustainable for high-growth teams.</p>
+      <div class="logo" style="margin-top:auto">
+        <div class="logo-mark">S</div>
+        <div class="logo-text">SMar<span>Devs</span></div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="pain-card">
+        <div class="icon">💸</div>
+        <div>
+          <h4>Excessive Costs</h4>
+          <p>Senior US engineers command $150K–$220K+ annually in salary alone — before benefits, equity, and overhead.</p>
+        </div>
+      </div>
+      <div class="pain-card" style="border-left-color: var(--amber)">
+        <div class="icon">⏳</div>
+        <div>
+          <h4>Painfully Slow Hiring</h4>
+          <p>Average time-to-hire exceeds 45 days for technical roles, stalling product roadmaps and sprint velocity.</p>
+        </div>
+      </div>
+      <div class="pain-card" style="border-left-color: var(--accent)">
+        <div class="icon">🔍</div>
+        <div>
+          <h4>Shrinking Talent Pool</h4>
+          <p>Fierce local competition for senior engineers means top candidates receive multiple offers within days of applying.</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span>smardevs.com</span><span>Confidential — SMarDevs 2025</span></div>
+  </div>
+
+  <!-- ─── SLIDE 3: Why SMarDevs ─────────────────────────────────────── -->
+  <div class="slide" id="s3">
+    <div class="accent-top"></div>
+    <div class="header">
+      <div style="display:flex;align-items:baseline;gap:14px">
+        <span class="slide-num light">02</span>
+        <h2>Why SMarDevs?</h2>
+      </div>
+      <p class="sub">Four unfair advantages that set us apart.</p>
+    </div>
+    <div class="grid" style="flex:1">
+      <div class="feat-card blue">
+        <h4>Rigorously Vetted Talent</h4>
+        <p>Every engineer passes multi-stage vetting: technical coding assessment, system design review, English proficiency test, and cultural alignment check. Only the top 5% are placed.</p>
+      </div>
+      <div class="feat-card sky">
+        <h4>True Time-Zone Alignment</h4>
+        <p>Our LATAM engineers work in US Eastern, Central, and Pacific time zones — real-time collaboration, no async lag, and no overnight handoffs holding your team back.</p>
+      </div>
+      <div class="feat-card green">
+        <h4>48-Hour Talent Delivery</h4>
+        <p>From discovery call to curated candidate profiles in two business days. Our deep network and proactive pipeline mean zero cold starts when you need to move fast.</p>
+      </div>
+      <div class="feat-card amber">
+        <h4>End-to-End Partnership</h4>
+        <p>We handle contracts, payroll, benefits, and compliance. You get a dedicated account manager and a 30-day replacement guarantee on every placement we make.</p>
+      </div>
+    </div>
+    <div class="footer"><span>smardevs.com</span><span>Confidential — SMarDevs 2025</span></div>
+  </div>
+
+  <!-- ─── SLIDE 4: Cost Savings ─────────────────────────────────────── -->
+  <div class="slide" id="s4">
+    <div class="accent-top"></div>
+    <div class="left">
+      <div>
+        <div style="display:flex;align-items:baseline;gap:14px">
+          <span class="slide-num">03</span>
+          <h2>World-Class Engineers.<br>Smarter Economics.</h2>
+        </div>
+        <div class="big-num">40–50%</div>
+        <div class="big-lbl">average cost reduction vs. equivalent US hiring</div>
+        <p class="sub">Access senior-level expertise at a fraction of US market rates — without compromising on technical standards or output quality.</p>
+      </div>
+      <div class="logo">
+        <div class="logo-mark">S</div>
+        <div class="logo-text">SMar<span>Devs</span></div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="results-label">Client Results</div>
+      <div class="case-card">
+        <div><div class="case-num">58%</div><div class="case-saved">saved</div></div>
+        <div><div class="case-name">Stratos Finance</div><div class="case-role">Distributed Systems Team</div></div>
+      </div>
+      <div class="case-card">
+        <div><div class="case-num">52%</div><div class="case-saved">saved</div></div>
+        <div><div class="case-name">Meridian Health</div><div class="case-role">Healthcare Infrastructure</div></div>
+      </div>
+      <div class="case-card">
+        <div><div class="case-num">61%</div><div class="case-saved">saved</div></div>
+        <div><div class="case-name">NovaCraft Labs</div><div class="case-role">Full Stack Product Squad</div></div>
+      </div>
+    </div>
+    <div class="footer"><span>smardevs.com</span><span>Confidential — SMarDevs 2025</span></div>
+  </div>
+
+  <!-- ─── SLIDE 5: LATAM Advantage ──────────────────────────────────── -->
+  <div class="slide" id="s5">
+    <div class="accent-top blue"></div>
+    <div style="display:flex;align-items:baseline;gap:14px">
+      <span class="slide-num light">04</span>
+      <div>
+        <h2>The LATAM Talent Advantage</h2>
+        <p class="sub">Why Latin America is the world's fastest-growing tech talent hub.</p>
+      </div>
+    </div>
+    <div class="big-stats">
+      <div class="big-stat-card"><div class="val">1.5M+</div><div class="lbl">Tech graduates entering LATAM annually</div></div>
+      <div class="big-stat-card"><div class="val">75%+</div><div class="lbl">English proficiency among tech professionals</div></div>
+      <div class="big-stat-card"><div class="val">0–3hr</div><div class="lbl">Time zone difference vs. US coasts</div></div>
+      <div class="big-stat-card"><div class="val">Top 5%</div><div class="lbl">Only placements from our vetted network</div></div>
+    </div>
+    <div class="latam-label">Active Talent Coverage</div>
+    <div class="countries">
+      <div class="country-chip"><div class="flag">🇭🇳</div><div class="name">Honduras</div></div>
+      <div class="country-chip"><div class="flag">🇨🇴</div><div class="name">Colombia</div></div>
+      <div class="country-chip"><div class="flag">🇲🇽</div><div class="name">Mexico</div></div>
+      <div class="country-chip"><div class="flag">🇦🇷</div><div class="name">Argentina</div></div>
+      <div class="country-chip"><div class="flag">🇧🇷</div><div class="name">Brazil</div></div>
+      <div class="country-chip"><div class="flag">🇨🇷</div><div class="name">Costa Rica</div></div>
+    </div>
+    <div class="tz-bar">
+      <div class="tz-bar-label">🕘 Time Zone Overlap</div>
+      <div class="tz-item">EST (UTC−5) ✓</div>
+      <div class="tz-item">CST (UTC−6) ✓</div>
+      <div class="tz-item">PST (UTC−8) · 3hr diff ✓</div>
+      <div class="tz-item highlight">Full overlap 9am–5pm your time</div>
+    </div>
+    <div class="footer"><span>smardevs.com</span><span>Confidential — SMarDevs 2025</span></div>
+  </div>
+
+  <!-- ─── SLIDE 6: Services ─────────────────────────────────────────── -->
+  <div class="slide" id="s6">
+    <div class="accent-top"></div>
+    <div style="display:flex;align-items:baseline;gap:14px">
+      <span class="slide-num light">05</span>
+      <div>
+        <h2>Tailored Solutions for Every Team</h2>
+        <p class="sub">Three flexible engagement models — designed around how you actually work.</p>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="svc-card blue">
+        <div class="icon">👥</div>
+        <div class="svc-badge">Most Popular</div>
+        <h3>Staff Augmentation</h3>
+        <p>Embed pre-vetted engineers directly into your existing team. They follow your processes, use your tools, and integrate as local hires — without the overhead of full-time recruitment.</p>
+        <ul>
+          <li>Filling skill gaps</li>
+          <li>Sprint acceleration</li>
+          <li>Seasonal workload scaling</li>
+        </ul>
+      </div>
+      <div class="svc-card sky">
+        <div class="icon">🚀</div>
+        <div class="svc-badge sky">Best for Projects</div>
+        <h3>Dedicated Teams</h3>
+        <p>A fully managed squad — developers, QA, DevOps, designers — assembled for your project. Operates autonomously with its own lead and clear delivery milestones.</p>
+        <ul>
+          <li>Greenfield builds</li>
+          <li>Long-term products</li>
+          <li>End-to-end delivery</li>
+        </ul>
+      </div>
+      <div class="svc-card green">
+        <div class="icon">🎯</div>
+        <div class="svc-badge green">Permanent Hire</div>
+        <h3>Direct Placement</h3>
+        <p>When you need permanent team members, we source, screen, and technically evaluate candidates who meet your exact bar — delivering them ready for an offer.</p>
+        <ul>
+          <li>Permanent additions</li>
+          <li>Senior leadership roles</li>
+          <li>Culture-fit hires</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer"><span>smardevs.com</span><span>Confidential — SMarDevs 2025</span></div>
+  </div>
+
+  <!-- ─── SLIDE 7: Process ──────────────────────────────────────────── -->
+  <div class="slide" id="s7">
+    <div class="accent-top"></div>
+    <div style="display:flex;align-items:baseline;gap:14px">
+      <span class="slide-num">06</span>
+      <div>
+        <h2>From Request to Results in Days</h2>
+        <p class="sub">A proven 6-step engagement model engineered for speed and precision.</p>
+      </div>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-circle">1</div>
+        <div class="step-icon">📋</div>
+        <div class="step-title">Discovery Call</div>
+        <div class="step-desc">Define role, requirements, timeline, and culture fit criteria.</div>
+      </div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <div class="step-icon">🔎</div>
+        <div class="step-title">Talent Sourcing</div>
+        <div class="step-desc">Activate our pre-vetted LATAM network to match your exact specs.</div>
+      </div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <div class="step-icon">⚙️</div>
+        <div class="step-title">Technical Vetting</div>
+        <div class="step-desc">Live coding, system design review, and English proficiency eval.</div>
+      </div>
+      <div class="step">
+        <div class="step-circle sky">4</div>
+        <div class="step-icon">📨</div>
+        <div class="step-title">Profile Delivery</div>
+        <div class="step-desc">Curated shortlist of matched candidates within 48 business hours.</div>
+      </div>
+      <div class="step">
+        <div class="step-circle sky">5</div>
+        <div class="step-icon">🤝</div>
+        <div class="step-title">Client Interviews</div>
+        <div class="step-desc">Your schedule, your format, with structured evaluation support.</div>
+      </div>
+      <div class="step">
+        <div class="step-circle sky">6</div>
+        <div class="step-icon">🌟</div>
+        <div class="step-title">Onboarding & Care</div>
+        <div class="step-desc">Contracts, payroll, compliance, and dedicated account management.</div>
+      </div>
+    </div>
+    <div class="footer"><span>smardevs.com</span><span>Confidential — SMarDevs 2025</span></div>
+  </div>
+
+  <!-- ─── SLIDE 8: Social Proof ─────────────────────────────────────── -->
+  <div class="slide" id="s8">
+    <div class="accent-top blue"></div>
+    <div style="display:flex;align-items:baseline;gap:14px">
+      <span class="slide-num light">07</span>
+      <div>
+        <h2>Trusted by Engineering Leaders</h2>
+        <p class="sub">What our clients say about the SMarDevs difference.</p>
+      </div>
+    </div>
+    <div class="testimonials">
+      <div class="t-card">
+        <div class="t-quote">"</div>
+        <div class="t-text">SMarDevs transformed our hiring strategy. We scaled from 3 to 12 engineers in under two months, and every single one has been exceptional.</div>
+        <div class="t-author">
+          <div class="t-avatar">SM</div>
+          <div><div class="t-name">Sarah Mitchell</div><div class="t-role">VP of Engineering · TechVenture Co.</div></div>
+        </div>
+      </div>
+      <div class="t-card sky">
+        <div class="t-quote sky">"</div>
+        <div class="t-text">The caliber of talent we access through SMarDevs rivals top-tier US candidates — at a significantly lower cost. It is a genuine game-changer.</div>
+        <div class="t-author">
+          <div class="t-avatar sky">JR</div>
+          <div><div class="t-name">James Rivera</div><div class="t-role">CTO · NovaCraft Labs</div></div>
+        </div>
+      </div>
+      <div class="t-card green">
+        <div class="t-quote green">"</div>
+        <div class="t-text">What sets SMarDevs apart is the ongoing partnership. They don't just place talent and disappear — they ensure long-term success for both sides.</div>
+        <div class="t-author">
+          <div class="t-avatar green">MP</div>
+          <div><div class="t-name">Michelle Park</div><div class="t-role">Head of Product · Stratos Finance</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="logos-bar">
+      <div class="logos-bar-label">Trusted By:</div>
+      <div class="logos-bar-names">
+        <div class="client-name">TechVenture Co.</div>
+        <div class="client-name">Meridian Health</div>
+        <div class="client-name">Stratos Finance</div>
+        <div class="client-name">NovaCraft Labs</div>
+        <div class="client-name">Pinnacle SaaS</div>
+        <div class="client-name">Velocity Retail</div>
+      </div>
+    </div>
+    <div class="footer"><span>smardevs.com</span><span>Confidential — SMarDevs 2025</span></div>
+  </div>
+
+  <!-- ─── SLIDE 9: Benefits ─────────────────────────────────────────── -->
+  <div class="slide" id="s9">
+    <div class="accent-top"></div>
+    <div style="display:flex;align-items:baseline;gap:14px">
+      <span class="slide-num light">08</span>
+      <div>
+        <h2>Flexible. Guaranteed. Fully Managed.</h2>
+        <p class="sub">Everything that protects your investment and keeps your team moving.</p>
+      </div>
+    </div>
+    <div class="benefits">
+      <div class="benefit-card">
+        <div class="b-icon">🔄</div>
+        <h4>30-Day Replacement Guarantee</h4>
+        <p>If any placed engineer doesn't meet expectations within 30 days, we replace them at no additional cost.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="b-icon">📋</div>
+        <h4>No Lock-In Contracts</h4>
+        <p>Flexible month-to-month or project-based agreements. Scale up or wind down as your business evolves.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="b-icon">💼</div>
+        <h4>Fully Managed Employment</h4>
+        <p>We handle payroll, benefits, tax compliance, and HR administration across all LATAM jurisdictions.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="b-icon">📞</div>
+        <h4>Dedicated Account Manager</h4>
+        <p>A single point of contact who knows your team, your goals, and ensures a seamless ongoing partnership.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="b-icon">⚡</div>
+        <h4>Rapid Team Scaling</h4>
+        <p>Go from 1 to 20 engineers quickly. Our pre-vetted pipeline means no delays for high-growth periods.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="b-icon">🔒</div>
+        <h4>IP & Security Compliance</h4>
+        <p>NDAs, IP assignments, and compliance with your security requirements are included and enforced on every engagement.</p>
+      </div>
+    </div>
+    <div class="closing-quote">"We don't just place talent and disappear. We're invested in long-term success for both sides."</div>
+    <div class="footer"><span>smardevs.com</span><span>Confidential — SMarDevs 2025</span></div>
+  </div>
+
+  <!-- ─── SLIDE 10: CTA ─────────────────────────────────────────────── -->
+  <div class="slide" id="s10">
+    <div class="accent-top"></div>
+    <div class="left">
+      <div class="logo">
+        <div class="logo-mark">S</div>
+        <div class="logo-text">SMar<span>Devs</span></div>
+      </div>
+      <div>
+        <h2>Ready to Build<br>Your Dream<br>Team?</h2>
+        <p class="sub">Tell us about the skills and experience you need. Our talent advisors will deliver curated candidate profiles within 48 hours — no commitment required.</p>
+        <div class="cta-btn">Start a Conversation &nbsp;→</div>
+      </div>
+      <div style="font-size:10px; color:var(--slate)">© 2025 SMarDevs · All rights reserved.</div>
+    </div>
+    <div class="right">
+      <div class="contact-label">Get in Touch</div>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="c-icon">✉️</div>
+          <div><div class="c-label">Email</div><div class="c-val">info@smardevs.com</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="c-icon">📞</div>
+          <div><div class="c-label">Phone</div><div class="c-val">+1 (504) 333-1465</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="c-icon">🌐</div>
+          <div><div class="c-label">Website</div><div class="c-val">smardevs.com</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="c-icon">💼</div>
+          <div><div class="c-label">LinkedIn</div><div class="c-val">linkedin.com/company/smardevs</div></div>
+        </div>
+      </div>
+      <div class="right-logo">
+        <div class="logo">
+          <div class="logo-mark">S</div>
+          <div class="logo-text">SMar<span>Devs</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span>smardevs.com</span><span>Confidential — SMarDevs 2025</span></div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- Navigation -->
+<div id="nav">
+  <button id="btn-prev" onclick="changeSlide(-1)" disabled>&#8592;</button>
+  <div id="dots"></div>
+  <div id="slide-counter">1 / 10</div>
+  <button id="btn-next" onclick="changeSlide(1)">&#8594;</button>
+  <button onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
+</div>
+
+<div id="hint">← → arrow keys to navigate &nbsp;·&nbsp; F for fullscreen</div>
+
+<script>
+  const TOTAL = 10;
+  let current = 1;
+
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+  const counter = document.getElementById('slide-counter');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+
+  // Build dots
+  for (let i = 1; i <= TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 1 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(n, dir = 1) {
+    if (n < 1 || n > TOTAL || n === current) return;
+    const prev = current;
+    current = n;
+
+    const prevSlide = slides[prev - 1];
+    const nextSlide = slides[current - 1];
+
+    prevSlide.style.display = 'flex';
+    prevSlide.style.opacity = '1';
+
+    // Animate out
+    prevSlide.style.transition = 'opacity .35s ease, transform .35s ease';
+    prevSlide.style.transform = dir > 0 ? 'translateX(-40px)' : 'translateX(40px)';
+    prevSlide.style.opacity = '0';
+
+    setTimeout(() => {
+      prevSlide.style.display = 'none';
+      prevSlide.style.transform = '';
+      prevSlide.style.transition = '';
+      prevSlide.style.opacity = '1';
+    }, 360);
+
+    // Animate in
+    nextSlide.style.display = 'flex';
+    nextSlide.style.opacity = '0';
+    nextSlide.style.transform = dir > 0 ? 'translateX(40px)' : 'translateX(-40px)';
+    nextSlide.style.transition = 'none';
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        nextSlide.style.transition = 'opacity .45s ease, transform .45s ease';
+        nextSlide.style.transform = '';
+        nextSlide.style.opacity = '1';
+      });
+    });
+
+    // Remove old active
+    slides.forEach(s => s.classList.remove('active'));
+    nextSlide.classList.add('active');
+
+    // Update UI
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i + 1 === current);
+    });
+    counter.textContent = `${current} / ${TOTAL}`;
+    btnPrev.disabled = current === 1;
+    btnNext.disabled = current === TOTAL;
+  }
+
+  function changeSlide(dir) { goTo(current + dir, dir); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')  { e.preventDefault(); changeSlide(-1); }
+    if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+    if (e.key === 'Home') goTo(1);
+    if (e.key === 'End')  goTo(TOTAL);
+  });
+
+  // Swipe support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) changeSlide(dx < 0 ? 1 : -1);
+  });
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) { document.documentElement.requestFullscreen?.(); }
+    else { document.exitFullscreen?.(); }
+  }
+
+  // Hide hint after 4s
+  setTimeout(() => {
+    const hint = document.getElementById('hint');
+    if (hint) { hint.style.transition = 'opacity 1s'; hint.style.opacity = '0'; setTimeout(() => hint.remove(), 1000); }
+  }, 4000);
+</script>
+</body>
+</html>

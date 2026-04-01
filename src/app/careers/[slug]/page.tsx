@@ -16,13 +16,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const supabase = await createServerSupabaseClient()
   const { data: job } = await supabase.from('jobs').select('title, summary').eq('slug', slug).eq('status', 'published').single()
 
-  if (!job) return { title: 'Job Not Found | SMarDevs' }
+  if (!job) return { title: 'Job Not Found' }
 
   return {
-    title: `${job.title} | Careers at SMarDevs`,
+    title: `${job.title} | Careers`,
     description: job.summary,
     openGraph: {
-      title: `${job.title} - SMarDevs Careers`,
+      title: `${job.title} | Careers`,
       description: job.summary,
     },
   }

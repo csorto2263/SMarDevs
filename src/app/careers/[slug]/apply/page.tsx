@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const supabase = await createServerSupabaseClient()
   const { data: job } = await supabase.from('jobs').select('title').eq('slug', slug).eq('status', 'published').single()
   return {
-    title: job ? `Apply - ${job.title} | SMarDevs` : 'Apply | SMarDevs',
+    title: job ? `Apply - ${job.title}` : 'Apply',
     robots: { index: false, follow: false },
   }
 }

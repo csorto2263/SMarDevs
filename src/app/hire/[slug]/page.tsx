@@ -31,12 +31,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!role) {
     return {
-      title: "Role Not Found | SMarDevs",
+      title: "Role Not Found",
     };
   }
 
   return {
-    title: `Hire Remote ${role.title} | SMarDevs`,
+    title: `Hire Remote ${role.title}`,
     description: role.heroDescription,
   };
 }

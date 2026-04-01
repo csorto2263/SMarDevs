@@ -32,7 +32,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Services | SMarDevs",
+  title: "Services",
   description:
     "Staff augmentation, dedicated teams, and direct placement services from SMarDevs. Access pre-vetted nearshore tech talent from Latin America aligned with your time zone and standards.",
 };

@@ -7,10 +7,10 @@ import type { Metadata } from 'next'
 import CareersFilters from '@/components/CareersFilters'
 
 export const metadata: Metadata = {
-  title: 'Careers | SMarDevs',
+  title: 'Careers',
   description: 'Join SMarDevs and work with top US companies from anywhere in Latin America. Explore open positions in engineering, QA, design, and more.',
   openGraph: {
-    title: 'Careers at SMarDevs',
+    title: 'Careers',
     description: 'Build your career with elite remote teams. Competitive USD pay, flexible hours, and meaningful projects.',
   },
 }

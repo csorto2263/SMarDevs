@@ -179,9 +179,9 @@ export default function HomePage() {
                 Backed by a team with 10+ years in tech recruiting
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-tight tracking-tight mb-6">
-                Exceptional Tech Talent.{" "}
+                Elite Nearshore Tech Talent{" "}
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-cyan-300">
-                  Borderless Potential.
+                  from Latin America.
                 </span>
               </h1>
               <p className="text-lg md:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed">

@@ -24,7 +24,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Hire Remote Talent | SMarDevs",
+  title: "Hire Remote Talent",
   description:
     "Hire elite remote tech talent from Latin America. Pre-vetted software engineers, developers, designers, and more — aligned with your time zone and ready to deliver.",
 };

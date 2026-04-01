@@ -12,7 +12,7 @@ import { caseStudies } from "@/data/case-studies";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Case Studies | SMarDevs",
+  title: "Case Studies",
   description:
     "Explore real results from companies that scaled their engineering teams with SMarDevs. See how our LATAM talent delivers measurable business outcomes.",
 };

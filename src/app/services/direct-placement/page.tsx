@@ -19,7 +19,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Direct Placement | SMarDevs",
+  title: "Direct Placement",
   description:
     "Permanent tech hiring done right. SMarDevs sources, screens, and delivers top-tier LATAM engineering talent for your full-time roles — faster, cheaper, and with a hiring guarantee.",
 };

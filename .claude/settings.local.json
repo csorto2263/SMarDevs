@@ -99,7 +99,24 @@
       "Bash(curl -s http://localhost:3000/api/admin/jobs)",
       "Bash(curl -s http://localhost:3000/api/admin/exam-categories)",
       "Bash(curl -s \"http://localhost:3000/api/admin/applications/f3e8c2a1-b5d7-4e9f-8a3c-1d2e5f7b9c4a/exams\")",
-      "Bash(curl -s -X PATCH \"https://mwalppgmkrmclwwugaev.supabase.co/rest/v1/applications?id=eq.5fe5764b-7fc0-417e-a05b-a7c23586e837\" -H \"apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im13YWxwcGdta3JtY2x3d3VnYWV2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDA5OTg2OCwiZXhwIjoyMDg5Njc1ODY4fQ.1bd2RbcRi0Q029jD-ZpGVJXyQT-SlyQzBo3Cb5FBeP8\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im13YWxwcGdta3JtY2x3d3VnYWV2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDA5OTg2OCwiZXhwIjoyMDg5Njc1ODY4fQ.1bd2RbcRi0Q029jD-ZpGVJXyQT-SlyQzBo3Cb5FBeP8\" -H \"Content-Type: application/json\" -H \"Prefer: return=representation\" -d '{\"\"\"\"status\"\"\"\":\"\"\"\"interview\"\"\"\"}')"
+      "Bash(curl -s -X PATCH \"https://mwalppgmkrmclwwugaev.supabase.co/rest/v1/applications?id=eq.5fe5764b-7fc0-417e-a05b-a7c23586e837\" -H \"apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im13YWxwcGdta3JtY2x3d3VnYWV2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDA5OTg2OCwiZXhwIjoyMDg5Njc1ODY4fQ.1bd2RbcRi0Q029jD-ZpGVJXyQT-SlyQzBo3Cb5FBeP8\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im13YWxwcGdta3JtY2x3d3VnYWV2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDA5OTg2OCwiZXhwIjoyMDg5Njc1ODY4fQ.1bd2RbcRi0Q029jD-ZpGVJXyQT-SlyQzBo3Cb5FBeP8\" -H \"Content-Type: application/json\" -H \"Prefer: return=representation\" -d '{\"\"\"\"status\"\"\"\":\"\"\"\"interview\"\"\"\"}')",
+      "Bash(node -e \"require\\(''pptxgenjs''\\)\")",
+      "Bash(node -e \"require\\(''react''\\)\")",
+      "Bash(node -e \"require\\(''sharp''\\)\")",
+      "Bash(node presentations/smardevs-pitch.js)",
+      "Bash(python \"C:\\\\Users\\\\Admin\\\\AppData\\\\Roaming\\\\Claude\\\\local-agent-mode-sessions\\\\skills-plugin\\\\f7cb9c87-5b3e-47dd-9441-a4967484cdd9\\\\9a3f648e-93d4-46f7-a1d8-e8fff8dda9d3\\\\skills\\\\pptx\\\\scripts\\\\office\\\\soffice.py\" --headless --convert-to pdf presentations/SMarDevs-B2B-Presentation.pptx)",
+      "Bash(py --version)",
+      "Bash(where soffice:*)",
+      "Bash(soffice --version)",
+      "Bash(where markitdown:*)",
+      "Bash(npx markitdown:*)",
+      "Bash(node -e \"require\\(''markitdown''\\)\")",
+      "Bash(python3:*)",
+      "Bash(node:*)",
+      "Bash(find /c/Users/Admin/Documents/BigDevs/Website -type f -name sitemap.* -o -name robots.*)",
+      "WebFetch(domain:smardevs.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(npx skills:*)"
     ]
   }
 }
