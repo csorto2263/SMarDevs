@@ -1,16 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClientAny } from '@/lib/supabase/admin'
-import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { logAudit } from '@/lib/audit'
-
-async function requireAdmin() {
-  const supabase = await createServerSupabaseClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return null
-  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
-  if (profile?.role !== 'admin') return null
-  return user
-}
+import { requireAdmin } from '@/lib/auth'
 
 // GET /api/admin/clients/[id]
 export async function GET(

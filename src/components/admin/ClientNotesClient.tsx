@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Loader2, Trash2 } from 'lucide-react'
+import { logAuditClient } from '@/lib/audit-client'
 import type { ClientNote } from '@/lib/types'
 
 interface Props {
@@ -33,6 +34,12 @@ export default function ClientNotesClient({ clientId, userId, initialNotes }: Pr
     if (!error && data) {
       setNotes(prev => [data as unknown as ClientNote, ...prev])
       setText('')
+      logAuditClient({
+        entity_type: 'client_note',
+        entity_id: (data as any).id,
+        action: 'create',
+        metadata: { client_id: clientId },
+      })
     }
     setSaving(false)
     router.refresh()
@@ -44,6 +51,12 @@ export default function ClientNotesClient({ clientId, userId, initialNotes }: Pr
     const supabase = createClient() as any
     await supabase.from('client_notes').delete().eq('id', noteId)
     setNotes(prev => prev.filter(n => n.id !== noteId))
+    logAuditClient({
+      entity_type: 'client_note',
+      entity_id: noteId,
+      action: 'delete',
+      metadata: { client_id: clientId },
+    })
     setDeletingId(null)
   }
 

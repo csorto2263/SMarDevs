@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { logAuditClient } from '@/lib/audit-client'
 import {
   Search, Plus, MoreHorizontal, Pencil, Copy, Eye, EyeOff,
   Archive, Trash2, ExternalLink, Globe, ChevronLeft, ChevronRight,
@@ -274,6 +275,13 @@ export default function JobsManager({ initialClients, initialCategories }: Props
           showToast(`"${job.title}" deleted`, 'success')
           break
       }
+      // Audit log
+      logAuditClient({
+        entity_type: 'job',
+        entity_id: id,
+        action,
+        metadata: { title: job.title, previous_status: job.status },
+      })
     } catch {
       showToast('Action failed', 'error')
     }

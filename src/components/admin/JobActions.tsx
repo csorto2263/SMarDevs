@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { MoreHorizontal, Pencil, Copy, Eye, EyeOff, Archive, Trash2, ExternalLink } from 'lucide-react'
+import { logAuditClient } from '@/lib/audit-client'
 
 interface JobActionsProps {
   job: {
@@ -71,6 +72,15 @@ export default function JobActions({ job }: JobActionsProps) {
             await supabase.from('jobs').delete().eq('id', job.id)
           }
           break
+      }
+      // Audit log for all actions
+      if (action !== 'delete' || confirm) {
+        logAuditClient({
+          entity_type: 'job',
+          entity_id: job.id,
+          action,
+          metadata: { title: job.title, previous_status: job.status },
+        })
       }
     } catch (err) {
       console.error('Action failed:', err)

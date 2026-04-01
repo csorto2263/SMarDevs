@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { createAdminClientAny } from '@/lib/supabase/admin'
-
-async function requireStaff() {
-  const supabase = await createServerSupabaseClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return null
-  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
-  if (!profile) return null
-  return user
-}
+import { requireStaff } from '@/lib/auth'
 
 // GET /api/admin/jobs?search=&status=&client_id=&category_id=&page=
 export async function GET(req: NextRequest) {

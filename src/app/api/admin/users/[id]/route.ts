@@ -1,15 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { createServerSupabaseClient } from '@/lib/supabase/server'
-
-async function requireAdmin() {
-  const supabase = await createServerSupabaseClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return null
-  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
-  if (profile?.role !== 'admin') return null
-  return user
-}
+import { logAudit } from '@/lib/audit'
+import { requireAdmin } from '@/lib/auth'
 
 // PATCH /api/admin/users/[id] — edit or archive
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -37,6 +29,16 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     await admin.auth.admin.updateUserById(id, { ban_duration: 'none' })
   }
 
+  // Determine audit action
+  const auditAction = status === 'archived' ? 'archive' : status === 'active' ? 'unarchive' : 'update'
+  await logAudit({
+    entity_type: 'user',
+    entity_id: id,
+    action: auditAction,
+    performed_by: caller.id,
+    metadata: { full_name, role, status, phone },
+  })
+
   return NextResponse.json({ user: data })
 }
 
@@ -53,8 +55,20 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   }
 
   const admin = createAdminClient()
+
+  // Fetch user info before deleting for audit
+  const { data: userProfile } = await admin.from('profiles').select('email, full_name').eq('id', id).single()
+
   const { error } = await admin.auth.admin.deleteUser(id)
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  await logAudit({
+    entity_type: 'user',
+    entity_id: id,
+    action: 'delete',
+    performed_by: caller.id,
+    metadata: { email: userProfile?.email, full_name: userProfile?.full_name },
+  })
 
   return NextResponse.json({ success: true })
 }
