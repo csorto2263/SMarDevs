@@ -21,11 +21,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "SMarDevs" }],
   creator: "SMarDevs",
-  metadataBase: new URL("https://smartdevs.com"),
+  metadataBase: new URL("https://smardevs.com"),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://smartdevs.com",
+    url: "https://smardevs.com",
     siteName: "SMarDevs",
     title: "SMarDevs | Elite Nearshore Tech Talent for Growing Teams",
     description:
@@ -63,8 +63,39 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "SMarDevs",
+    url: "https://smardevs.com",
+    logo: "https://smardevs.com/og-image.png",
+    description:
+      "Connect with rigorously vetted software engineers, developers, QA specialists, and tech professionals from Latin America.",
+    contactPoint: {
+      "@type": "ContactPoint",
+      email: "info@smardevs.com",
+      contactType: "sales",
+    },
+    sameAs: [
+      "https://www.facebook.com/smardevs",
+      "https://www.linkedin.com/company/smardevs",
+    ],
+    areaServed: ["US", "CA", "GB"],
+    serviceType: [
+      "Staff Augmentation",
+      "Dedicated Development Teams",
+      "Direct Placement",
+    ],
+  };
+
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="antialiased text-navy-950 bg-white">
         {children}
         <SMartyWidget />
