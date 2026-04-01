@@ -194,7 +194,7 @@ export default function SalaryGuidePage() {
                       </>
                     ) : (
                       <>
-                        Obtener Salary Guide
+                        Get the Salary Guide
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
