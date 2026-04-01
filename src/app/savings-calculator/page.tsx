@@ -17,10 +17,12 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const roles = [
-  "Software Engineer",
   "Frontend Developer",
   "Backend Developer",
   "Full Stack Developer",
+  "Software Engineer",
+  "Mobile Developer",
+  "Data Engineer",
   "QA Engineer",
   "QA Automation Engineer",
   "DevOps Engineer",
@@ -32,57 +34,68 @@ const roles = [
 type Role = (typeof roles)[number];
 type Seniority = "Junior" | "Mid-Level" | "Senior";
 
-// LATAM cost = 50-60% of US cost (40-50% savings shown to client; remainder is negotiation margin)
+// All-in SMarDevs rates (latam) sourced from the 2026 LATAM Tech Salary Guide.
+// US rates based on Glassdoor/Indeed/ZipRecruiter 2026 national averages.
 const salaryData: Record<Role, Record<Seniority, { us: number; latam: number }>> = {
-  "Software Engineer": {
-    Junior:     { us: 8500,  latam: 5100 },
-    "Mid-Level":{ us: 11000, latam: 6600 },
-    Senior:     { us: 14000, latam: 8400 },
-  },
   "Frontend Developer": {
-    Junior:     { us: 8500,  latam: 5100 },
-    "Mid-Level":{ us: 11000, latam: 6600 },
-    Senior:     { us: 14000, latam: 8400 },
+    Junior:     { us: 8000,  latam: 4400 },
+    "Mid-Level":{ us: 11000, latam: 5100 },
+    Senior:     { us: 14000, latam: 6100 },
   },
   "Backend Developer": {
-    Junior:     { us: 8500,  latam: 5100 },
-    "Mid-Level":{ us: 11000, latam: 6600 },
-    Senior:     { us: 14000, latam: 8400 },
+    Junior:     { us: 8750,  latam: 4600 },
+    "Mid-Level":{ us: 11750, latam: 5500 },
+    Senior:     { us: 15000, latam: 6500 },
   },
   "Full Stack Developer": {
-    Junior:     { us: 8500,  latam: 5100 },
-    "Mid-Level":{ us: 11000, latam: 6600 },
-    Senior:     { us: 14000, latam: 8400 },
+    Junior:     { us: 7500,  latam: 4700 },
+    "Mid-Level":{ us: 10000, latam: 5750 },
+    Senior:     { us: 13000, latam: 6900 },
+  },
+  "Software Engineer": {
+    Junior:     { us: 8500,  latam: 4500 },
+    "Mid-Level":{ us: 11500, latam: 5300 },
+    Senior:     { us: 14500, latam: 6300 },
+  },
+  "Mobile Developer": {
+    Junior:     { us: 8500,  latam: 4700 },
+    "Mid-Level":{ us: 11500, latam: 5875 },
+    Senior:     { us: 14800, latam: 6875 },
+  },
+  "Data Engineer": {
+    Junior:     { us: 8000,  latam: 4600 },
+    "Mid-Level":{ us: 10750, latam: 5750 },
+    Senior:     { us: 13800, latam: 7000 },
   },
   "QA Engineer": {
-    Junior:     { us: 7000,  latam: 4200 },
-    "Mid-Level":{ us: 8000,  latam: 4800 },
-    Senior:     { us: 10500, latam: 6300 },
+    Junior:     { us: 6500,  latam: 4350 },
+    "Mid-Level":{ us: 8500,  latam: 5100 },
+    Senior:     { us: 11000, latam: 6100 },
   },
   "QA Automation Engineer": {
-    Junior:     { us: 8000,  latam: 4800 },
-    "Mid-Level":{ us: 10000, latam: 6000 },
-    Senior:     { us: 13000, latam: 7800 },
+    Junior:     { us: 6500,  latam: 4900 },
+    "Mid-Level":{ us: 8500,  latam: 5750 },
+    Senior:     { us: 11000, latam: 6600 },
   },
   "DevOps Engineer": {
-    Junior:     { us: 8500,  latam: 5100 },
-    "Mid-Level":{ us: 11200, latam: 6720 },
-    Senior:     { us: 14500, latam: 8700 },
+    Junior:     { us: 7250,  latam: 4900 },
+    "Mid-Level":{ us: 9750,  latam: 5900 },
+    Senior:     { us: 12500, latam: 7100 },
   },
   "UI/UX Designer": {
-    Junior:     { us: 7000,  latam: 4200 },
-    "Mid-Level":{ us: 9000,  latam: 5400 },
-    Senior:     { us: 12000, latam: 7200 },
+    Junior:     { us: 7500,  latam: 4650 },
+    "Mid-Level":{ us: 9750,  latam: 5250 },
+    Senior:     { us: 12700, latam: 6100 },
   },
   "Project Manager": {
-    Junior:     { us: 7500,  latam: 4500 },
-    "Mid-Level":{ us: 9500,  latam: 5700 },
-    Senior:     { us: 13000, latam: 7800 },
+    Junior:     { us: 7250,  latam: 4550 },
+    "Mid-Level":{ us: 9750,  latam: 5600 },
+    Senior:     { us: 12400, latam: 6250 },
   },
   "Business Analyst": {
-    Junior:     { us: 7000,  latam: 4200 },
-    "Mid-Level":{ us: 9000,  latam: 5400 },
-    Senior:     { us: 12000, latam: 7200 },
+    Junior:     { us: 7000,  latam: 4500 },
+    "Mid-Level":{ us: 9000,  latam: 5250 },
+    Senior:     { us: 12000, latam: 6000 },
   },
 };
 
