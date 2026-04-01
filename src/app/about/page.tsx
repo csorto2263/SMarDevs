@@ -142,7 +142,7 @@ export default function AboutPage() {
                   Our Story
                 </p>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8">
-                  From Honduras to{" "}
+                  From LATAM to{" "}
                   <span className="gradient-text">the World</span>
                 </h2>
                 <div className="space-y-6 text-gray-600 text-lg leading-relaxed">
