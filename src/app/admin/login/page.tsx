@@ -83,12 +83,12 @@ function AdminLoginForm() {
           This portal is for SMarDevs staff only. Your account does not have the required permissions.
         </p>
         <div className="flex flex-col gap-3">
-          <Link
-            href="/portal"
+          <button
+            onClick={() => { window.location.href = '/portal/login' }}
             className="w-full flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-semibold py-3 rounded-xl transition-all"
           >
             Go to Applicant Portal
-          </Link>
+          </button>
           <button
             onClick={() => { setAccessDenied(false); setEmail(''); setPassword('') }}
             className="w-full text-sm text-gray-500 hover:text-gray-300 transition-colors py-2"
