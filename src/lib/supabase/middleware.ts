@@ -73,12 +73,13 @@ export async function updateSession(request: NextRequest) {
 
   // ── /admin routes ───────────────────────────────────────────────────────────
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    // Always allow: email-link reset and login page
+    // Always allow: email-link reset, forgot password, and login page
     if (
       request.nextUrl.pathname === '/admin/reset-password' ||
+      request.nextUrl.pathname === '/admin/forgot-password' ||
       request.nextUrl.pathname === '/admin/login'
     ) {
-      if (user && request.nextUrl.pathname === '/admin/login') {
+      if (user && (request.nextUrl.pathname === '/admin/login' || request.nextUrl.pathname === '/admin/forgot-password')) {
         // Already authenticated — check if they're staff before redirecting
         const { data: profile } = await adminClient
           .from('profiles')
