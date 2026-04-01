@@ -28,7 +28,7 @@ export const caseStudies: CaseStudy[] = [
     outcome:
       "The platform successfully migrated to a microservices architecture with event-driven processing, achieving sub-200ms transaction latency at 10x the previous throughput. The combined team delivered the migration three weeks ahead of schedule, enabling Stratos to onboard enterprise clients on their accelerated timeline. The nearshore team remains embedded 14 months later as a permanent extension of the engineering organization.",
     metrics: {
-      "Engineering Cost Reduction": "58% vs. US hiring",
+      "Engineering Cost Reduction": "47% vs. US hiring",
       "Time to Market": "3 weeks ahead of schedule",
       "Transaction Throughput": "10x increase",
       "System Uptime": "99.97% post-migration",
@@ -76,11 +76,11 @@ export const caseStudies: CaseStudy[] = [
     solution:
       "SMarDevs deployed a full-stack squad of six engineers covering React, Node.js, PostgreSQL, and DevOps. The team operated as a dedicated product squad with their own tech lead, collaborating with NovaCraft's product managers through shared Figma designs, Linear project boards, and bi-weekly stakeholder demos. A QA automation engineer was included from sprint one to establish automated testing pipelines that maintained quality at speed.",
     outcome:
-      "The marketplace launched on schedule with all core features operational, including multi-vendor onboarding, automated escrow payments, and real-time inventory synchronization across supplier APIs. NovaCraft onboarded their first 50 enterprise buyers within the first month post-launch. The automated test suite achieved 94% coverage, giving the team confidence to iterate rapidly on post-launch feedback without introducing regressions.",
+      "The marketplace launched on schedule with all core features operational, including multi-vendor onboarding, automated escrow payments, and real-time inventory synchronization across supplier APIs. NovaCraft onboarded their first 50 enterprise buyers within the first month post-launch. The automated test suite achieved 89% coverage, giving the team confidence to iterate rapidly on post-launch feedback without introducing regressions.",
     metrics: {
       "Launch Timeline": "Delivered on 4-month schedule",
-      "Engineering Cost Savings": "61% vs. US team build-out",
-      "Automated Test Coverage": "94%",
+      "Engineering Cost Savings": "51% vs. US team build-out",
+      "Automated Test Coverage": "89%",
       "First-Month Enterprise Buyers": "50+ organizations",
     },
     testimonial: {
