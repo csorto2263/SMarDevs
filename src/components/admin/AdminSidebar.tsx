@@ -18,6 +18,7 @@ import {
   Building2,
   UserCheck,
   Globe,
+  BookOpen,
 } from 'lucide-react'
 import type { User } from '@supabase/supabase-js'
 import type { Profile } from '@/lib/supabase/types'
@@ -26,6 +27,7 @@ const navItems = [
   { href: '/admin',            label: 'Dashboard',  icon: LayoutDashboard, exact: true },
   { href: '/admin/jobs',       label: 'Jobs',        icon: Briefcase },
   { href: '/admin/applicants', label: 'Applicants',  icon: Users },
+  { href: '/admin/exams',      label: 'Exams',       icon: BookOpen },
   { href: '/admin/clients',    label: 'Clients',     icon: Building2,  adminOnly: true },
   { href: '/admin/employees',  label: 'Employees',   icon: UserCheck,  adminOnly: true },
   { href: '/admin/users',      label: 'Users',       icon: UserCog,    adminOnly: true },

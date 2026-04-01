@@ -1,15 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { createServerSupabaseClient } from '@/lib/supabase/server'
-
-async function requireAdmin() {
-  const supabase = await createServerSupabaseClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return null
-  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
-  if (profile?.role !== 'admin') return null
-  return user
-}
+import { logAudit } from '@/lib/audit'
+import { requireAdmin } from '@/lib/auth'
 
 // GET /api/admin/users — list with search, filter, pagination
 export async function GET(req: NextRequest) {
@@ -70,6 +62,14 @@ export async function POST(req: NextRequest) {
     { id: userId, email, full_name: full_name || null, role, phone: phone || null, status: 'active' },
     { onConflict: 'id' }
   )
+
+  await logAudit({
+    entity_type: 'user',
+    entity_id: userId,
+    action: 'create',
+    performed_by: caller.id,
+    metadata: { email, full_name, role },
+  })
 
   return NextResponse.json({ user: { id: userId, email } }, { status: 201 })
 }

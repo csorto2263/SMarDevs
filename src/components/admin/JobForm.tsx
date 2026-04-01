@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Save, ArrowLeft, Plus, X, Loader2 } from 'lucide-react'
+import { logAuditClient } from '@/lib/audit-client'
 import Link from 'next/link'
 import type { JobCategory, Job } from '@/lib/supabase/types'
 import type { Client } from '@/lib/types'
@@ -165,10 +166,24 @@ export default function JobForm({ categories, clients, initialData }: JobFormPro
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { error: err } = await supabase.from('jobs').update(cleanedData as any).eq('id', initialData.id)
         if (err) throw err
+        logAuditClient({
+          entity_type: 'job',
+          entity_id: initialData.id,
+          action: 'update',
+          metadata: { title: form.title },
+        })
       } else {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { error: err } = await supabase.from('jobs').insert(cleanedData as any)
+        const { data: newJob, error: err } = await supabase.from('jobs').insert(cleanedData as any).select('id').single()
         if (err) throw err
+        if (newJob) {
+          logAuditClient({
+            entity_type: 'job',
+            entity_id: newJob.id,
+            action: 'create',
+            metadata: { title: form.title },
+          })
+        }
       }
       router.push('/admin/jobs')
       router.refresh()

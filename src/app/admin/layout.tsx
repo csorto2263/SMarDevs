@@ -1,4 +1,6 @@
+import { redirect } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
+import { createAdminClientAny } from '@/lib/supabase/admin'
 import AdminSidebar from '@/components/admin/AdminSidebar'
 
 export const metadata = {
@@ -6,30 +8,33 @@ export const metadata = {
   robots: { index: false, follow: false },
 }
 
+const STAFF_ROLES = ['admin', 'recruiter', 'hiring_manager']
+
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  // The middleware handles redirects for unauthenticated users.
-  // Login page must be accessible without auth.
   const supabase = await createServerSupabaseClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  // If not authenticated, the middleware will redirect to login.
-  // But if somehow we get here without a user (and we're not on login), redirect.
+  // No session → login page renders itself, everything else redirects
   if (!user) {
-    // Return children as-is — this allows the login page to render
-    // The middleware already handles redirect logic for non-login admin routes
     return <>{children}</>
   }
 
-  // Get profile
-  const { data: profile } = await supabase
+  // Use admin client to bypass RLS for role check
+  const adminClient = createAdminClientAny()
+  const { data: profile } = await adminClient
     .from('profiles')
     .select('*')
     .eq('id', user.id)
     .single()
+
+  // Not a staff member → hard redirect, no UI rendered
+  if (!profile || !STAFF_ROLES.includes(profile.role)) {
+    redirect(profile?.role === 'applicant' ? '/portal' : '/admin/login')
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex">

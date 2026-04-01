@@ -1,16 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { createClient } from '@supabase/supabase-js'
-
-async function requireAdmin() {
-  const supabase = await createServerSupabaseClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return null
-  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
-  if (profile?.role !== 'admin') return null
-  return user
-}
+import { logAudit } from '@/lib/audit'
+import { requireAdmin } from '@/lib/auth'
 
 // POST /api/admin/users/[id]/reset-password
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -44,6 +36,14 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     console.error('[reset-password] error:', error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
+
+  await logAudit({
+    entity_type: 'user',
+    entity_id: id,
+    action: 'password_reset_sent',
+    performed_by: caller.id,
+    metadata: { email: profile.email },
+  })
 
   return NextResponse.json({ success: true, emailSent: true, message: `Password reset email sent to ${profile.email}` })
 }

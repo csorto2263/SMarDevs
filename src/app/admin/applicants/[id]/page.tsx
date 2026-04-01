@@ -10,6 +10,7 @@ import StatusChangerV2 from '@/components/admin/StatusChangerV2'
 import AdminNotes from '@/components/admin/AdminNotes'
 import ShareApplicantButton from '@/components/admin/ShareApplicantButton'
 import PipelineHistoryDrawer from '@/components/admin/PipelineHistoryDrawer'
+import ApplicantEvaluations from '@/components/admin/ApplicantEvaluations'
 
 export default async function ApplicantDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -215,6 +216,9 @@ export default async function ApplicantDetailPage({ params }: { params: Promise<
               </div>
             </div>
           )}
+
+          {/* Technical Evaluations */}
+          <ApplicantEvaluations applicationId={app.id} currentStatus={app.status} />
 
           {/* Notes */}
           <AdminNotes applicationId={app.id} userId={user!.id} initialNotes={app.admin_notes || []} />

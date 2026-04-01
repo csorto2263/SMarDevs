@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { MessageSquare, Send, Loader2, Trash2 } from 'lucide-react'
+import { logAuditClient } from '@/lib/audit-client'
 
 interface Note {
   id: string
@@ -45,6 +46,12 @@ export default function AdminNotes({ applicationId, userId, initialNotes }: Prop
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       setNotes(prev => [data as any, ...prev])
       setNewNote('')
+      logAuditClient({
+        entity_type: 'admin_note',
+        entity_id: (data as any).id,
+        action: 'create',
+        metadata: { application_id: applicationId },
+      })
     }
     setSaving(false)
   }
@@ -56,6 +63,12 @@ export default function AdminNotes({ applicationId, userId, initialNotes }: Prop
     const { error } = await supabase.from('admin_notes').delete().eq('id', noteId)
     if (!error) {
       setNotes(prev => prev.filter(n => n.id !== noteId))
+      logAuditClient({
+        entity_type: 'admin_note',
+        entity_id: noteId,
+        action: 'delete',
+        metadata: { application_id: applicationId },
+      })
     }
     setDeleting(null)
   }
