@@ -9,7 +9,9 @@ export async function POST(req: NextRequest) {
   }
 
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.office365.com',
+    port: 587,
+    secure: false,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
@@ -73,7 +75,8 @@ export async function POST(req: NextRequest) {
   try {
     await transporter.sendMail({
       from: `"SMarDevs Contact" <${process.env.SMTP_USER}>`,
-      to: 'carlos.sorto@easylifehn.com',
+      to: 'csorto@smardevs.com',
+      cc: 'mortega@smardevs.com',
       replyTo: email,
       subject: `New Inquiry from ${name} — ${company}`,
       html,

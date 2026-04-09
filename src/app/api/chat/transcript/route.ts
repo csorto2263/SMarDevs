@@ -176,7 +176,9 @@ export async function POST(req: NextRequest) {
 
     // ── Send email ──
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.office365.com',
+      port: 587,
+      secure: false,
       auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
     })
 
@@ -193,7 +195,8 @@ export async function POST(req: NextRequest) {
 
     await transporter.sendMail({
       from: `"SMarty Bot" <${process.env.SMTP_USER}>`,
-      to: 'carlos.sorto@easylifehn.com',
+      to: 'csorto@smardevs.com',
+      cc: 'mortega@smardevs.com',
       subject,
       html,
       text: `SMarty Chat Transcript\n\nSession: ${sessionId}\nStarted: ${startedAt}\nEnded: ${endedAt}\nPage: ${pageUrl}\nLanguage: ${language}\n\n${leadSummary ? `--- Lead Info ---\n${leadSummary}\n\n` : ''}--- Conversation ---\n\n${transcriptLines}`,

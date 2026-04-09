@@ -6,7 +6,7 @@ import { requireStaff } from '@/lib/auth'
 import nodemailer from 'nodemailer'
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
+  host: 'smtp.office365.com',
   port: 587,
   secure: false,
   auth: {

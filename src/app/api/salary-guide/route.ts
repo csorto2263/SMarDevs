@@ -46,7 +46,9 @@ export async function POST(req: NextRequest) {
 
   // Send email with PDF attachment
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.office365.com',
+    port: 587,
+    secure: false,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
@@ -139,7 +141,8 @@ export async function POST(req: NextRequest) {
     // Notify admin
     await transporter.sendMail({
       from: `"SMarDevs Leads" <${process.env.SMTP_USER}>`,
-      to: 'carlos.sorto@easylifehn.com',
+      to: 'csorto@smardevs.com',
+      cc: 'mortega@smardevs.com',
       replyTo: email,
       subject: `New Salary Guide Lead: ${name} — ${company}`,
       html: adminHtml,
