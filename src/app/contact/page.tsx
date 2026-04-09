@@ -11,7 +11,6 @@ import {
   CheckCircle2,
   ChevronDown,
   MapPin,
-  MessageSquare,
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -101,10 +100,6 @@ export default function ContactPage() {
         {/* Hero */}
         <section className="bg-hero-gradient section-padding pt-32 pb-16">
           <div className="container-custom text-center">
-            <div className="inline-flex items-center gap-2 bg-brand-600/10 border border-brand-600/20 rounded-full px-4 py-1.5 mb-6">
-              <MessageSquare className="w-4 h-4 text-brand-600" />
-              <span className="text-sm text-brand-600 font-medium">Get in Touch</span>
-            </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 max-w-4xl mx-auto">
               Let&#39;s Build Something{" "}
               <span className="gradient-text">Exceptional Together</span>
@@ -120,10 +115,6 @@ export default function ContactPage() {
         <section className="py-16 bg-navy-950">
           <div className="container-custom">
             <div className="max-w-4xl mx-auto text-center mb-8">
-              <div className="inline-flex items-center gap-2 bg-brand-600/10 border border-brand-600/20 rounded-full px-4 py-1.5 mb-4">
-                <Calendar className="w-4 h-4 text-brand-600" />
-                <span className="text-sm text-brand-600 font-medium">Book a Call</span>
-              </div>
               <h2 className="text-2xl md:text-3xl font-bold mb-3">
                 Schedule a Free Discovery Call
               </h2>
@@ -134,7 +125,7 @@ export default function ContactPage() {
             <div
               className="calendly-inline-widget w-full rounded-2xl overflow-hidden border border-white/10"
               data-url="https://calendly.com/csorto-smardevs/30min?background_color=0a0f1e&text_color=ffffff&primary_color=2563eb"
-              style={{ minWidth: 320, height: 700 }}
+              style={{ minWidth: 320, height: 750 }}
             />
           </div>
         </section>
