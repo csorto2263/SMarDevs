@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import Link from "next/link";
 import {
   Mail,
@@ -35,6 +35,16 @@ const timelineOptions = ["Immediately", "1-2 weeks", "1 month", "Just exploring"
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
   const [sending, setSending] = useState(false);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [form, setForm] = useState({
@@ -103,6 +113,29 @@ export default function ContactPage() {
               Tell us about your hiring needs and our team will craft a tailored staffing solution
               within 24 hours.
             </p>
+          </div>
+        </section>
+
+        {/* Calendly Inline Widget */}
+        <section className="py-16 bg-navy-950">
+          <div className="container-custom">
+            <div className="max-w-4xl mx-auto text-center mb-8">
+              <div className="inline-flex items-center gap-2 bg-brand-600/10 border border-brand-600/20 rounded-full px-4 py-1.5 mb-4">
+                <Calendar className="w-4 h-4 text-brand-600" />
+                <span className="text-sm text-brand-600 font-medium">Book a Call</span>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold mb-3">
+                Schedule a Free Discovery Call
+              </h2>
+              <p className="text-gray-400">
+                Pick a time that works for you — no commitment required.
+              </p>
+            </div>
+            <div
+              className="calendly-inline-widget w-full rounded-2xl overflow-hidden border border-white/10"
+              data-url="https://calendly.com/csorto-smardevs/30min?background_color=0a0f1e&text_color=ffffff&primary_color=2563eb"
+              style={{ minWidth: 320, height: 700 }}
+            />
           </div>
         </section>
 
@@ -367,22 +400,6 @@ export default function ContactPage() {
                   </p>
                 </div>
 
-                {/* Calendly Placeholder */}
-                <div className="shadow-glass rounded-2xl border border-white/10 bg-white/5 p-6">
-                  <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-                    <Calendar className="w-5 h-5 text-accent-500" />
-                    Book Directly
-                  </h3>
-                  <p className="text-sm text-gray-400 mb-4">
-                    Prefer to book directly? Use our calendar below to schedule a 30-minute
-                    discovery call at a time that works for you.
-                  </p>
-                  <div className="w-full h-48 bg-navy-950 border border-white/10 rounded-lg flex items-center justify-center">
-                    <p className="text-gray-600 text-sm text-center px-4">
-                      Calendly scheduling widget will appear here
-                    </p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
