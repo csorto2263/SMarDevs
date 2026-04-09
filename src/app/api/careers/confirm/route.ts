@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.office365.com',
+  host: 'smtpout.secureserver.net',
   port: 587,
   secure: false,
   auth: {
