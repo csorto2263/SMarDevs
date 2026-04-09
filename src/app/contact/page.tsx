@@ -98,13 +98,13 @@ export default function ContactPage() {
       <Header />
       <main className="min-h-screen bg-navy-950 text-white">
         {/* Hero */}
-        <section className="bg-hero-gradient section-padding pt-32 pb-16">
+        <section className="bg-hero-gradient pt-28 pb-8">
           <div className="container-custom text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 max-w-4xl mx-auto">
+            <h1 className="text-3xl md:text-4xl font-bold mb-3 max-w-3xl mx-auto">
               Let&#39;s Build Something{" "}
               <span className="gradient-text">Exceptional Together</span>
             </h1>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            <p className="text-base text-gray-400 max-w-xl mx-auto">
               Tell us about your hiring needs and our team will craft a tailored staffing solution
               within 24 hours.
             </p>
@@ -112,7 +112,7 @@ export default function ContactPage() {
         </section>
 
         {/* Calendly Inline Widget */}
-        <section className="py-16 bg-navy-950">
+        <section className="py-8 bg-navy-950">
           <div className="container-custom">
             <div className="max-w-4xl mx-auto text-center mb-8">
               <h2 className="text-2xl md:text-3xl font-bold mb-3">
