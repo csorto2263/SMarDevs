@@ -149,8 +149,8 @@ export async function POST(req: NextRequest) {
     })
 
     return NextResponse.json({ success: true })
-  } catch (error: any) {
+  } catch (error) {
     console.error('[salary-guide] email error:', error)
-    return NextResponse.json({ error: 'Failed to send email', detail: error?.message || String(error) }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to send email' }, { status: 500 })
   }
 }
