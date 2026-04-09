@@ -132,10 +132,10 @@ function Footer() {
             {/* Contact info */}
             <div className="space-y-1 text-sm text-gray-400">
               <a
-                href="mailto:info@smartdevs.com"
+                href="mailto:mortega@smardevs.com"
                 className="block hover:text-white transition-colors"
               >
-                info@smartdevs.com
+                mortega@smardevs.com
               </a>
               <a
                 href="tel:+15043331465"

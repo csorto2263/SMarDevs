@@ -320,7 +320,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <p className="text-sm text-gray-400">Email</p>
-                        <a href="mailto:carlos.sorto@easylifehn.com" className="text-white font-medium hover:text-brand-400 transition-colors">carlos.sorto@easylifehn.com</a>
+                        <a href="mailto:mortega@smardevs.com" className="text-white font-medium hover:text-brand-400 transition-colors">mortega@smardevs.com</a>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
