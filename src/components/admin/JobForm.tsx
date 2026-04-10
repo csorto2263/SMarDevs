@@ -8,6 +8,7 @@ import { logAuditClient } from '@/lib/audit-client'
 import Link from 'next/link'
 import type { JobCategory, Job } from '@/lib/supabase/types'
 import type { Client } from '@/lib/types'
+import UnsavedChangesModal from '@/components/admin/UnsavedChangesModal'
 
 interface JobFormProps {
   categories: JobCategory[]
@@ -91,6 +92,9 @@ export default function JobForm({ categories, clients, initialData }: JobFormPro
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isDirty, setIsDirty] = useState(false)
+  const [showUnsavedModal, setShowUnsavedModal] = useState(false)
+  const [pendingHref, setPendingHref] = useState<string | null>(null)
 
   const [form, setForm] = useState({
     title: initialData?.title || '',
@@ -116,6 +120,42 @@ export default function JobForm({ categories, clients, initialData }: JobFormPro
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formAny = form as any
+
+  // Track initial form snapshot to detect dirty state
+  const initialFormRef = useRef(JSON.stringify(form))
+
+  useEffect(() => {
+    setIsDirty(JSON.stringify(form) !== initialFormRef.current)
+  }, [form])
+
+  // Warn on browser close/refresh
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (isDirty) {
+        e.preventDefault()
+        e.returnValue = ''
+      }
+    }
+    window.addEventListener('beforeunload', handler)
+    return () => window.removeEventListener('beforeunload', handler)
+  }, [isDirty])
+
+  // Intercept all link/anchor clicks when there are unsaved changes
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (!isDirty) return
+      const anchor = (e.target as HTMLElement).closest('a[href]') as HTMLAnchorElement | null
+      if (!anchor) return
+      const href = anchor.getAttribute('href')
+      if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return
+      e.preventDefault()
+      e.stopPropagation()
+      setPendingHref(href)
+      setShowUnsavedModal(true)
+    }
+    document.addEventListener('click', handler, true)
+    return () => document.removeEventListener('click', handler, true)
+  }, [isDirty])
 
   const updateField = (field: string, value: string | boolean) => {
     setForm(prev => ({ ...prev, [field]: value }))
@@ -144,8 +184,7 @@ export default function JobForm({ categories, clients, initialData }: JobFormPro
     }))
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const saveJob = async (redirectTo?: string) => {
     setLoading(true)
     setError(null)
 
@@ -185,7 +224,11 @@ export default function JobForm({ categories, clients, initialData }: JobFormPro
           })
         }
       }
-      router.push('/admin/jobs')
+      // Mark as clean after successful save
+      initialFormRef.current = JSON.stringify(form)
+      setIsDirty(false)
+      setShowUnsavedModal(false)
+      router.push(redirectTo ?? '/admin/jobs')
       router.refresh()
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to save job')
@@ -194,10 +237,38 @@ export default function JobForm({ categories, clients, initialData }: JobFormPro
     }
   }
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    await saveJob()
+  }
+
+  const handleModalUpdate = async () => {
+    await saveJob(pendingHref ?? '/admin/jobs')
+  }
+
+  const handleModalContinue = () => {
+    setIsDirty(false)
+    setShowUnsavedModal(false)
+    if (pendingHref) router.push(pendingHref)
+  }
+
+  const handleModalCancel = () => {
+    setShowUnsavedModal(false)
+    setPendingHref(null)
+  }
+
   const inputClasses = 'w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-navy-950 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all'
   const labelClasses = 'block text-sm font-medium text-gray-700 mb-1.5'
 
   return (
+    <>
+    <UnsavedChangesModal
+      open={showUnsavedModal}
+      saving={loading}
+      onCancel={handleModalCancel}
+      onContinue={handleModalContinue}
+      onUpdate={handleModalUpdate}
+    />
     <form onSubmit={handleSubmit} className="space-y-8">
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">{error}</div>
@@ -329,5 +400,6 @@ export default function JobForm({ categories, clients, initialData }: JobFormPro
         </button>
       </div>
     </form>
+    </>
   )
 }
